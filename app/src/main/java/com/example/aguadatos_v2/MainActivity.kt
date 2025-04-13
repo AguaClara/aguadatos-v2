@@ -26,6 +26,8 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+            // Call our main navigation setup from Compose
+            NavigationSetup()
         }
     }
 }
