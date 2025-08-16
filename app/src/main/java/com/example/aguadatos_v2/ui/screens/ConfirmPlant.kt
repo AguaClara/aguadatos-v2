@@ -53,8 +53,12 @@ fun ConfirmPlant() {
             fontProvider = provider,
         )
     )
+
     val plant= "Gracias"
- Column(modifier = Modifier
+    val labels = listOf("Plant Flow in NTU", "Raw Water in NTU", "Coagulant Dose", "Filtered Water Turbidity in NTU", "Clarified Water Turbidity in NTU", "Chlorine Dose", "Color", "Tank Volumes")
+
+
+    Column(modifier = Modifier
      .fillMaxSize()
      .background(Color(0xffe4effc))
      .padding(24.dp),
