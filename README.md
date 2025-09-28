@@ -4,7 +4,7 @@ POST stands for Plant Operations Smartphone Tracker. We are dedicated to designi
 
 ## Team Members:
 - Patrick Egan | Subteam Lead | Developer
-- Daniel Romero | Frontend Devloper
+- Daniel Romero | Frontend Developer
 ### Goals for Spring 2025:
 
 1. Implement second iteration design of AguaDatos on the frontend while migrating to Jetpack Compose
