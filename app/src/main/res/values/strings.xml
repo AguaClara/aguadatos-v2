@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">AguaDatos-v2</string>
+    <string name="app_name">AguaDatosApp</string>
+    <string name="aguadatos">AguaDatos</string>
+
+    <!-- SignUp -->
+    <string name="first_and_last_name">First and last name</string>
+    <string name="plant_code">Plant Code</string>
+    <string name="ex">Ex. </string>
 </resources>

@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
@@ -142,7 +143,7 @@ fun SignUp(
 
                 //Name field
                 Text(
-                    text = "First and Last Name",
+                    text = stringResource(R.string.first_and_last_name),
                     color = Color.Black,
                     fontSize = 14.sp,
                     fontFamily = fontFamily
@@ -151,7 +152,9 @@ fun SignUp(
                     value = userName,
                     onValueChange = { userName = it},
                     placeholder = {
-                        Text("ex. Kelly Tran", color = Color.Gray, fontFamily = fontFamily)
+                        Text(stringResource(R.string.ex) +  "Kelly Tran",
+                            color = Color.Gray,
+                            fontFamily = fontFamily)
                             },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
@@ -166,7 +169,7 @@ fun SignUp(
 
                 //Plant code field
                 Text(
-                    text = "Plant Code",
+                    text = stringResource(R.string.plant_code),
                     color = Color.Black,
                     fontSize = 14.sp,
                     fontFamily = fontFamily
@@ -175,7 +178,9 @@ fun SignUp(
                     value = plantCode,
                     onValueChange = { plantCode = it},
                     placeholder = {
-                        Text("ex. ABC123", color = Color.Gray, fontFamily = fontFamily)
+                        Text(stringResource(R.string.ex) + "ABC123",
+                            color = Color.Gray,
+                            fontFamily = fontFamily)
                     },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
@@ -191,7 +196,8 @@ fun SignUp(
                     textAlign = TextAlign.Right,
                     fontSize = 9.sp,
                     fontFamily = fontFamily,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(bottom = 4.dp),
 
                 )
