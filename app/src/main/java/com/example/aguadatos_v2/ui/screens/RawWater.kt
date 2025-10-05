@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -54,7 +55,7 @@ public fun RawWater(
         )
     )
 
-    val selectedChemical by remember {mutableStateOf("PAC")} //take this value from server or previous screen
+    val selectedChemical by remember {mutableStateOf(stringResource(R.string.pac))} //take this value from server or previous screen
     var rawWater by remember { mutableStateOf("") }
 
     Scaffold(
@@ -65,7 +66,7 @@ public fun RawWater(
                 onRecordsClick = onRecordsClick,
                 onGraphsClick = onGraphsClick,
                 onProfileClick = onProfileClick,
-                currentScreen = "Home"
+                currentScreen = stringResource(R.string.home)
             )
         }
     ) { innerPadding ->
@@ -85,7 +86,7 @@ public fun RawWater(
                 //back arrow
                 Image(
                     painter = painterResource(id = R.drawable.back_arrow),
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.back),
                     modifier = Modifier
                         .size(28.dp)
                         .clickable { onBackClick() }
@@ -94,7 +95,7 @@ public fun RawWater(
 
                 //heading
                 Text(
-                    text = "RAW WATER",
+                    text = stringResource(R.string.raw_water),
                     fontSize = 24.sp,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
@@ -105,7 +106,7 @@ public fun RawWater(
 
             //explanation text
             Text(
-                text = "What is the turbidity of the raw water coming into the plant in NTU?",
+                text = stringResource(R.string.what_is_the_turbidity_of_the_raw_water),
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 16.dp, start = 16.dp),
                 fontFamily = fontFamily
@@ -113,7 +114,9 @@ public fun RawWater(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 //raw water input text field
@@ -137,11 +140,11 @@ public fun RawWater(
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "NTU", fontSize = 16.sp, fontFamily = fontFamily)
+                Text(text = stringResource(R.string.ntu), fontSize = 16.sp, fontFamily = fontFamily)
             }
 
             Text(
-                text = "Reminder: the chemical type is $selectedChemical",
+                text = stringResource(R.string.reminder_the_chemical_type_is) + selectedChemical,
                 fontSize = 14.sp,
                 fontStyle = FontStyle.Italic,
                 color = Color.Gray.copy(alpha = 0.8f),
@@ -161,7 +164,7 @@ public fun RawWater(
                     .align(Alignment.End)
                     .height(40.dp)
             ) {
-                Text(text = "SUBMIT", fontFamily = fontFamily)
+                Text(text = stringResource(R.string.submit), fontFamily = fontFamily)
             }
         }
     }

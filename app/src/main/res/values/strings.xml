@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">AguaDatosApp</string>
     <string name="aguadatos" translatable="false">AguaDatos</string>
 
-    <!-- SignUp -->
+    <!-- Signup -->
     <string name="first_and_last_name">First and last name</string>
     <string name="plant_code">Plant Code</string>
     <string name="ex">Ex. </string>
@@ -34,5 +34,16 @@
     <string name="chlorine_dosage">Chlorine Dosage</string>
     <string name="color">Color</string>
     <string name="tank_volumes">Tank Volumes</string>
+
+    <!-- RawWater -->
+    <string name="pac">PAC</string>
+    <string name="what_is_the_turbidity_of_the_raw_water">What is the turbidity of the raw water coming into the plant in NTU?</string>
+    <string name="reminder_the_chemical_type_is">Reminder: the chemical type is</string>
+    <string name="submit">SUBMIT</string>
+    <string name="ntu">NTU</string>
+    <string name="raw_water">RAW WATER</string>
+    <string name="back">Back</string>
+    <string name="home">Home</string>
+
 
 </resources>
