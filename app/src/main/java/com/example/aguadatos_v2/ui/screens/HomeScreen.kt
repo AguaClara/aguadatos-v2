@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
@@ -71,8 +72,26 @@ fun HomeScreen(
 ) {
 
     //labels and handlers of all parameters that need buttons
-    val labels = listOf("Plant Flow", "Raw Water Turbidity", "Coagulant Dosage", "Filtered Water Turbidity", "Clarified Water Turbidity", "Chlorine Dosage", "Color", "Tank Volumes")
-    val onClickHandlers = listOf(onPlantFlow, onRawWaterTurbidity, onCoagulantDosage, onFilteredWaterTurbidity, onClarifiedWaterTurbidity, onChlorineDosage, onColor, onTankVolumes)
+    val labels = listOf(
+        stringResource(R.string.plant_flow),
+        stringResource(R.string.raw_water_turbidity),
+        stringResource(R.string.coagulant_dosage),
+        stringResource(R.string.filtered_water_turbidity),
+        stringResource(R.string.clarified_water_turbidity),
+        stringResource(R.string.chlorine_dosage),
+        stringResource(R.string.color),
+        stringResource(R.string.tank_volumes)
+    )
+    val onClickHandlers = listOf(
+        onPlantFlow,
+        onRawWaterTurbidity,
+        onCoagulantDosage,
+        onFilteredWaterTurbidity,
+        onClarifiedWaterTurbidity,
+        onChlorineDosage,
+        onColor,
+        onTankVolumes
+    )
 
 
     Scaffold(
@@ -103,7 +122,7 @@ fun HomeScreen(
                 //back arrow
                 Image(
                     painter = painterResource(R.drawable.logo),
-                    contentDescription = "AguaDatos logo",
+                    contentDescription = stringResource(R.string.aguadatos_logo),
                     modifier = Modifier
                         .weight(7f)
                         .height(62.dp)
@@ -114,7 +133,7 @@ fun HomeScreen(
 
             //heading
             Text(
-                text = "Types of Entries",
+                text = stringResource(R.string.types_of_entries),
                 fontSize = 30.sp,
                 color = Color(0xff000000),
                 modifier = Modifier

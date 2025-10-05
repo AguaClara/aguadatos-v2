@@ -1,9 +1,38 @@
 <resources>
-    <string name="app_name">AguaDatosApp</string>
-    <string name="aguadatos">AguaDatos</string>
+    <string name="app_name" translatable="false">AguaDatosApp</string>
+    <string name="aguadatos" translatable="false">AguaDatos</string>
 
     <!-- SignUp -->
     <string name="first_and_last_name">First and last name</string>
     <string name="plant_code">Plant Code</string>
     <string name="ex">Ex. </string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="lock_icon">Lock icon</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_account">Create account</string>
+    <string name="already_have_an_account_log_in">Already have an account? Log in</string>
+
+    <string name="includes_lowercase_character">"Includes lowercase character"</string>
+    <string name="includes_uppercase_character">"Includes uppercase character"</string>
+    <string name="includes_numbers">"Includes numbers"</string>
+    <string name="includes_symbols">"Includes symbols"</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="your_plant">"Your Plant: "</string>
+    <string name="sign_up">"Sign Up "</string>
+    <string name="aguadatos_logo">AguaDatos logo</string>
+    <string name="password">Password</string>
+    <string name="input_verification_code">"Please input the 6-digit verification code that has been sent to your phone number: "</string>
+    <string name="create">CREATE</string>
+    <string name="types_of_entries">Types of Entries</string>
+    <string name="plant_flow">Plant Flow</string>
+    <string name="raw_water_turbidity">Raw Water Turbidity</string>
+    <string name="coagulant_dosage">Coagulant Dosage</string>
+    <string name="filtered_water_turbidity">Filtered Water Turbidity</string>
+    <string name="clarified_water_turbidity">Clarified Water Turbidity</string>
+    <string name="chlorine_dosage">Chlorine Dosage</string>
+    <string name="color">Color</string>
+    <string name="tank_volumes">Tank Volumes</string>
+
 </resources>

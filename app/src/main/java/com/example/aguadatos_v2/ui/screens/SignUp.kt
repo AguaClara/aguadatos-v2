@@ -118,13 +118,13 @@ fun SignUp(
             ){
                 Image(
                     painter = painterResource(R.drawable.agimg),
-                    contentDescription = "AguaDatos image",
+                    contentDescription = stringResource(R.string.aguadatos_logo),
                     modifier = Modifier
                         .weight(1f)
                         .height(62.dp)
                 )
                 Text(
-                    text = "Sign Up ",
+                    text = stringResource(R.string.sign_up),
                     fontSize = 24.sp,
                     color = Color.Black,
                     modifier = Modifier
@@ -191,7 +191,7 @@ fun SignUp(
                     leadingIcon = {Icon(painter = painterResource(id = R.drawable.person2), contentDescription = "Person icon")}
                     )
                 Text(
-                    text = "Your Plant: ",
+                    text = stringResource(R.string.your_plant),
                     color = Color.Black,
                     textAlign = TextAlign.Right,
                     fontSize = 9.sp,
@@ -204,7 +204,7 @@ fun SignUp(
 
                 //Phone number field
                 Text(
-                    text = "Phone Number",
+                    text = stringResource(R.string.phone_number),
                     color = Color.Black,
                     fontSize = 14.sp,
                     fontFamily = fontFamily
@@ -213,7 +213,7 @@ fun SignUp(
                     value = phoneNumber,
                     onValueChange = { phoneNumber = it},
                     placeholder = {
-                        Text("ex. 123-456-789", color = Color.Gray, fontFamily = fontFamily)
+                        Text(stringResource(R.string.ex) + "123-456-789", color = Color.Gray, fontFamily = fontFamily)
                     },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
@@ -227,7 +227,7 @@ fun SignUp(
 
                 //Password field
                 Text(
-                    text = "Password",
+                    text = stringResource(R.string.password),
                     color = Color.Black,
                     fontSize = 14.sp,
                     fontFamily = fontFamily,
@@ -236,7 +236,7 @@ fun SignUp(
                     value = password,
                     onValueChange = { password = it },
                     placeholder = {
-                        Text("Enter your password", color = Color.Gray, fontFamily = fontFamily)
+                        Text(stringResource(R.string.enter_your_password), color = Color.Gray, fontFamily = fontFamily)
                     },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
@@ -249,7 +249,7 @@ fun SignUp(
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.lock),
-                            contentDescription = "Lock icon"
+                            contentDescription = stringResource(R.string.lock_icon)
                         )
                     },
                     trailingIcon = {
@@ -260,7 +260,8 @@ fun SignUp(
                                 painter = painterResource(
                                     id = if (showPassword) R.drawable.eyeoff else R.drawable.eye
                                 ),
-                                contentDescription = if (showPassword) "Hide password" else "Show password"
+                                contentDescription = if (showPassword) stringResource(R.string.hide_password)
+                                    else stringResource(R.string.show_password)
                             )
                         }
                     },
@@ -272,16 +273,14 @@ fun SignUp(
                 )
 
                 //Requirement line component for password strength visuals
-                RequirementLine(met = hasLower, text = "Includes lowercase character")
-                RequirementLine(met = hasUpper, text = "Includes uppercase character")
-                RequirementLine(met = hasDigit, text = "Includes numbers")
-                RequirementLine(met = hasSymbol, text = "Includes symbols")
-
-                Spacer(modifier = Modifier.height(8.dp))
+                RequirementLine(met = hasLower, text = stringResource(R.string.includes_lowercase_character))
+                RequirementLine(met = hasUpper, text = stringResource(R.string.includes_uppercase_character))
+                RequirementLine(met = hasDigit, text = stringResource(R.string.includes_numbers))
+                RequirementLine(met = hasSymbol, text = stringResource(R.string.includes_symbols))
 
                 //confirm password field
                 Text(
-                    text = "Confirm Password",
+                    text = stringResource(R.string.confirm_password),
                     color = Color.Black,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(top = 4.dp),
@@ -291,7 +290,7 @@ fun SignUp(
                     value = confPassword,
                     onValueChange = { confPassword = it },
                     placeholder = {
-                        Text("Enter your password", color = Color.Gray, fontFamily = fontFamily)
+                        Text(stringResource(R.string.enter_your_password), color = Color.Gray, fontFamily = fontFamily)
                     },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
@@ -304,7 +303,7 @@ fun SignUp(
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.lock),
-                            contentDescription = "Lock icon"
+                            contentDescription = stringResource(R.string.lock_icon)
                         )
                     },
                     trailingIcon = {
@@ -315,7 +314,8 @@ fun SignUp(
                                 painter = painterResource(
                                     id = if (showConfPassword) R.drawable.eyeoff else R.drawable.eye
                                 ),
-                                contentDescription = if (showConfPassword) "Hide password" else "Show password"
+                                contentDescription = if (showConfPassword) stringResource(R.string.hide_password)
+                                    else stringResource(R.string.show_password)
                             )
                         }
                     },
@@ -349,7 +349,7 @@ fun SignUp(
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
-                        text = "Create account",
+                        text = stringResource(R.string.create_account),
                         color = Color.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
@@ -363,7 +363,7 @@ fun SignUp(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Already have an account? Log in",
+                        text = stringResource(R.string.already_have_an_account_log_in),
                         color = Color(0xFF666666),
                         fontSize = 14.sp,
                         fontFamily = fontFamily

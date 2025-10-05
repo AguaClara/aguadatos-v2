@@ -35,6 +35,7 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -102,11 +103,12 @@ fun VerificationCode(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(painter = painterResource(R.drawable.logo),
-            contentDescription = "adlogo",
-            modifier = Modifier.align(Alignment.Start)
+            contentDescription = stringResource(R.string.aguadatos_logo),
+            modifier = Modifier
+                .align(Alignment.Start)
                 .size(width = 180.dp, height = 100.dp))
 
-        Text(text = "Please input the 6-digit verification code that has been sent to your phone number: ",
+        Text(text = stringResource(R.string.input_verification_code),
             fontSize = 18.sp,
             textAlign = TextAlign.Left,
             color = Color.Black,
@@ -119,7 +121,7 @@ fun VerificationCode(
         CodeInputTextFields(
             codeLength = codeLength,
             codeValues = verificationCode,
-            onUpdateCodeValuesByIndex = { index, value ->
+            onUpdateCodeValuesByIndex = {index, value ->
                 verificationCode[index] = value
             },
             onCodeInputComplete = {
@@ -145,7 +147,7 @@ fun VerificationCode(
                 shape = RoundedCornerShape(12.dp)
             )
 
-            {Text(text = "CREATE", fontSize = 15.sp,
+            {Text(text = stringResource(R.string.create), fontSize = 15.sp,
                 fontFamily = fontFamily,
                 fontWeight = FontWeight.W500)}
         }
