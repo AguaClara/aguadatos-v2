@@ -7,10 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
@@ -18,6 +15,7 @@ import com.example.aguadatos_v2.ui.screens.Chlorine
 import com.example.aguadatos_v2.ui.screens.ClarifiedWater
 import com.example.aguadatos_v2.ui.screens.Coagulant
 import com.example.aguadatos_v2.ui.screens.ConfirmPlant
+import com.example.aguadatos_v2.ui.screens.ConfirmScreen
 import com.example.aguadatos_v2.ui.screens.CreateParameter
 import com.example.aguadatos_v2.ui.screens.FilteredWater
 import com.example.aguadatos_v2.ui.screens.HomeScreen
@@ -30,7 +28,6 @@ import com.example.aguadatos_v2.ui.screens.Records
 import com.example.aguadatos_v2.ui.screens.SignUp
 import com.example.aguadatos_v2.ui.screens.VerificationCode
 import com.example.aguadatos_v2.ui.screens.WelcomePage
-import com.example.aguadatos_v2.ui.theme.AguaDatosv2Theme
 
 //main activity handles navigation
 class MainActivity : ComponentActivity() {
@@ -97,7 +94,24 @@ class MainActivity : ComponentActivity() {
 
                     //coagulant route
                     composable("coagulant"){
-                        Coagulant(onBackClick = {navController.navigate("home")}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+                        Coagulant(
+                            onBackClick = {navController.navigate("home")},
+                            onSubmitClick = {navController.navigate("confirmation")},
+                            onHomeClick = {navController.navigate("home")},
+                            onRecordsClick = {navController.navigate("records")},
+                            {},
+                            {}) {
+                            composable("confirmation") {
+                                ConfirmScreen(
+                                    onBackClick = { navController.popBackStack() },
+                                    onSubmitclick = { navController.navigate("confirmation") },
+                                    onGraphsClick = { navController.navigate("graphs")},
+                                    onHomeClick = { navController.navigate("home")},
+                                    onProfileClick = { navController.navigate("profile") },
+                                    onRecordsClick = { navController.navigate("records") }
+                                )
+                            }
+                        }
                     }
 
                     //plant configuration route
