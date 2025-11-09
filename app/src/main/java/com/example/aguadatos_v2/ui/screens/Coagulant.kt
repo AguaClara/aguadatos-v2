@@ -1,6 +1,5 @@
 package com.example.aguadatos_v2.ui.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,8 +49,6 @@ public fun Coagulant(
     function: () -> Unit
 ) {
 
-    val localNavController = rememberNavController()
-
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Calibration", "Change Dose")
     var isOn by remember { mutableStateOf(false) }
@@ -80,6 +77,7 @@ public fun Coagulant(
             )
         }
     ) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -558,7 +556,7 @@ public fun Coagulant(
                 }
 
             Button (
-                onClick = onSubmitClick,
+                onClick = { onSubmitClick() },
                     //{ /* submit things*/ },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
@@ -569,22 +567,22 @@ public fun Coagulant(
                     .align(Alignment.End)
                     .height(50.dp)
                     .padding(8.dp)
-                    ) {
+            ) {
                     Text(text = "SUBMIT")
                 }
             }
         }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
 @Composable
 public fun ConfirmScreen(
     onGraphsClick: () -> Unit,
     onHomeClick: () -> Unit,
     onProfileClick: () -> Unit,
     onRecordsClick: () -> Unit,
-    onSubmitclick: () -> Unit,
-    onBackClick: () -> Boolean
+    onSubmitClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         containerColor = Color(0xffe4effc),
@@ -597,19 +595,34 @@ public fun ConfirmScreen(
                 currentScreen = "Home"
             )
         }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(32.dp)
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(16.dp)
-                )
-        ) {
-            Text("To Be Implemented")
-        }
-      }
+    )
+        { innerPadding ->
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 24.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp, bottom = 24.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "COAGULANT DOSAGE",
+                        fontSize = 24.sp,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.width(44.dp))
+                }
+            }
+          }
 }
+
 
 
 

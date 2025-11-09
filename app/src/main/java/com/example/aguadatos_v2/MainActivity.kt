@@ -101,17 +101,19 @@ class MainActivity : ComponentActivity() {
                             onRecordsClick = {navController.navigate("records")},
                             {},
                             {}) {
-                            composable("confirmation") {
-                                ConfirmScreen(
-                                    onBackClick = { navController.popBackStack() },
-                                    onSubmitclick = { navController.navigate("confirmation") },
-                                    onGraphsClick = { navController.navigate("graphs")},
-                                    onHomeClick = { navController.navigate("home")},
-                                    onProfileClick = { navController.navigate("profile") },
-                                    onRecordsClick = { navController.navigate("records") }
-                                )
-                            }
                         }
+                    }
+
+                    // confirmation route
+                    composable("confirmation") {
+                        ConfirmScreen(
+                            onBackClick = { navController.popBackStack() },
+                            onSubmitClick = { navController.navigate("confirmation") },
+                            onGraphsClick = { navController.navigate("graphs")},
+                            onHomeClick = { navController.navigate("home")},
+                            onProfileClick = { navController.navigate("profile") },
+                            onRecordsClick = { navController.navigate("records") }
+                        )
                     }
 
                     //plant configuration route
@@ -153,9 +155,6 @@ class MainActivity : ComponentActivity() {
                     composable("confirm_plant") {
                         ConfirmPlant()
                     }
-
-
-
                 }
             }
         }

@@ -106,7 +106,6 @@ fun HomeScreen(
             )
         }
     ) { innerPadding ->
-
         Column(
             Modifier
                 .fillMaxSize()
@@ -128,7 +127,6 @@ fun HomeScreen(
                         .height(62.dp)
                 )
                 Spacer(modifier = Modifier.weight(5f))
-
             }
 
             //heading
