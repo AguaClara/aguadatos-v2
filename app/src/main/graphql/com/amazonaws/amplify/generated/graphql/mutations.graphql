@@ -1,0 +1,1069 @@
+# this is an auto generated file. This will be overwritten
+
+mutation CreatePlant(
+  $input: CreatePlantInput!
+  $condition: ModelPlantConditionInput
+) {
+  createPlant(input: $input, condition: $condition) {
+    id
+    name
+    operators {
+      nextToken
+      __typename
+    }
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdatePlant(
+  $input: UpdatePlantInput!
+  $condition: ModelPlantConditionInput
+) {
+  updatePlant(input: $input, condition: $condition) {
+    id
+    name
+    operators {
+      nextToken
+      __typename
+    }
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeletePlant(
+  $input: DeletePlantInput!
+  $condition: ModelPlantConditionInput
+) {
+  deletePlant(input: $input, condition: $condition) {
+    id
+    name
+    operators {
+      nextToken
+      __typename
+    }
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateOperator(
+  $input: CreateOperatorInput!
+  $condition: ModelOperatorConditionInput
+) {
+  createOperator(input: $input, condition: $condition) {
+    id
+    name
+    plantID
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateOperator(
+  $input: UpdateOperatorInput!
+  $condition: ModelOperatorConditionInput
+) {
+  updateOperator(input: $input, condition: $condition) {
+    id
+    name
+    plantID
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteOperator(
+  $input: DeleteOperatorInput!
+  $condition: ModelOperatorConditionInput
+) {
+  deleteOperator(input: $input, condition: $condition) {
+    id
+    name
+    plantID
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateInflowEntry(
+  $input: CreateInflowEntryInput!
+  $condition: ModelInflowEntryConditionInput
+) {
+  createInflowEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    inflowRate
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateInflowEntry(
+  $input: UpdateInflowEntryInput!
+  $condition: ModelInflowEntryConditionInput
+) {
+  updateInflowEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    inflowRate
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteInflowEntry(
+  $input: DeleteInflowEntryInput!
+  $condition: ModelInflowEntryConditionInput
+) {
+  deleteInflowEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    inflowRate
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateRawEntry(
+  $input: CreateRawEntryInput!
+  $condition: ModelRawEntryConditionInput
+) {
+  createRawEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateRawEntry(
+  $input: UpdateRawEntryInput!
+  $condition: ModelRawEntryConditionInput
+) {
+  updateRawEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteRawEntry(
+  $input: DeleteRawEntryInput!
+  $condition: ModelRawEntryConditionInput
+) {
+  deleteRawEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateClarifiedEntry(
+  $input: CreateClarifiedEntryInput!
+  $condition: ModelClarifiedEntryConditionInput
+) {
+  createClarifiedEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateClarifiedEntry(
+  $input: UpdateClarifiedEntryInput!
+  $condition: ModelClarifiedEntryConditionInput
+) {
+  updateClarifiedEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteClarifiedEntry(
+  $input: DeleteClarifiedEntryInput!
+  $condition: ModelClarifiedEntryConditionInput
+) {
+  deleteClarifiedEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateFilteredEntry(
+  $input: CreateFilteredEntryInput!
+  $condition: ModelFilteredEntryConditionInput
+) {
+  createFilteredEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidities
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateFilteredEntry(
+  $input: UpdateFilteredEntryInput!
+  $condition: ModelFilteredEntryConditionInput
+) {
+  updateFilteredEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidities
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteFilteredEntry(
+  $input: DeleteFilteredEntryInput!
+  $condition: ModelFilteredEntryConditionInput
+) {
+  deleteFilteredEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidities
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateCalibrationEntry(
+  $input: CreateCalibrationEntryInput!
+  $condition: ModelCalibrationEntryConditionInput
+) {
+  createCalibrationEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    coagType
+    sliderPosition
+    inflowRate
+    startVolume
+    endVolume
+    timeElapsed
+    dose
+    flowRate
+    activeTank
+    tankVolume
+    doseEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    calibrationEntryDoseEntryId
+    __typename
+  }
+}
+
+mutation UpdateCalibrationEntry(
+  $input: UpdateCalibrationEntryInput!
+  $condition: ModelCalibrationEntryConditionInput
+) {
+  updateCalibrationEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    coagType
+    sliderPosition
+    inflowRate
+    startVolume
+    endVolume
+    timeElapsed
+    dose
+    flowRate
+    activeTank
+    tankVolume
+    doseEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    calibrationEntryDoseEntryId
+    __typename
+  }
+}
+
+mutation DeleteCalibrationEntry(
+  $input: DeleteCalibrationEntryInput!
+  $condition: ModelCalibrationEntryConditionInput
+) {
+  deleteCalibrationEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    coagType
+    sliderPosition
+    inflowRate
+    startVolume
+    endVolume
+    timeElapsed
+    dose
+    flowRate
+    activeTank
+    tankVolume
+    doseEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    calibrationEntryDoseEntryId
+    __typename
+  }
+}
+
+mutation CreateDoseEntry(
+  $input: CreateDoseEntryInput!
+  $condition: ModelDoseEntryConditionInput
+) {
+  createDoseEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    targetDose
+    updatedSliderPosition
+    updatedFlowRate
+    calibrationEntryID
+    calibrationEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateDoseEntry(
+  $input: UpdateDoseEntryInput!
+  $condition: ModelDoseEntryConditionInput
+) {
+  updateDoseEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    targetDose
+    updatedSliderPosition
+    updatedFlowRate
+    calibrationEntryID
+    calibrationEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteDoseEntry(
+  $input: DeleteDoseEntryInput!
+  $condition: ModelDoseEntryConditionInput
+) {
+  deleteDoseEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    targetDose
+    updatedSliderPosition
+    updatedFlowRate
+    calibrationEntryID
+    calibrationEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateFeedbackEntry(
+  $input: CreateFeedbackEntryInput!
+  $condition: ModelFeedbackEntryConditionInput
+) {
+  createFeedbackEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    feedback
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateFeedbackEntry(
+  $input: UpdateFeedbackEntryInput!
+  $condition: ModelFeedbackEntryConditionInput
+) {
+  updateFeedbackEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    feedback
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteFeedbackEntry(
+  $input: DeleteFeedbackEntryInput!
+  $condition: ModelFeedbackEntryConditionInput
+) {
+  deleteFeedbackEntry(input: $input, condition: $condition) {
+    id
+    createdAt
+    plantID
+    operatorID
+    feedback
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}

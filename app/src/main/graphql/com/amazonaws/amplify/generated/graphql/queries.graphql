@@ -1,0 +1,1049 @@
+# this is an auto generated file. This will be overwritten
+
+query GetPlant($id: ID!) {
+  getPlant(id: $id) {
+    id
+    name
+    operators {
+      nextToken
+      __typename
+    }
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListPlants(
+  $filter: ModelPlantFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listPlants(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetOperator($id: ID!) {
+  getOperator(id: $id) {
+    id
+    name
+    plantID
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListOperators(
+  $filter: ModelOperatorFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listOperators(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetInflowEntry($id: ID!) {
+  getInflowEntry(id: $id) {
+    id
+    createdAt
+    plantID
+    operatorID
+    inflowRate
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+query ListInflowEntries(
+  $filter: ModelInflowEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listInflowEntries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      inflowRate
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetRawEntry($id: ID!) {
+  getRawEntry(id: $id) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+query ListRawEntries(
+  $filter: ModelRawEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listRawEntries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidity
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetClarifiedEntry($id: ID!) {
+  getClarifiedEntry(id: $id) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+query ListClarifiedEntries(
+  $filter: ModelClarifiedEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listClarifiedEntries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidity
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetFilteredEntry($id: ID!) {
+  getFilteredEntry(id: $id) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidities
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+query ListFilteredEntries(
+  $filter: ModelFilteredEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFilteredEntries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidities
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetCalibrationEntry($id: ID!) {
+  getCalibrationEntry(id: $id) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    coagType
+    sliderPosition
+    inflowRate
+    startVolume
+    endVolume
+    timeElapsed
+    dose
+    flowRate
+    activeTank
+    tankVolume
+    doseEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    calibrationEntryDoseEntryId
+    __typename
+  }
+}
+
+query ListCalibrationEntries(
+  $filter: ModelCalibrationEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCalibrationEntries(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetDoseEntry($id: ID!) {
+  getDoseEntry(id: $id) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    targetDose
+    updatedSliderPosition
+    updatedFlowRate
+    calibrationEntryID
+    calibrationEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+query ListDoseEntries(
+  $filter: ModelDoseEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listDoseEntries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetFeedbackEntry($id: ID!) {
+  getFeedbackEntry(id: $id) {
+    id
+    createdAt
+    plantID
+    operatorID
+    feedback
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+query ListFeedbackEntries(
+  $filter: ModelFeedbackEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFeedbackEntries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      feedback
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query OperatorsByPlantIDAndId(
+  $plantID: ID!
+  $id: ModelIDKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelOperatorFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  operatorsByPlantIDAndId(
+    plantID: $plantID
+    id: $id
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query InflowEntriesByPlantIDAndCreatedAt(
+  $plantID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelInflowEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  inflowEntriesByPlantIDAndCreatedAt(
+    plantID: $plantID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      inflowRate
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query InflowEntriesByOperatorIDAndCreatedAt(
+  $operatorID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelInflowEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  inflowEntriesByOperatorIDAndCreatedAt(
+    operatorID: $operatorID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      inflowRate
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query RawEntriesByPlantIDAndCreatedAt(
+  $plantID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelRawEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  rawEntriesByPlantIDAndCreatedAt(
+    plantID: $plantID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidity
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query RawEntriesByOperatorIDAndCreatedAt(
+  $operatorID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelRawEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  rawEntriesByOperatorIDAndCreatedAt(
+    operatorID: $operatorID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidity
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query ClarifiedEntriesByPlantIDAndCreatedAt(
+  $plantID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelClarifiedEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  clarifiedEntriesByPlantIDAndCreatedAt(
+    plantID: $plantID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidity
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query ClarifiedEntriesByOperatorIDAndCreatedAt(
+  $operatorID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelClarifiedEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  clarifiedEntriesByOperatorIDAndCreatedAt(
+    operatorID: $operatorID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidity
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query FilteredEntriesByPlantIDAndCreatedAt(
+  $plantID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelFilteredEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  filteredEntriesByPlantIDAndCreatedAt(
+    plantID: $plantID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidities
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query FilteredEntriesByOperatorIDAndCreatedAt(
+  $operatorID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelFilteredEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  filteredEntriesByOperatorIDAndCreatedAt(
+    operatorID: $operatorID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      turbidities
+      notes
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query CalibrationEntriesByPlantIDAndCreatedAt(
+  $plantID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelCalibrationEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  calibrationEntriesByPlantIDAndCreatedAt(
+    plantID: $plantID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query CalibrationEntriesByOperatorIDAndCreatedAt(
+  $operatorID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelCalibrationEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  calibrationEntriesByOperatorIDAndCreatedAt(
+    operatorID: $operatorID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query DoseEntriesByPlantIDAndCreatedAt(
+  $plantID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelDoseEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  doseEntriesByPlantIDAndCreatedAt(
+    plantID: $plantID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query DoseEntriesByOperatorIDAndCreatedAt(
+  $operatorID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelDoseEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  doseEntriesByOperatorIDAndCreatedAt(
+    operatorID: $operatorID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query DoseEntriesByCalibrationEntryID(
+  $calibrationEntryID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelDoseEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  doseEntriesByCalibrationEntryID(
+    calibrationEntryID: $calibrationEntryID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query FeedbackEntriesByPlantIDAndCreatedAt(
+  $plantID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelFeedbackEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  feedbackEntriesByPlantIDAndCreatedAt(
+    plantID: $plantID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      feedback
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query FeedbackEntriesByOperatorIDAndCreatedAt(
+  $operatorID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelFeedbackEntryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  feedbackEntriesByOperatorIDAndCreatedAt(
+    operatorID: $operatorID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      plantID
+      operatorID
+      feedback
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
