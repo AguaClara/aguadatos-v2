@@ -1,0 +1,1018 @@
+# this is an auto generated file. This will be overwritten
+
+subscription OnCreatePlant($filter: ModelSubscriptionPlantFilterInput) {
+  onCreatePlant(filter: $filter) {
+    id
+    name
+    operators {
+      nextToken
+      __typename
+    }
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdatePlant($filter: ModelSubscriptionPlantFilterInput) {
+  onUpdatePlant(filter: $filter) {
+    id
+    name
+    operators {
+      nextToken
+      __typename
+    }
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeletePlant($filter: ModelSubscriptionPlantFilterInput) {
+  onDeletePlant(filter: $filter) {
+    id
+    name
+    operators {
+      nextToken
+      __typename
+    }
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateOperator($filter: ModelSubscriptionOperatorFilterInput) {
+  onCreateOperator(filter: $filter) {
+    id
+    name
+    plantID
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateOperator($filter: ModelSubscriptionOperatorFilterInput) {
+  onUpdateOperator(filter: $filter) {
+    id
+    name
+    plantID
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteOperator($filter: ModelSubscriptionOperatorFilterInput) {
+  onDeleteOperator(filter: $filter) {
+    id
+    name
+    plantID
+    inflowEntries {
+      nextToken
+      __typename
+    }
+    rawEntries {
+      nextToken
+      __typename
+    }
+    clarifiedEntries {
+      nextToken
+      __typename
+    }
+    filteredEntries {
+      nextToken
+      __typename
+    }
+    calibrationEntries {
+      nextToken
+      __typename
+    }
+    doseEntries {
+      nextToken
+      __typename
+    }
+    feedbackEntries {
+      nextToken
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateInflowEntry(
+  $filter: ModelSubscriptionInflowEntryFilterInput
+) {
+  onCreateInflowEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    inflowRate
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateInflowEntry(
+  $filter: ModelSubscriptionInflowEntryFilterInput
+) {
+  onUpdateInflowEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    inflowRate
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteInflowEntry(
+  $filter: ModelSubscriptionInflowEntryFilterInput
+) {
+  onDeleteInflowEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    inflowRate
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateRawEntry($filter: ModelSubscriptionRawEntryFilterInput) {
+  onCreateRawEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateRawEntry($filter: ModelSubscriptionRawEntryFilterInput) {
+  onUpdateRawEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteRawEntry($filter: ModelSubscriptionRawEntryFilterInput) {
+  onDeleteRawEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateClarifiedEntry(
+  $filter: ModelSubscriptionClarifiedEntryFilterInput
+) {
+  onCreateClarifiedEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateClarifiedEntry(
+  $filter: ModelSubscriptionClarifiedEntryFilterInput
+) {
+  onUpdateClarifiedEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteClarifiedEntry(
+  $filter: ModelSubscriptionClarifiedEntryFilterInput
+) {
+  onDeleteClarifiedEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidity
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateFilteredEntry(
+  $filter: ModelSubscriptionFilteredEntryFilterInput
+) {
+  onCreateFilteredEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidities
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateFilteredEntry(
+  $filter: ModelSubscriptionFilteredEntryFilterInput
+) {
+  onUpdateFilteredEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidities
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteFilteredEntry(
+  $filter: ModelSubscriptionFilteredEntryFilterInput
+) {
+  onDeleteFilteredEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    turbidities
+    notes
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateCalibrationEntry(
+  $filter: ModelSubscriptionCalibrationEntryFilterInput
+) {
+  onCreateCalibrationEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    coagType
+    sliderPosition
+    inflowRate
+    startVolume
+    endVolume
+    timeElapsed
+    dose
+    flowRate
+    activeTank
+    tankVolume
+    doseEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    calibrationEntryDoseEntryId
+    __typename
+  }
+}
+
+subscription OnUpdateCalibrationEntry(
+  $filter: ModelSubscriptionCalibrationEntryFilterInput
+) {
+  onUpdateCalibrationEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    coagType
+    sliderPosition
+    inflowRate
+    startVolume
+    endVolume
+    timeElapsed
+    dose
+    flowRate
+    activeTank
+    tankVolume
+    doseEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    calibrationEntryDoseEntryId
+    __typename
+  }
+}
+
+subscription OnDeleteCalibrationEntry(
+  $filter: ModelSubscriptionCalibrationEntryFilterInput
+) {
+  onDeleteCalibrationEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    coagType
+    sliderPosition
+    inflowRate
+    startVolume
+    endVolume
+    timeElapsed
+    dose
+    flowRate
+    activeTank
+    tankVolume
+    doseEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      targetDose
+      updatedSliderPosition
+      updatedFlowRate
+      calibrationEntryID
+      updatedAt
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    calibrationEntryDoseEntryId
+    __typename
+  }
+}
+
+subscription OnCreateDoseEntry($filter: ModelSubscriptionDoseEntryFilterInput) {
+  onCreateDoseEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    targetDose
+    updatedSliderPosition
+    updatedFlowRate
+    calibrationEntryID
+    calibrationEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateDoseEntry($filter: ModelSubscriptionDoseEntryFilterInput) {
+  onUpdateDoseEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    targetDose
+    updatedSliderPosition
+    updatedFlowRate
+    calibrationEntryID
+    calibrationEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteDoseEntry($filter: ModelSubscriptionDoseEntryFilterInput) {
+  onDeleteDoseEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    chemicalType
+    targetDose
+    updatedSliderPosition
+    updatedFlowRate
+    calibrationEntryID
+    calibrationEntry {
+      id
+      createdAt
+      plantID
+      operatorID
+      chemicalType
+      coagType
+      sliderPosition
+      inflowRate
+      startVolume
+      endVolume
+      timeElapsed
+      dose
+      flowRate
+      activeTank
+      tankVolume
+      updatedAt
+      calibrationEntryDoseEntryId
+      __typename
+    }
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateFeedbackEntry(
+  $filter: ModelSubscriptionFeedbackEntryFilterInput
+) {
+  onCreateFeedbackEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    feedback
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateFeedbackEntry(
+  $filter: ModelSubscriptionFeedbackEntryFilterInput
+) {
+  onUpdateFeedbackEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    feedback
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteFeedbackEntry(
+  $filter: ModelSubscriptionFeedbackEntryFilterInput
+) {
+  onDeleteFeedbackEntry(filter: $filter) {
+    id
+    createdAt
+    plantID
+    operatorID
+    feedback
+    plant {
+      id
+      name
+      createdAt
+      updatedAt
+      __typename
+    }
+    operator {
+      id
+      name
+      plantID
+      createdAt
+      updatedAt
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
