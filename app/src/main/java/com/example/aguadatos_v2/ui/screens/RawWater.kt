@@ -55,7 +55,7 @@ public fun RawWater(
         )
     )
 
-    val selectedChemical by remember {mutableStateOf(stringResource(R.string.pac))} //take this value from server or previous screen
+    val selectedChemical by remember {mutableStateOf("")} //take this value from server or previous screen
     var rawWater by remember { mutableStateOf("") }
 
     Scaffold(
