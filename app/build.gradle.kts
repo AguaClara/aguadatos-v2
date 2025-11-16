@@ -62,7 +62,10 @@ dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
     val navVersion = "2.9.2"
     implementation("androidx.navigation:navigation-compose:$navVersion")
+
     // Amplify Libraries
     implementation("com.amplifyframework:core:2.24.0")
+    implementation("com.amplifyframework:aws-api:2.24.0")
+    implementation("com.amplifyframework:aws-auth-cognito:2.24.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 }
