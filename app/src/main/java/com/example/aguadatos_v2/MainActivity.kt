@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("login") {
                         LoginPage(
-                            onLoginClick = { navController.navigate("login") },
+                            onLoginClick = { navController.navigate("home") },
                             onSignupClick = {navController.navigate(route = "signup")}
                         )
                     }
