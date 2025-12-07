@@ -129,7 +129,10 @@ class MainActivity : ComponentActivity() {
 
                     //signup route
                     composable("signup"){
-                        SignUp({},{})
+                        SignUp (
+                            onCreateAccountClick = { navController.navigate("home") },
+                            onLogInClick = {}
+                        )
                     }
 
                     //create parameter route
