@@ -1,6 +1,7 @@
 package com.example.aguadatos_v2
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -128,7 +129,10 @@ class MainActivity : ComponentActivity() {
 
                     //signup route
                     composable("signup"){
-                        SignUp({},{})
+                        SignUp (
+                            onCreateAccountClick = { navController.navigate("home") },
+                            onLogInClick = {}
+                        )
                     }
 
                     //create parameter route

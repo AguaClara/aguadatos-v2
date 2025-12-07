@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +37,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.ui.components.RequirementLine
 import com.example.aguadatos_v2.R
+
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.aguadatos_v2.ui.theme.AuthViewModel
+
 
 /*
 *
@@ -101,6 +106,23 @@ fun SignUp(
     val hasSymbol = password.any { !it.isLetterOrDigit() }
 
 
+    val authViewModel: AuthViewModel = viewModel()
+    fun onCreateAccountClick() {
+        if (!hasDigit || !hasLower || !hasUpper || !hasSymbol) {
+            // TODO: Error message pop up
+        } else if (password != confPassword || !phoneValid) {
+            // TODO: Error message pop up
+        } else {
+            authViewModel.signUp(
+                onSuccess = {
+                    onCreateAccountClick();
+                },
+                onError = { msg: String ->
+                    Log.e("SignUp error: ", msg)
+                }
+            )
+        }
+    }
 
     Scaffold(
         containerColor = Color(0xffe4effc)
@@ -328,17 +350,8 @@ fun SignUp(
 
                 //sign up button
                 Button(
-                    onClick = if (!hasDigit || !hasLower || !hasUpper || !hasSymbol || (password != confPassword || !phoneValid)){
-                        {}
-                        /*
-                        error message pop up
-                         */
-                    } else {
-                        /*
-                        store data to server
-                         */
-
-                        onCreateAccountClick
+                    onClick = {
+                        onCreateAccountClick();
                     },
                     modifier = Modifier
                         .fillMaxWidth()
