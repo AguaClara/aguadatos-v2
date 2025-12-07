@@ -27,6 +27,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -93,17 +94,21 @@ fun WelcomePage(
             modifier = Modifier.size(40.dp))
     }
     Spacer(modifier = Modifier.height(16.dp))
-
-    Text(
-        text = "Already have an account? Log in",
-        fontSize = 10.sp,
-        textDecoration = TextDecoration.Underline,
-        color = Color.Gray,
-        modifier = Modifier.clickable {  }
+    TextButton(
+        onClick = onLoginClick,
+        modifier = Modifier.clickable { }
             .align(Alignment.End)
-            .padding(end = 25.dp),
-        fontFamily = fontFamily
-    )
+            .padding(end = 25.dp)
+    ) {
+        Text(
+            text = "Already have an account? Log in",
+            fontSize = 10.sp,
+            textDecoration = TextDecoration.Underline,
+            color = Color.Gray,
+
+            fontFamily = fontFamily
+        )
+    }
 
     }
 

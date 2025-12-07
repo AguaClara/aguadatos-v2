@@ -48,12 +48,12 @@ class MainActivity : ComponentActivity() {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 NavHost(
                     navController = navController,
-                    startDestination = "login",
+                    startDestination = "welcome",
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable("login") {
                         LoginPage(
-                            onLoginClick = { navController.navigate("home") },
+                            onLoginClick = { navController.navigate("login") },
                             onSignupClick = {navController.navigate(route = "signup")}
                         )
                     }
