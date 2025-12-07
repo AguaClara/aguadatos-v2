@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2
 
+import android.R.attr.data
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -9,17 +10,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.aguadatos_v2.ui.screens.Chlorine
 import com.example.aguadatos_v2.ui.screens.ClarifiedWater
 import com.example.aguadatos_v2.ui.screens.Coagulant
+import com.example.aguadatos_v2.ui.screens.CoagulantSubmission
+import com.example.aguadatos_v2.ui.screens.Color
 import com.example.aguadatos_v2.ui.screens.ConfirmPlant
 import com.example.aguadatos_v2.ui.screens.ConfirmScreen
 import com.example.aguadatos_v2.ui.screens.CreateParameter
 import com.example.aguadatos_v2.ui.screens.FilteredWater
 import com.example.aguadatos_v2.ui.screens.HomeScreen
+import com.example.aguadatos_v2.ui.screens.LoginPage
 import com.example.aguadatos_v2.ui.screens.PlantConfiguration
 import com.example.aguadatos_v2.ui.screens.PlantConfigurationConfirm
 import com.example.aguadatos_v2.ui.screens.PlantConfigurationOther
@@ -42,9 +48,21 @@ class MainActivity : ComponentActivity() {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 NavHost(
                     navController = navController,
-                    startDestination = "home",
+                    startDestination = "login",
                     modifier = Modifier.padding(innerPadding)
                 ) {
+                    composable("login") {
+                        LoginPage(
+                            onLoginClick = { navController.navigate("home") },
+                            onSignupClick = {navController.navigate(route = "signup")}
+                        )
+                    }
+                    composable("welcome") {
+                        WelcomePage(
+                            onCreateAccountClick = { navController.navigate("signup") },
+                            onLoginClick = { navController.navigate("login") } // or "home" if you don't have login yet
+                        )
+                    }
                     //home route
                     composable("home") {
                         HomeScreen(
@@ -78,6 +96,10 @@ class MainActivity : ComponentActivity() {
                         ClarifiedWater(onBackClick = {navController.navigate("home")}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
                     }
 
+                    //color route
+                    composable("color") {
+                        Color(onBackClick = {navController.navigate("home")},{}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+                    }
                     //filtered water route
                     composable("filtered_water"){
                         FilteredWater(onBackClick = {navController.navigate("home")}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
@@ -97,24 +119,63 @@ class MainActivity : ComponentActivity() {
                     composable("coagulant"){
                         Coagulant(
                             onBackClick = {navController.navigate("home")},
-                            onSubmitClick = {navController.navigate("confirmation")},
+                            onSubmitClick = { submission ->
+                                navController.currentBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set("coagulantSubmission", submission)
+                                navController.navigate("confirmation") },
                             onHomeClick = {navController.navigate("home")},
                             onRecordsClick = {navController.navigate("records")},
                             {},
-                            {}) {
-                        }
+                            {})
                     }
 
                     // confirmation route
                     composable("confirmation") {
-                        ConfirmScreen(
-                            onBackClick = { navController.popBackStack() },
-                            onSubmitClick = { navController.navigate("confirmation") },
-                            onGraphsClick = { navController.navigate("graphs")},
-                            onHomeClick = { navController.navigate("home")},
-                            onProfileClick = { navController.navigate("profile") },
-                            onRecordsClick = { navController.navigate("records") }
-                        )
+                        val submission =
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.get<CoagulantSubmission>("coagulantSubmission")
+                        if (submission == null) {
+                            ConfirmScreen(
+                                date = "",
+                                sliderPosition = 0f,
+                                inflowRate = "",
+                                startVolume = "",
+                                endVolume = "",
+                                timeElapsed = "",
+                                chemicalDose = "",
+                                chemicalFlowRate = "",
+                                onBackClick = { navController.popBackStack() },
+                                onSubmitClick = { navController.navigate("home") },
+                                onHomeClick = { navController.navigate("home") },
+                                onRecordsClick = { navController.navigate("records") },
+                                chemicalType = "",
+                                onGraphsClick = { /* TODO() */},
+                                onProfileClick = { /* TODO() */}
+                            )
+                        } else {
+                            ConfirmScreen(
+                                onBackClick = { navController.popBackStack() },
+                                onSubmitClick = { navController.navigate("confirmation") },
+                                onGraphsClick = { navController.navigate("graphs") },
+                                onHomeClick = { navController.navigate("home") },
+                                onProfileClick = { navController.navigate("profile") },
+                                onRecordsClick = { navController.navigate("records") },
+                                date = submission.date,
+                                chemicalType = submission.chemicalType,
+                                sliderPosition = submission.sliderPosition,
+                                inflowRate = submission.inflowRate,
+                                startVolume = submission.startVolume,
+                                endVolume = submission.endVolume,
+                                timeElapsed = submission.timeElapsed,
+                                chemicalDose = submission.chemicalDose,
+                                chemicalFlowRate = submission.chemicalFlowRate
+                            )
+                        }
+
+
+
                     }
 
                     //plant configuration route
@@ -131,7 +192,7 @@ class MainActivity : ComponentActivity() {
                     composable("signup"){
                         SignUp (
                             onCreateAccountClick = { navController.navigate("home") },
-                            onLogInClick = {}
+                            onLoginClick = { navController.navigate("login")}
                         )
                     }
 

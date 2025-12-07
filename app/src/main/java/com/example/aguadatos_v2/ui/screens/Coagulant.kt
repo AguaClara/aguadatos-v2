@@ -31,22 +31,35 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.navigation.compose.rememberNavController
+import java.io.Serializable
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /*
 * tried to finish this screen as well, but since internship ends, I dont have time (double check with patrick for what to do)
 * */
 
+data class CoagulantSubmission(
+    val date: String,
+    val chemicalType: String,
+    val sliderPosition: Float,
+    val inflowRate: String,
+    val startVolume: String,
+    val endVolume: String,
+    val timeElapsed: String,
+    val chemicalDose: String,
+    val chemicalFlowRate: String
+) : Serializable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun Coagulant(
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (CoagulantSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
     onProfileClick: () -> Unit,
-    function: () -> Unit
 ) {
 
     var tabIndex by remember { mutableStateOf(0) }
@@ -556,7 +569,20 @@ public fun Coagulant(
                 }
 
             Button (
-                onClick = { onSubmitClick() },
+                onClick = {
+                    val submission = CoagulantSubmission(
+                        date = LocalDate.now().toString(),
+                        chemicalType = "PAC",
+                        sliderPosition = sliderPos,
+                        inflowRate = waterInflow,
+                        startVolume = startVolume,
+                        endVolume = endVolume,
+                        timeElapsed = timeElapsed,
+                        chemicalDose = "TODO",
+                        chemicalFlowRate = chemFlowRate
+                    )
+                    onSubmitClick(submission)
+                },
                     //{ /* submit things*/ },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
@@ -577,6 +603,15 @@ public fun Coagulant(
 
 @Composable
 public fun ConfirmScreen(
+    date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+    chemicalType: String,
+    sliderPosition: Float,
+    inflowRate: String,
+    startVolume: String,
+    endVolume: String,
+    timeElapsed: String,
+    chemicalDose: String,
+    chemicalFlowRate: String,
     onGraphsClick: () -> Unit,
     onHomeClick: () -> Unit,
     onProfileClick: () -> Unit,
@@ -596,31 +631,337 @@ public fun ConfirmScreen(
             )
         }
     )
-        { innerPadding ->
+    { innerPadding ->
 
-            Column(
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 24.dp)
+        ) {
+            Row(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(horizontal = 24.dp)
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 24.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
+                Text(
+                    text = "COAGULANT DOSAGE",
+                    fontSize = 24.sp,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center
+                )
+
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp, bottom = 24.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(20.dp)
                 ) {
-                    Spacer(modifier = Modifier.width(16.dp))
                     Text(
-                        text = "COAGULANT DOSAGE",
-                        fontSize = 24.sp,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
+                        text = "Please confirm your entry:",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 12.dp)
                     )
-                    Spacer(modifier = Modifier.width(44.dp))
+
+                    // Date / Chemical Type
+                    Text(
+                        text = "• Date: $date",
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    Text(
+                        text = "• Chemical Type: $chemicalType",
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    Divider(thickness = 1.dp, color = Color(0xFFE0E0E0))
+
+                    // Calibration section
+                    Text(
+                        text = "Calibration",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                    )
+
+                    Text(
+                        text = "• Slider Position: ${"%.1f".format(sliderPosition)} %",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• Inflow Rate: $inflowRate mL/s",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• Start Volume: $startVolume mL",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• End Volume: $endVolume mL",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• Time Elapsed: $timeElapsed s",
+                        fontSize = 18.sp
+                    )
+
+                    Divider(
+                        thickness = 1.dp,
+                        color = Color(0xFFE0E0E0),
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+
+                    // Output section
+                    Text(
+                        text = "Output",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                    )
+                    Text(
+                        text = "• Chemical Dose: $chemicalDose mg/L",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• Chemical Flow Rate: $chemicalFlowRate mL/s",
+                        fontSize = 18.sp
+                    )
                 }
             }
-          }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Button(
+                    onClick = onBackClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.White,
+                        contentColor = Color(color = 0xFF77AF87)
+                    ),
+                    shape = RoundedCornerShape(20.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("GO BACK", fontSize = 16.sp)
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Button(
+                    onClick = onSubmitClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF77AF87),
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(20.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("CONFIRM", fontSize = 16.sp)
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+
+    }
+}
+
+@Composable
+fun SubmittedConfirmScreen(
+    date: String,
+    time: String,
+    chemicalType: String,
+    sliderPosition: Float,
+    inflowRate: String,
+    startVolume: String,
+    endVolume: String,
+    timeElapsed: String,
+    chemicalDose: String,
+    chemicalFlowRate: String,
+    onGraphsClick: () -> Unit,
+    onHomeClick: () -> Unit,
+    onProfileClick: () -> Unit,
+    onRecordsClick: () -> Unit,
+    onBackClick: () -> Unit
+) {
+    Scaffold(
+        containerColor = Color(0xffe4effc),
+        bottomBar = {
+            BottomNavigationBar(
+                onHomeClick = onHomeClick,
+                onRecordsClick = onRecordsClick,
+                onGraphsClick = onGraphsClick,
+                onProfileClick = onProfileClick,
+                currentScreen = "Home"
+            )
+        }
+    ) { innerPadding ->
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 24.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 24.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "COAGULANT DOSAGE",
+                    fontSize = 24.sp,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                ) {
+                    Text(
+                        text = "Submission complete",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    Text(
+                        text = "Submitted on $date at $time",
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    Text(
+                        text = "Entry details:",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    // Date / Chemical Type
+                    Text(
+                        text = "• Date: $date",
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    Text(
+                        text = "• Chemical Type: $chemicalType",
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    Divider(thickness = 1.dp, color = Color(0xFFE0E0E0))
+
+                    // Calibration
+                    Text(
+                        text = "Calibration",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                    )
+
+                    Text(
+                        text = "• Slider Position: ${"%.1f".format(sliderPosition)} %",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• Inflow Rate: $inflowRate mL/s",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• Start Volume: $startVolume mL",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• End Volume: $endVolume mL",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• Time Elapsed: $timeElapsed s",
+                        fontSize = 18.sp
+                    )
+
+                    Divider(
+                        thickness = 1.dp,
+                        color = Color(0xFFE0E0E0),
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+
+                    // Output
+                    Text(
+                        text = "Output",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                    )
+                    Text(
+                        text = "• Chemical Dose: $chemicalDose mg/L",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "• Chemical Flow Rate: $chemicalFlowRate mL/s",
+                        fontSize = 18.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                OutlinedButton(
+                    onClick = onBackClick,
+                    shape = RoundedCornerShape(20.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Back", fontSize = 16.sp)
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Button(
+                    onClick = onHomeClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF77AF87),
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(20.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Home", fontSize = 16.sp)
+                }
+            }
+        }
+    }
 }
 
 

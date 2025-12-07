@@ -46,7 +46,10 @@ fun PreviewWelcomePage() {
     WelcomePage()
 }
 @Composable
-fun WelcomePage() {
+fun WelcomePage(
+    onCreateAccountClick: () -> Unit = {},
+    onLoginClick: () -> Unit = {}
+) {
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
         providerPackage = "com.google.android.gms",
@@ -76,7 +79,7 @@ fun WelcomePage() {
     Image(painter = painterResource(R.drawable.agimg), contentDescription = "agimg",
         modifier = Modifier.size(140.dp))
     Spacer(modifier = Modifier.height(24.dp))
-    Button(onClick = {  },
+    Button(onClick = onCreateAccountClick,
         modifier = Modifier.align(Alignment.End),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,

@@ -73,7 +73,7 @@ fun PreviewSignUp(){
 @Composable
 fun SignUp(
     onCreateAccountClick: () -> Unit = {},
-    onLogInClick: () -> Unit = {}
+    onLoginClick: () -> Unit = {}
 ){
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
@@ -372,7 +372,7 @@ fun SignUp(
 
                 //login button
                 TextButton(
-                    onClick = onLogInClick,
+                    onClick = onLoginClick,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
