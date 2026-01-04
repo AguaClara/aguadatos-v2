@@ -44,7 +44,7 @@ import com.example.aguadatos_v2.R
 @Preview(showBackground = true)
 @Composable
 fun PreviewWelcomePage() {
-    WelcomePage()
+    WelcomePage( {}, {})
 }
 @Composable
 fun WelcomePage(
@@ -80,7 +80,8 @@ fun WelcomePage(
     Image(painter = painterResource(R.drawable.agimg), contentDescription = "agimg",
         modifier = Modifier.size(140.dp))
     Spacer(modifier = Modifier.height(24.dp))
-    Button(onClick = onCreateAccountClick,
+    Button(
+        onClick = onCreateAccountClick,
         modifier = Modifier.align(Alignment.End),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,

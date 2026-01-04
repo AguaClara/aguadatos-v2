@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.CodeInputTextFields
+import com.example.aguadatos_v2.ui.theme.AuthViewModel
 
 /*
 *
@@ -68,15 +70,16 @@ import com.example.aguadatos_v2.ui.components.CodeInputTextFields
 *  - Verification code screen to verify phone number
 * */
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewVerificationCode() {
-    VerificationCode({})
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewVerificationCode() {
+//    VerificationCode({})
+//}
 
 
 @Composable
 fun VerificationCode(
+    authViewModel : AuthViewModel,
     onSubmitClick: () -> Unit
 ) {
     val provider = GoogleFont.Provider(
@@ -127,9 +130,18 @@ fun VerificationCode(
             onCodeInputComplete = {
                 // code to validate verification code with server goes here
                 val code = verificationCode.joinToString("")
-                //if (server_validates_code), then:
-                onSubmitClick()
-
+                authViewModel.confirmCode(
+                    code = code,
+                    onSuccess = { onSubmitClick() },
+                    onError = {
+                        // TODO: Error popup, then resend code
+                        msg -> Log.e("Verify error: ", msg);
+                        authViewModel.resendCode(
+                            onSuccess = { Log.i("Verify", "Code resent") },
+                            onError = { msg -> Log.e("Resend error: ", msg); }
+                        )
+                    }
+                )
             },
             fontFamily = fontFamily
         )

@@ -14,9 +14,14 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
+    "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [],
+    "passwordPolicyCharacters": [
+      "Requires Lowercase",
+      "Requires Uppercase",
+      "Requires Numbers",
+      "Requires Symbols"
+    ],
     "requiredAttributes": [
       "name"
     ],
@@ -24,13 +29,15 @@
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
-      "email"
+      "phone_number",
+      "name"
     ],
     "userpoolClientReadAttributes": [
-      "email"
+      "name",
+      "phone_number"
     ],
     "userpoolClientLambdaRole": "aguadae431ca11_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
+    "userpoolClientSetAttributes": true,
     "sharedId": "e431ca11",
     "resourceName": "aguadatosv2e431ca11",
     "authSelections": "userPoolOnly",
@@ -59,13 +66,13 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "userPoolGroups": true,
+    "userPoolGroups": false,
     "adminQueries": false,
     "hostedUI": false,
-    "authProviders": [],
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "permissions": []
+    "permissions": [],
+    "authProviders": []
   }
 }
