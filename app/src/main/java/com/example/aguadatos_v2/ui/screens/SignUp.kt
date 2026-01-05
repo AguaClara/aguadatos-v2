@@ -94,6 +94,12 @@ fun SignUp(
     )
   )
 
+  val invalid_user_name_error = stringResource(R.string.invalid_user_name)
+  val invalid_phone_number_error = stringResource(R.string.invalid_phone_number)
+  val invalid_password_error = stringResource(R.string.invalid_password)
+  val password_mismatch_error = stringResource(R.string.password_mismatch)
+
+
   fun formatNumber(input : String): String {
     if (input.isBlank()) { return "" }
     val number = "+" + input.replace("[^\\d]".toRegex(), "")
@@ -140,16 +146,6 @@ fun SignUp(
 //    Log.i("SignUp number", "Formated #: $formattedNumber")
 //    return true
 //  }
-
-  fun verifyFields() : String? {
-    return when {
-      !validName -> "Invalid user name"
-      !phoneValid -> "Invalid phone number"
-      !hasDigit || !hasLower || !hasUpper || !hasSymbol -> "Invalid Password"
-      password != confPassword -> "The confirmation password does not match"
-      else -> null
-    }
-  }
 
   Scaffold(
     containerColor = Color(0xffe4effc),
@@ -386,7 +382,14 @@ fun SignUp(
         Button(
           onClick = {
             // TODO
-            val error = verifyFields()
+            val error = when {
+                !validName -> invalid_user_name_error
+                !phoneValid ->invalid_phone_number_error
+                !hasDigit || !hasLower || !hasUpper || !hasSymbol -> invalid_password_error
+                password != confPassword -> password_mismatch_error
+                else -> null
+              }
+
             if (error != null) {
               scope.launch {
                 snackbarHostState.showSnackbar(

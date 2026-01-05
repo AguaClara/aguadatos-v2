@@ -5,7 +5,6 @@ import android.R.attr.fontFamily
 import android.R.attr.fontWeight
 import android.R.attr.password
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,10 +42,18 @@ import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.aguadatos_v2.R
 
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewLoginPage(){
+    LoginPage({},{})
+}
 
 @Composable
 fun LoginPage(
@@ -57,7 +64,7 @@ fun LoginPage(
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
         providerPackage = "com.google.android.gms",
-        certificates = com.example.aguadatos_v2.R.array.com_google_android_gms_fonts_certs
+        certificates = R.array.com_google_android_gms_fonts_certs
     )
     val fontName = GoogleFont("Lato")
     val fontFamily = FontFamily(
@@ -92,14 +99,14 @@ fun LoginPage(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Image(
-                    painter = painterResource(com.example.aguadatos_v2.R.drawable.agimg),
+                    painter = painterResource(R.drawable.agimg),
                     contentDescription = stringResource(com.example.aguadatos_v2.R.string.aguadatos_logo),
                     modifier = Modifier
                         .weight(1f)
                         .height(62.dp)
                 )
                 Text(
-                    text = "Log In",
+                    text = stringResource(R.string.log_in),
                     fontSize = 24.sp,
                     color = Color.Black,
                     modifier = Modifier
@@ -112,7 +119,7 @@ fun LoginPage(
             Spacer(modifier = Modifier.height(150.dp))
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "First and Last Name",
+                    text = stringResource(R.string.first_and_last_name),
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -134,13 +141,13 @@ fun LoginPage(
                     .fillMaxWidth()
                     .padding(0.dp),
                 leadingIcon = { Icon(
-                    painter = painterResource(id = com.example.aguadatos_v2.R.drawable.person2),
+                    painter = painterResource(id = R.drawable.person2),
                     contentDescription = "Person icon") },
             )
 
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Password",
+                    text = stringResource(R.string.password),
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -150,7 +157,7 @@ fun LoginPage(
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                placeholder = { Text("Password", color = Color.Gray) },
+                placeholder = { Text(stringResource(R.string.password), color = Color.Gray) },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -160,7 +167,7 @@ fun LoginPage(
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.fillMaxWidth(),
                 leadingIcon = { Icon(
-                    painter = painterResource(id = com.example.aguadatos_v2.R.drawable.lock),
+                    painter = painterResource(id = R.drawable.lock),
                     contentDescription = "lock") },
                 trailingIcon = {
                     IconButton(
@@ -168,10 +175,10 @@ fun LoginPage(
                     ) {
                         Icon(
                             painter = painterResource(
-                                id = if (showPassword) com.example.aguadatos_v2.R.drawable.eyeoff else com.example.aguadatos_v2.R.drawable.eye
+                                id = if (showPassword) R.drawable.eyeoff else R.drawable.eye
                             ),
-                            contentDescription = if (showPassword) stringResource(com.example.aguadatos_v2.R.string.hide_password)
-                            else stringResource(com.example.aguadatos_v2.R.string.show_password)
+                            contentDescription = if (showPassword) stringResource(R.string.hide_password)
+                            else stringResource(R.string.show_password)
                         )
                     }
                 }
@@ -197,13 +204,13 @@ fun LoginPage(
                 ),
                 enabled = name.isNotBlank() && password.isNotBlank()
             ) {
-                Text("Log In", fontSize = 18.sp)
+                Text(stringResource(R.string.log_in), fontSize = 18.sp)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Don't have an account? Sign up",
+                text = stringResource(R.string.dont_have_an_account_sign_up),
                 fontSize = 14.sp,
                 color = Color.Gray,
                 textDecoration = TextDecoration.Underline,

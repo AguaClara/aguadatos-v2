@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -88,7 +89,7 @@ public fun Chlorine(
                 //back arrow
                 Image(
                     painter = painterResource(id = R.drawable.back_arrow),
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.back),
                     modifier = Modifier
                         .size(28.dp)
                         .clickable { onBackClick() }
@@ -97,7 +98,7 @@ public fun Chlorine(
 
                 //heading
                 Text(
-                    text = "CHLORINE DOSAGE",
+                    text = stringResource(R.string.chlorine_dosage_caps),
                     fontSize = 24.sp,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
@@ -109,7 +110,7 @@ public fun Chlorine(
 
             //explanation text
             Text(
-                text = "How much chlorine was used to dose the water?",
+                text = stringResource(R.string.how_much_chlorine),
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 16.dp, start = 16.dp),
                 fontFamily = fontFamily
@@ -117,7 +118,9 @@ public fun Chlorine(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 //chlorine dosage input text field
@@ -138,11 +141,11 @@ public fun Chlorine(
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "mg/L", fontSize = 16.sp, fontFamily = fontFamily)
+                Text(text = stringResource(R.string.mg_per_l), fontSize = 16.sp, fontFamily = fontFamily)
             }
 
             Text(
-                text = "Reminder: the chemical type is $selectedChemical",
+                text = stringResource(R.string.chemical_type_reminder) + " $selectedChemical",
                 fontSize = 14.sp,
                 fontStyle = FontStyle.Italic,
                 color = Color.Gray.copy(alpha = 0.8f),
@@ -162,7 +165,7 @@ public fun Chlorine(
                     .align(Alignment.End)
                     .height(40.dp)
             ) {
-                Text(text = "SUBMIT", fontFamily = fontFamily)
+                Text(text = stringResource(R.string.submit), fontFamily = fontFamily)
             }
 
         }

@@ -40,928 +40,928 @@ import java.time.format.DateTimeFormatter
 * */
 
 data class CoagulantSubmission(
-    val date: String,
-    val chemicalType: String,
-    val sliderPosition: Float,
-    val inflowRate: String,
-    val startVolume: String,
-    val endVolume: String,
-    val timeElapsed: String,
-    val chemicalDose: String,
-    val chemicalFlowRate: String
+  val date: String,
+  val chemicalType: String,
+  val sliderPosition: Float,
+  val inflowRate: String,
+  val startVolume: String,
+  val endVolume: String,
+  val timeElapsed: String,
+  val chemicalDose: String,
+  val chemicalFlowRate: String
 ) : Serializable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun Coagulant(
-    onBackClick: () -> Unit,
-    onSubmitClick: (CoagulantSubmission) -> Unit,
-    onHomeClick: () -> Unit,
-    onRecordsClick: () -> Unit,
-    onGraphsClick: () -> Unit,
-    onProfileClick: () -> Unit,
+  onBackClick: () -> Unit,
+  onSubmitClick: (CoagulantSubmission) -> Unit,
+  onHomeClick: () -> Unit,
+  onRecordsClick: () -> Unit,
+  onGraphsClick: () -> Unit,
+  onProfileClick: () -> Unit,
 ) {
 
-    var tabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Calibration", "Change Dose")
-    var isOn by remember { mutableStateOf(false) }
+  var tabIndex by remember { mutableStateOf(0) }
+  val tabs = listOf("Calibration", "Change Dose")
+  var isOn by remember { mutableStateOf(false) }
 
-    var sliderPos by remember { mutableStateOf(0f) }
-    var sliderPosOverDose by remember { mutableStateOf(0f) }
-    var waterInflow by remember { mutableStateOf("") }
-    var startVolume by remember { mutableStateOf("") }
-    var endVolume by remember { mutableStateOf("") }
-    var timeElapsed by remember { mutableStateOf("")}
+  var sliderPos by remember { mutableStateOf(0f) }
+  var sliderPosOverDose by remember { mutableStateOf(0f) }
+  var waterInflow by remember { mutableStateOf("") }
+  var startVolume by remember { mutableStateOf("") }
+  var endVolume by remember { mutableStateOf("") }
+  var timeElapsed by remember { mutableStateOf("")}
 
-    var chemFlowRate by remember { mutableStateOf("") }
-    var targetChemDose by remember { mutableStateOf("")}
-    var newSliderPos by remember { mutableStateOf(0f)}
+  var chemFlowRate by remember { mutableStateOf("") }
+  var targetChemDose by remember { mutableStateOf("")}
+  var newSliderPos by remember { mutableStateOf(0f)}
 
 
-    Scaffold(
-        containerColor = Color(0xffe4effc),
-        bottomBar = {
-            BottomNavigationBar(
-                onHomeClick = onHomeClick,
-                onRecordsClick = onRecordsClick,
-                onGraphsClick = onGraphsClick,
-                onProfileClick = onProfileClick,
-                currentScreen = "Home"
-            )
-        }
-    ) { innerPadding ->
+  Scaffold(
+    containerColor = Color(0xffe4effc),
+    bottomBar = {
+      BottomNavigationBar(
+        onHomeClick = onHomeClick,
+        onRecordsClick = onRecordsClick,
+        onGraphsClick = onGraphsClick,
+        onProfileClick = onProfileClick,
+        currentScreen = "Home"
+      )
+    }
+  ) { innerPadding ->
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp)
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(innerPadding)
+        .padding(horizontal = 24.dp)
+    ) {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(top = 16.dp, bottom = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Image(
+          painter = painterResource(id = R.drawable.back_arrow),
+          contentDescription = "Back",
+          modifier = Modifier
+            .size(28.dp)
+            .clickable { onBackClick() }
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+          text = "COAGULANT DOSAGE",
+          fontSize = 24.sp,
+          modifier = Modifier.weight(1f),
+          textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.width(44.dp))
+      }
+      Text(
+        text = "Reminder: the chemical type is ___ and the chemical concentration is #",
+        fontSize = 14.sp,
+        fontStyle = FontStyle.Italic,
+        color = Color.Gray.copy(alpha = 0.8f),
+        modifier = Modifier.padding(bottom = 24.dp)
+      )
+      Box(
+        modifier = Modifier
+          .clip(RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))
+          .border(
+            width = 1.dp,
+            color = Color.Black,
+            shape = RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp)
+          )
+      ) {
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+
+          horizontalArrangement = Arrangement.Center
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 24.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.back_arrow),
-                    contentDescription = "Back",
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clickable { onBackClick() }
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = "COAGULANT DOSAGE",
-                    fontSize = 24.sp,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.width(44.dp))
-            }
-            Text(
-                text = "Reminder: the chemical type is ___ and the chemical concentration is #",
-                fontSize = 14.sp,
-                fontStyle = FontStyle.Italic,
-                color = Color.Gray.copy(alpha = 0.8f),
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
+          tabs.forEachIndexed { index, title ->
+            val isSelected = tabIndex == index
             Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))
-                    .border(
-                        width = 1.dp,
-                        color = Color.Black,
-                        shape = RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp)
-                    )
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    tabs.forEachIndexed { index, title ->
-                        val isSelected = tabIndex == index
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(40.dp)
-                                .clip(RoundedCornerShape(18.dp))
-                                .background(
-                                    color = if (isSelected) Color(0xFF3C89E1) else Color.Transparent,
-                                    shape = RoundedCornerShape(18.dp)
-                                )
-                                .clickable { tabIndex = index }
-                                .border(
-                                    width = 1.dp,
-                                    color = if (isSelected) Color.Black else Color.Transparent,
-                                    shape = RoundedCornerShape(18.dp)
-                                ),
-
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = title,
-                                color = if (isSelected) Color.White else Color.Black,
-                                fontSize = 18.sp
-                            )
-                        }
-                    }
-                }
-            }
-            // Switching between Calibration and Change Dose tabs
-            when (tabIndex) {
-                0 -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(450.dp)
-                            .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
-                            .background(Color.Transparent)
-                            .padding(0.dp)
-                            .drawBehind {
-                                val strokeWidth = 1.dp.toPx()
-                                val cornerRadius = 18.dp.toPx()
-                                drawRoundRect(
-                                    color = Color.Black,
-                                    topLeft = Offset(0f, 0f),
-                                    size = Size(size.width, size.height),
-                                    cornerRadius = CornerRadius(cornerRadius, cornerRadius),
-                                    style = Stroke(width = strokeWidth)
-                                )
-                                drawRect(
-                                    color = Color(0xffe4effc),
-                                    topLeft = Offset(0f, 0f),
-                                    size = Size(size.width, strokeWidth + 12.dp.toPx())
-                                )
-                                drawLine(
-                                    color = Color.Black,
-                                    start = Offset(0f, 0f),
-                                    end = Offset(0f, size.height - cornerRadius),
-                                    strokeWidth = strokeWidth,
-                                )
-                                drawLine(
-                                    color = Color.Black,
-                                    start = Offset(size.width, 0f),
-                                    end = Offset(size.width, size.height - cornerRadius),
-                                    strokeWidth = strokeWidth,
-                                )
-                            }
-                            .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
-                            .background(Color.Transparent),
-                        ) {
-                        Column(
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            Text(
-                                text = "Slider Position",
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(start = 12.dp, top = 12.dp),
-                                fontSize = 18.sp
-                            )
-                            Slider(
-                                value = sliderPos,
-                                onValueChange = { sliderPos = it },
-                                valueRange = 0f..100f,
-                                modifier = Modifier
-                                    .padding(start = 10.dp, end = 10.dp)
-                                    .fillMaxWidth(),
-                                colors = SliderDefaults.colors(
-                                    thumbColor = Color(0xFF3C89E1),
-                                    activeTrackColor = Color(0xFF3C89E1),
-                                    inactiveTrackColor = Color.White
-                                )
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 16.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(text = "0%")
-                                Spacer(modifier = Modifier.weight(0.12f))
-                                Text(text = "35%")
-                                Spacer(modifier = Modifier.weight(0.30f))
-                                Text(text = "100%")
-                            }
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                                verticalArrangement = Arrangement.spacedBy(12.dp)
-                            ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    Text(
-                                        text = "Water Inflow Rate:",
-                                        modifier = Modifier
-                                            .width(120.dp),
-                                        fontWeight = FontWeight.Bold
-                                    )
-
-                                    OutlinedTextField(
-                                        value = waterInflow,
-                                        onValueChange = { waterInflow = it },
-                                        shape = RoundedCornerShape(8.dp),
-                                        colors = TextFieldDefaults.textFieldColors(
-                                            containerColor = Color.White,
-                                            focusedIndicatorColor = Color.Black
-                                        ),
-                                        modifier = Modifier
-                                            .width(70.dp)
-                                            .height(30.dp)
-                                    )
-                                    Text(text = "lts/s", fontWeight = FontWeight.Bold)
-                                }
-
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    Text(
-                                        text = "Start Volume:",
-                                        modifier = Modifier.width(100.dp),
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    OutlinedTextField(
-                                        value = startVolume,
-                                        onValueChange = { startVolume = it },
-                                        shape = RoundedCornerShape(8.dp),
-                                        colors = TextFieldDefaults.textFieldColors(
-                                            containerColor = Color.White,
-                                            focusedIndicatorColor = Color.Black
-                                        ),
-                                        modifier = Modifier
-                                            .width(70.dp)
-                                            .height(30.dp)
-                                    )
-                                    Text(text = "mL", fontWeight = FontWeight.Bold)
-                                }
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    Text(
-                                        text = "End Volume:",
-                                        modifier = Modifier.width(100.dp),
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    OutlinedTextField(
-                                        value = endVolume,
-                                        onValueChange = { endVolume = it },
-                                        shape = RoundedCornerShape(8.dp),
-                                        colors = TextFieldDefaults.textFieldColors(
-                                            containerColor = Color.White,
-                                            focusedIndicatorColor = Color.Black
-                                        ),
-                                        modifier = Modifier
-                                            .width(70.dp)
-                                            .height(30.dp)
-                                    )
-                                    Text(text = "mL", fontWeight = FontWeight.Bold)
-                                }
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    Text(
-                                        text = "Time Elapsed:",
-                                        modifier = Modifier.width(100.dp),
-                                        fontWeight = FontWeight.Bold
-                                    )
-
-                                    OutlinedTextField(
-                                        value = timeElapsed,
-                                        onValueChange = { timeElapsed = it },
-                                        shape = RoundedCornerShape(8.dp),
-                                        colors = TextFieldDefaults.textFieldColors(
-                                            containerColor = Color.White,
-                                            focusedIndicatorColor = Color.Black
-                                        ),
-                                        modifier = Modifier
-                                            .width(70.dp)
-                                            .height(30.dp)
-                                    )
-                                    Text(text = "s", fontWeight = FontWeight.Bold)
-                                }
-                                HorizontalDivider(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(0.dp),
-                                    thickness = 1.dp,
-                                    color = Color.Black
-                                )
-                                Text(
-                                    text = "Results",
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(start = 4.dp, top = 4.dp),
-                                    fontSize = 20.sp
-                                )
-                                Text(
-                                    text = "Chemical Dose: ---",
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(start = 10.dp, top = 10.dp),
-                                    fontSize = 16.sp
-                                )
-                                Text(
-                                    text = "Chemical Flow Rate: $chemFlowRate",
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(start = 10.dp, top = 10.dp),
-                                    fontSize = 16.sp
-                                )
-                            }
-                        }
-                    }
-                }
-                1 -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(380.dp)
-                            .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
-                            .background(Color.Transparent)
-                            .padding(0.dp)
-                            .drawBehind {
-                                val strokeWidth = 1.dp.toPx()
-                                val cornerRadius = 18.dp.toPx()
-
-                                drawRoundRect(
-                                    color = Color.Black,
-                                    topLeft = Offset(0f, 0f),
-                                    size = Size(size.width, size.height),
-                                    cornerRadius = CornerRadius(cornerRadius, cornerRadius),
-                                    style = Stroke(width = strokeWidth)
-                                )
-                                drawRect(
-                                    color = Color(0xffe4effc),
-                                    topLeft = Offset(0f, 0f),
-                                    size = Size(size.width, strokeWidth + 12.dp.toPx())
-                                )
-
-                                drawLine(
-                                    color = Color.Black,
-                                    start = Offset(0f, 0f),
-                                    end = Offset(0f, size.height - cornerRadius),
-                                    strokeWidth = strokeWidth,
-                                )
-
-                                drawLine(
-                                    color = Color.Black,
-                                    start = Offset(size.width, 0f),
-                                    end = Offset(size.width, size.height - cornerRadius),
-                                    strokeWidth = strokeWidth,
-                                )
-                            }
-                            .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
-                            .background(Color.Transparent),
-
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 12.dp, start = 4.dp, end = 4.dp)
-                            ) {
-                                Text(
-                                    text = "Chemical Flow Rate: $chemFlowRate mL/s",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "Slider Position over Dose:",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(start = 16.dp, top = 16.dp),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Slider(
-                                    value = sliderPosOverDose,
-                                    onValueChange = { sliderPosOverDose = it },
-                                    valueRange = 0f..100f,
-                                    modifier = Modifier
-                                        .padding(start = 10.dp, end = 10.dp)
-                                        .fillMaxWidth(),
-                                    colors = SliderDefaults.colors(
-                                        thumbColor = Color(0xFF3C89E1),
-                                        activeTrackColor = Color(0xFF3C89E1),
-                                        inactiveTrackColor = Color.White
-                                    )
-                                )
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 16.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(text = "0%")
-                                    Spacer(modifier = Modifier.weight(0.12f))
-                                    Text(text = "35%")
-                                    Spacer(modifier = Modifier.weight(0.30f))
-                                    Text(text = "100%")
-                                }
-                                Row(
-                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = "Target Chemical Dose:",
-                                        modifier = Modifier.width(200.dp),
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 18.sp
-                                    )
-                                    OutlinedTextField(
-                                        value = targetChemDose,
-                                        onValueChange = { targetChemDose = it },
-                                        shape = RoundedCornerShape(8.dp),
-                                        colors = TextFieldDefaults.textFieldColors(
-                                            containerColor = Color.White,
-                                            focusedIndicatorColor = Color.Black
-                                        ),
-                                        modifier = Modifier
-                                            .width(80.dp)
-                                            .height(30.dp)
-                                            .padding(end = 8.dp)
-                                    )
-                                    Text(
-                                        text = "mg/L",
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 18.sp,
-                                        modifier = Modifier.fillMaxWidth()
-                                    )
-                                }
-                                HorizontalDivider(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 16.dp),
-                                    thickness = 1.dp,
-                                    color = Color.Black
-                                )
-                                Text(
-                                    text = "Results",
-                                    fontSize = 24.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.fillMaxWidth().padding(16.dp)
-                                )
-                                Text(
-                                    text = "New Slider Position:",
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(start = 28.dp)
-                                )
-                                Slider(
-                                    value = newSliderPos,
-                                    onValueChange = { newSliderPos = it },
-                                    valueRange = 0f..100f,
-                                    modifier = Modifier
-                                        .padding(start = 30.dp, end = 30.dp)
-                                        .fillMaxWidth(),
-                                    colors = SliderDefaults.colors(
-                                        thumbColor = Color(0xFF3C89E1),
-                                        activeTrackColor = Color(0xFF3C89E1),
-                                        inactiveTrackColor = Color.White
-                                    )
-                                )
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(start = 30.dp, top = 0.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(text = "0%", fontSize = 18.sp)
-                                    Spacer(modifier = Modifier.weight(0.10f))
-                                    Text(text = "35%", fontSize = 18.sp)
-                                    Spacer(modifier = Modifier.weight(0.26f))
-                                }
-                            }
-                        }
-
-                }
-            }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    Text(
-                        text = "Active Tank",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Switch(
-                        checked = !isOn,
-                        onCheckedChange = { isOn = !it },
-                        colors = SwitchDefaults.colors(
-                            uncheckedThumbColor = Color(0xFFE0F3E3),
-                            uncheckedTrackColor = Color(0xFF7CBB84),
-                            checkedThumbColor = Color.White,
-                            checkedTrackColor = Color.Gray
-                        ),
-                        modifier = Modifier.scale(1f)
-                    )
-                }
-
-            Button (
-                onClick = {
-                    val submission = CoagulantSubmission(
-                        date = LocalDate.now().toString(),
-                        chemicalType = "PAC",
-                        sliderPosition = sliderPos,
-                        inflowRate = waterInflow,
-                        startVolume = startVolume,
-                        endVolume = endVolume,
-                        timeElapsed = timeElapsed,
-                        chemicalDose = "TODO",
-                        chemicalFlowRate = chemFlowRate
-                    )
-                    onSubmitClick(submission)
-                },
-                    //{ /* submit things*/ },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF77AF87),
-                    contentColor = Color.White
+              modifier = Modifier
+                .weight(1f)
+                .height(40.dp)
+                .clip(RoundedCornerShape(18.dp))
+                .background(
+                  color = if (isSelected) Color(0xFF3C89E1) else Color.Transparent,
+                  shape = RoundedCornerShape(18.dp)
+                )
+                .clickable { tabIndex = index }
+                .border(
+                  width = 1.dp,
+                  color = if (isSelected) Color.Black else Color.Transparent,
+                  shape = RoundedCornerShape(18.dp)
                 ),
-                shape = RoundedCornerShape(20.dp),
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .height(50.dp)
-                    .padding(8.dp)
+
+              contentAlignment = Alignment.Center
             ) {
-                    Text(text = "SUBMIT")
-                }
+              Text(
+                text = title,
+                color = if (isSelected) Color.White else Color.Black,
+                fontSize = 18.sp
+              )
             }
+          }
         }
+      }
+      // Switching between Calibration and Change Dose tabs
+      when (tabIndex) {
+        0 -> {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(450.dp)
+              .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
+              .background(Color.Transparent)
+              .padding(0.dp)
+              .drawBehind {
+                val strokeWidth = 1.dp.toPx()
+                val cornerRadius = 18.dp.toPx()
+                drawRoundRect(
+                  color = Color.Black,
+                  topLeft = Offset(0f, 0f),
+                  size = Size(size.width, size.height),
+                  cornerRadius = CornerRadius(cornerRadius, cornerRadius),
+                  style = Stroke(width = strokeWidth)
+                )
+                drawRect(
+                  color = Color(0xffe4effc),
+                  topLeft = Offset(0f, 0f),
+                  size = Size(size.width, strokeWidth + 12.dp.toPx())
+                )
+                drawLine(
+                  color = Color.Black,
+                  start = Offset(0f, 0f),
+                  end = Offset(0f, size.height - cornerRadius),
+                  strokeWidth = strokeWidth,
+                )
+                drawLine(
+                  color = Color.Black,
+                  start = Offset(size.width, 0f),
+                  end = Offset(size.width, size.height - cornerRadius),
+                  strokeWidth = strokeWidth,
+                )
+              }
+              .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
+              .background(Color.Transparent),
+          ) {
+            Column(
+              horizontalAlignment = Alignment.Start
+            ) {
+              Text(
+                text = "Slider Position",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 12.dp, top = 12.dp),
+                fontSize = 18.sp
+              )
+              Slider(
+                value = sliderPos,
+                onValueChange = { sliderPos = it },
+                valueRange = 0f..100f,
+                modifier = Modifier
+                  .padding(start = 10.dp, end = 10.dp)
+                  .fillMaxWidth(),
+                colors = SliderDefaults.colors(
+                  thumbColor = Color(0xFF3C89E1),
+                  activeTrackColor = Color(0xFF3C89E1),
+                  inactiveTrackColor = Color.White
+                )
+              )
+              Row(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+              ) {
+                Text(text = "0%")
+                Spacer(modifier = Modifier.weight(0.12f))
+                Text(text = "35%")
+                Spacer(modifier = Modifier.weight(0.30f))
+                Text(text = "100%")
+              }
+              Column(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(horizontal = 12.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+              ) {
+                Row(
+                  verticalAlignment = Alignment.CenterVertically,
+                  horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                  Text(
+                    text = "Water Inflow Rate:",
+                    modifier = Modifier
+                      .width(120.dp),
+                    fontWeight = FontWeight.Bold
+                  )
+
+                  OutlinedTextField(
+                    value = waterInflow,
+                    onValueChange = { waterInflow = it },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                      containerColor = Color.White,
+                      focusedIndicatorColor = Color.Black
+                    ),
+                    modifier = Modifier
+                      .width(70.dp)
+                      .height(30.dp)
+                  )
+                  Text(text = "lts/s", fontWeight = FontWeight.Bold)
+                }
+
+                Row(
+                  verticalAlignment = Alignment.CenterVertically,
+                  horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                  Text(
+                    text = "Start Volume:",
+                    modifier = Modifier.width(100.dp),
+                    fontWeight = FontWeight.Bold
+                  )
+                  OutlinedTextField(
+                    value = startVolume,
+                    onValueChange = { startVolume = it },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                      containerColor = Color.White,
+                      focusedIndicatorColor = Color.Black
+                    ),
+                    modifier = Modifier
+                      .width(70.dp)
+                      .height(30.dp)
+                  )
+                  Text(text = "mL", fontWeight = FontWeight.Bold)
+                }
+                Row(
+                  verticalAlignment = Alignment.CenterVertically,
+                  horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                  Text(
+                    text = "End Volume:",
+                    modifier = Modifier.width(100.dp),
+                    fontWeight = FontWeight.Bold
+                  )
+                  OutlinedTextField(
+                    value = endVolume,
+                    onValueChange = { endVolume = it },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                      containerColor = Color.White,
+                      focusedIndicatorColor = Color.Black
+                    ),
+                    modifier = Modifier
+                      .width(70.dp)
+                      .height(30.dp)
+                  )
+                  Text(text = "mL", fontWeight = FontWeight.Bold)
+                }
+                Row(
+                  verticalAlignment = Alignment.CenterVertically,
+                  horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                  Text(
+                    text = "Time Elapsed:",
+                    modifier = Modifier.width(100.dp),
+                    fontWeight = FontWeight.Bold
+                  )
+
+                  OutlinedTextField(
+                    value = timeElapsed,
+                    onValueChange = { timeElapsed = it },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                      containerColor = Color.White,
+                      focusedIndicatorColor = Color.Black
+                    ),
+                    modifier = Modifier
+                      .width(70.dp)
+                      .height(30.dp)
+                  )
+                  Text(text = "s", fontWeight = FontWeight.Bold)
+                }
+                HorizontalDivider(
+                  modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp),
+                  thickness = 1.dp,
+                  color = Color.Black
+                )
+                Text(
+                  text = "Results",
+                  fontWeight = FontWeight.Bold,
+                  modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                  fontSize = 20.sp
+                )
+                Text(
+                  text = "Chemical Dose: ---",
+                  fontWeight = FontWeight.Bold,
+                  modifier = Modifier.padding(start = 10.dp, top = 10.dp),
+                  fontSize = 16.sp
+                )
+                Text(
+                  text = "Chemical Flow Rate: $chemFlowRate",
+                  fontWeight = FontWeight.Bold,
+                  modifier = Modifier.padding(start = 10.dp, top = 10.dp),
+                  fontSize = 16.sp
+                )
+              }
+            }
+          }
+        }
+        1 -> {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(380.dp)
+              .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
+              .background(Color.Transparent)
+              .padding(0.dp)
+              .drawBehind {
+                val strokeWidth = 1.dp.toPx()
+                val cornerRadius = 18.dp.toPx()
+
+                drawRoundRect(
+                  color = Color.Black,
+                  topLeft = Offset(0f, 0f),
+                  size = Size(size.width, size.height),
+                  cornerRadius = CornerRadius(cornerRadius, cornerRadius),
+                  style = Stroke(width = strokeWidth)
+                )
+                drawRect(
+                  color = Color(0xffe4effc),
+                  topLeft = Offset(0f, 0f),
+                  size = Size(size.width, strokeWidth + 12.dp.toPx())
+                )
+
+                drawLine(
+                  color = Color.Black,
+                  start = Offset(0f, 0f),
+                  end = Offset(0f, size.height - cornerRadius),
+                  strokeWidth = strokeWidth,
+                )
+
+                drawLine(
+                  color = Color.Black,
+                  start = Offset(size.width, 0f),
+                  end = Offset(size.width, size.height - cornerRadius),
+                  strokeWidth = strokeWidth,
+                )
+              }
+              .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
+              .background(Color.Transparent),
+
+            ) {
+            Column(
+              modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 12.dp, start = 4.dp, end = 4.dp)
+            ) {
+              Text(
+                text = "Chemical Flow Rate: $chemFlowRate mL/s",
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(16.dp),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+              )
+              Text(
+                text = "Slider Position over Dose:",
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(start = 16.dp, top = 16.dp),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+              )
+              Slider(
+                value = sliderPosOverDose,
+                onValueChange = { sliderPosOverDose = it },
+                valueRange = 0f..100f,
+                modifier = Modifier
+                  .padding(start = 10.dp, end = 10.dp)
+                  .fillMaxWidth(),
+                colors = SliderDefaults.colors(
+                  thumbColor = Color(0xFF3C89E1),
+                  activeTrackColor = Color(0xFF3C89E1),
+                  inactiveTrackColor = Color.White
+                )
+              )
+              Row(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+              ) {
+                Text(text = "0%")
+                Spacer(modifier = Modifier.weight(0.12f))
+                Text(text = "35%")
+                Spacer(modifier = Modifier.weight(0.30f))
+                Text(text = "100%")
+              }
+              Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+              ) {
+                Text(
+                  text = "Target Chemical Dose:",
+                  modifier = Modifier.width(200.dp),
+                  fontWeight = FontWeight.Bold,
+                  fontSize = 18.sp
+                )
+                OutlinedTextField(
+                  value = targetChemDose,
+                  onValueChange = { targetChemDose = it },
+                  shape = RoundedCornerShape(8.dp),
+                  colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    focusedIndicatorColor = Color.Black
+                  ),
+                  modifier = Modifier
+                    .width(80.dp)
+                    .height(30.dp)
+                    .padding(end = 8.dp)
+                )
+                Text(
+                  text = "mg/L",
+                  fontWeight = FontWeight.Bold,
+                  fontSize = 18.sp,
+                  modifier = Modifier.fillMaxWidth()
+                )
+              }
+              HorizontalDivider(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(top = 16.dp),
+                thickness = 1.dp,
+                color = Color.Black
+              )
+              Text(
+                text = "Results",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
+              )
+              Text(
+                text = "New Slider Position:",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 28.dp)
+              )
+              Slider(
+                value = newSliderPos,
+                onValueChange = { newSliderPos = it },
+                valueRange = 0f..100f,
+                modifier = Modifier
+                  .padding(start = 30.dp, end = 30.dp)
+                  .fillMaxWidth(),
+                colors = SliderDefaults.colors(
+                  thumbColor = Color(0xFF3C89E1),
+                  activeTrackColor = Color(0xFF3C89E1),
+                  inactiveTrackColor = Color.White
+                )
+              )
+              Row(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(start = 30.dp, top = 0.dp),
+                verticalAlignment = Alignment.CenterVertically
+              ) {
+                Text(text = "0%", fontSize = 18.sp)
+                Spacer(modifier = Modifier.weight(0.10f))
+                Text(text = "35%", fontSize = 18.sp)
+                Spacer(modifier = Modifier.weight(0.26f))
+              }
+            }
+          }
+
+        }
+      }
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(8.dp)
+      ) {
+        Text(
+          text = "Active Tank",
+          fontWeight = FontWeight.Bold,
+          fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Switch(
+          checked = !isOn,
+          onCheckedChange = { isOn = !it },
+          colors = SwitchDefaults.colors(
+            uncheckedThumbColor = Color(0xFFE0F3E3),
+            uncheckedTrackColor = Color(0xFF7CBB84),
+            checkedThumbColor = Color.White,
+            checkedTrackColor = Color.Gray
+          ),
+          modifier = Modifier.scale(1f)
+        )
+      }
+
+      Button (
+        onClick = {
+          val submission = CoagulantSubmission(
+            date = LocalDate.now().toString(),
+            chemicalType = "PAC",
+            sliderPosition = sliderPos,
+            inflowRate = waterInflow,
+            startVolume = startVolume,
+            endVolume = endVolume,
+            timeElapsed = timeElapsed,
+            chemicalDose = "TODO",
+            chemicalFlowRate = chemFlowRate
+          )
+          onSubmitClick(submission)
+        },
+        //{ /* submit things*/ },
+        colors = ButtonDefaults.buttonColors(
+          containerColor = Color(0xFF77AF87),
+          contentColor = Color.White
+        ),
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+          .align(Alignment.End)
+          .height(50.dp)
+          .padding(8.dp)
+      ) {
+        Text(text = "SUBMIT")
+      }
+    }
+  }
 }
 
 
 @Composable
 public fun ConfirmScreen(
-    date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-    chemicalType: String,
-    sliderPosition: Float,
-    inflowRate: String,
-    startVolume: String,
-    endVolume: String,
-    timeElapsed: String,
-    chemicalDose: String,
-    chemicalFlowRate: String,
-    onGraphsClick: () -> Unit,
-    onHomeClick: () -> Unit,
-    onProfileClick: () -> Unit,
-    onRecordsClick: () -> Unit,
-    onSubmitClick: () -> Unit,
-    onBackClick: () -> Unit
+  date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+  chemicalType: String,
+  sliderPosition: Float,
+  inflowRate: String,
+  startVolume: String,
+  endVolume: String,
+  timeElapsed: String,
+  chemicalDose: String,
+  chemicalFlowRate: String,
+  onGraphsClick: () -> Unit,
+  onHomeClick: () -> Unit,
+  onProfileClick: () -> Unit,
+  onRecordsClick: () -> Unit,
+  onSubmitClick: () -> Unit,
+  onBackClick: () -> Unit
 ) {
-    Scaffold(
-        containerColor = Color(0xffe4effc),
-        bottomBar = {
-            BottomNavigationBar(
-                onHomeClick = onHomeClick,
-                onRecordsClick = onRecordsClick,
-                onGraphsClick = onGraphsClick,
-                onProfileClick = onProfileClick,
-                currentScreen = "Home"
-            )
-        }
-    )
-    { innerPadding ->
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 24.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "COAGULANT DOSAGE",
-                    fontSize = 24.sp,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White
-                ),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                ) {
-                    Text(
-                        text = "Please confirm your entry:",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 12.dp)
-                    )
-
-                    // Date / Chemical Type
-                    Text(
-                        text = "• Date: $date",
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                    Text(
-                        text = "• Chemical Type: $chemicalType",
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 12.dp)
-                    )
-
-                    Divider(thickness = 1.dp, color = Color(0xFFE0E0E0))
-
-                    // Calibration section
-                    Text(
-                        text = "Calibration",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-                    )
-
-                    Text(
-                        text = "• Slider Position: ${"%.1f".format(sliderPosition)} %",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• Inflow Rate: $inflowRate mL/s",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• Start Volume: $startVolume mL",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• End Volume: $endVolume mL",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• Time Elapsed: $timeElapsed s",
-                        fontSize = 18.sp
-                    )
-
-                    Divider(
-                        thickness = 1.dp,
-                        color = Color(0xFFE0E0E0),
-                        modifier = Modifier.padding(top = 16.dp)
-                    )
-
-                    // Output section
-                    Text(
-                        text = "Output",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-                    )
-                    Text(
-                        text = "• Chemical Dose: $chemicalDose mg/L",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• Chemical Flow Rate: $chemicalFlowRate mL/s",
-                        fontSize = 18.sp
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(
-                    onClick = onBackClick,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White,
-                        contentColor = Color(color = 0xFF77AF87)
-                    ),
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("GO BACK", fontSize = 16.sp)
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Button(
-                    onClick = onSubmitClick,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF77AF87),
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("CONFIRM", fontSize = 16.sp)
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-        }
-
+  Scaffold(
+    containerColor = Color(0xffe4effc),
+    bottomBar = {
+      BottomNavigationBar(
+        onHomeClick = onHomeClick,
+        onRecordsClick = onRecordsClick,
+        onGraphsClick = onGraphsClick,
+        onProfileClick = onProfileClick,
+        currentScreen = "Home"
+      )
     }
+  )
+  { innerPadding ->
+
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(innerPadding)
+        .padding(horizontal = 24.dp)
+    ) {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(top = 16.dp, bottom = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Text(
+          text = "COAGULANT DOSAGE",
+          fontSize = 24.sp,
+          modifier = Modifier.weight(1f),
+          textAlign = TextAlign.Center
+        )
+
+      }
+      Card(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 8.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+          containerColor = Color.White
+        ),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+      ) {
+        Column(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp)
+        ) {
+          Text(
+            text = "Please confirm your entry:",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 12.dp)
+          )
+
+          // Date / Chemical Type
+          Text(
+            text = "• Date: $date",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 4.dp)
+          )
+          Text(
+            text = "• Chemical Type: $chemicalType",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 12.dp)
+          )
+
+          Divider(thickness = 1.dp, color = Color(0xFFE0E0E0))
+
+          // Calibration section
+          Text(
+            text = "Calibration",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+          )
+
+          Text(
+            text = "• Slider Position: ${"%.1f".format(sliderPosition)} %",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• Inflow Rate: $inflowRate mL/s",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• Start Volume: $startVolume mL",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• End Volume: $endVolume mL",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• Time Elapsed: $timeElapsed s",
+            fontSize = 18.sp
+          )
+
+          Divider(
+            thickness = 1.dp,
+            color = Color(0xFFE0E0E0),
+            modifier = Modifier.padding(top = 16.dp)
+          )
+
+          // Output section
+          Text(
+            text = "Output",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+          )
+          Text(
+            text = "• Chemical Dose: $chemicalDose mg/L",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• Chemical Flow Rate: $chemicalFlowRate mL/s",
+            fontSize = 18.sp
+          )
+        }
+      }
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+      ) {
+        Button(
+          onClick = onBackClick,
+          colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White,
+            contentColor = Color(color = 0xFF77AF87)
+          ),
+          shape = RoundedCornerShape(20.dp),
+          modifier = Modifier.weight(1f)
+        ) {
+          Text("GO BACK", fontSize = 16.sp)
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Button(
+          onClick = onSubmitClick,
+          colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF77AF87),
+            contentColor = Color.White
+          ),
+          shape = RoundedCornerShape(20.dp),
+          modifier = Modifier.weight(1f)
+        ) {
+          Text("CONFIRM", fontSize = 16.sp)
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+      }
+    }
+
+  }
 }
 
 @Composable
 fun SubmittedConfirmScreen(
-    date: String,
-    time: String,
-    chemicalType: String,
-    sliderPosition: Float,
-    inflowRate: String,
-    startVolume: String,
-    endVolume: String,
-    timeElapsed: String,
-    chemicalDose: String,
-    chemicalFlowRate: String,
-    onGraphsClick: () -> Unit,
-    onHomeClick: () -> Unit,
-    onProfileClick: () -> Unit,
-    onRecordsClick: () -> Unit,
-    onBackClick: () -> Unit
+  date: String,
+  time: String,
+  chemicalType: String,
+  sliderPosition: Float,
+  inflowRate: String,
+  startVolume: String,
+  endVolume: String,
+  timeElapsed: String,
+  chemicalDose: String,
+  chemicalFlowRate: String,
+  onGraphsClick: () -> Unit,
+  onHomeClick: () -> Unit,
+  onProfileClick: () -> Unit,
+  onRecordsClick: () -> Unit,
+  onBackClick: () -> Unit
 ) {
-    Scaffold(
-        containerColor = Color(0xffe4effc),
-        bottomBar = {
-            BottomNavigationBar(
-                onHomeClick = onHomeClick,
-                onRecordsClick = onRecordsClick,
-                onGraphsClick = onGraphsClick,
-                onProfileClick = onProfileClick,
-                currentScreen = "Home"
-            )
-        }
-    ) { innerPadding ->
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 24.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "COAGULANT DOSAGE",
-                    fontSize = 24.sp,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White
-                ),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                ) {
-                    Text(
-                        text = "Submission complete",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    Text(
-                        text = "Submitted on $date at $time",
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-
-                    Text(
-                        text = "Entry details:",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(bottom = 12.dp)
-                    )
-
-                    // Date / Chemical Type
-                    Text(
-                        text = "• Date: $date",
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                    Text(
-                        text = "• Chemical Type: $chemicalType",
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 12.dp)
-                    )
-
-                    Divider(thickness = 1.dp, color = Color(0xFFE0E0E0))
-
-                    // Calibration
-                    Text(
-                        text = "Calibration",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-                    )
-
-                    Text(
-                        text = "• Slider Position: ${"%.1f".format(sliderPosition)} %",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• Inflow Rate: $inflowRate mL/s",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• Start Volume: $startVolume mL",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• End Volume: $endVolume mL",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• Time Elapsed: $timeElapsed s",
-                        fontSize = 18.sp
-                    )
-
-                    Divider(
-                        thickness = 1.dp,
-                        color = Color(0xFFE0E0E0),
-                        modifier = Modifier.padding(top = 16.dp)
-                    )
-
-                    // Output
-                    Text(
-                        text = "Output",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-                    )
-                    Text(
-                        text = "• Chemical Dose: $chemicalDose mg/L",
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = "• Chemical Flow Rate: $chemicalFlowRate mL/s",
-                        fontSize = 18.sp
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                OutlinedButton(
-                    onClick = onBackClick,
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("Back", fontSize = 16.sp)
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Button(
-                    onClick = onHomeClick,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF77AF87),
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("Home", fontSize = 16.sp)
-                }
-            }
-        }
+  Scaffold(
+    containerColor = Color(0xffe4effc),
+    bottomBar = {
+      BottomNavigationBar(
+        onHomeClick = onHomeClick,
+        onRecordsClick = onRecordsClick,
+        onGraphsClick = onGraphsClick,
+        onProfileClick = onProfileClick,
+        currentScreen = "Home"
+      )
     }
+  ) { innerPadding ->
+
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(innerPadding)
+        .padding(horizontal = 24.dp)
+    ) {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(top = 16.dp, bottom = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Text(
+          text = "COAGULANT DOSAGE",
+          fontSize = 24.sp,
+          modifier = Modifier.weight(1f),
+          textAlign = TextAlign.Center
+        )
+      }
+
+      Card(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 8.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+          containerColor = Color.White
+        ),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+      ) {
+        Column(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp)
+        ) {
+          Text(
+            text = "Submission complete",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp)
+          )
+
+          Text(
+            text = "Submitted on $date at $time",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
+          )
+
+          Text(
+            text = "Entry details:",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(bottom = 12.dp)
+          )
+
+          // Date / Chemical Type
+          Text(
+            text = "• Date: $date",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 4.dp)
+          )
+          Text(
+            text = "• Chemical Type: $chemicalType",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 12.dp)
+          )
+
+          Divider(thickness = 1.dp, color = Color(0xFFE0E0E0))
+
+          // Calibration
+          Text(
+            text = "Calibration",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+          )
+
+          Text(
+            text = "• Slider Position: ${"%.1f".format(sliderPosition)} %",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• Inflow Rate: $inflowRate mL/s",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• Start Volume: $startVolume mL",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• End Volume: $endVolume mL",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• Time Elapsed: $timeElapsed s",
+            fontSize = 18.sp
+          )
+
+          Divider(
+            thickness = 1.dp,
+            color = Color(0xFFE0E0E0),
+            modifier = Modifier.padding(top = 16.dp)
+          )
+
+          // Output
+          Text(
+            text = "Output",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+          )
+          Text(
+            text = "• Chemical Dose: $chemicalDose mg/L",
+            fontSize = 18.sp
+          )
+          Text(
+            text = "• Chemical Flow Rate: $chemicalFlowRate mL/s",
+            fontSize = 18.sp
+          )
+        }
+      }
+
+      Spacer(modifier = Modifier.height(12.dp))
+
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(bottom = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+      ) {
+        OutlinedButton(
+          onClick = onBackClick,
+          shape = RoundedCornerShape(20.dp),
+          modifier = Modifier.weight(1f)
+        ) {
+          Text("Back", fontSize = 16.sp)
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Button(
+          onClick = onHomeClick,
+          colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF77AF87),
+            contentColor = Color.White
+          ),
+          shape = RoundedCornerShape(20.dp),
+          modifier = Modifier.weight(1f)
+        ) {
+          Text("Home", fontSize = 16.sp)
+        }
+      }
+    }
+  }
 }
 
 

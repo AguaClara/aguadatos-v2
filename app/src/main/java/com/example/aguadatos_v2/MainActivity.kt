@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
               onFilteredWaterTurbidity = { navController.navigate("filtered_water") },
               onClarifiedWaterTurbidity = { navController.navigate("clarified_water") },
               onChlorineDosage = { navController.navigate("chlorine") },
-              onColor = {},
+              onColor = { navController.navigate("color") },
               onTankVolumes = {},
               onHomeClick = {},
               onRecordsClick = {},

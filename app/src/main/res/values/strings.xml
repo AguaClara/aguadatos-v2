@@ -34,6 +34,10 @@
     <string name="chlorine_dosage">Chlorine Dosage</string>
     <string name="color">Color</string>
     <string name="tank_volumes">Tank Volumes</string>
+    <string name="invalid_user_name">Invalid user name</string>
+    <string name="invalid_phone_number">Invalid phone number</string>
+    <string name="invalid_password">Invalid Password</string>
+    <string name="password_mismatch">The confirmation password does not match</string>
 
     <!-- RawWater -->
     <string name="pac">PAC</string>
@@ -45,5 +49,21 @@
     <string name="back">Back</string>
     <string name="home">Home</string>
 
+    <!-- Login -->
+    <string name="log_in">Log In</string>
+    <string name="dont_have_an_account_sign_up">Don\'t have an account? Sign up</string>
+
+    <!-- Chlorine Dosage -->
+    <string name="chlorine_dosage_caps">CHLORINE DOSAGE</string>
+    <string name="how_much_chlorine">How much chlorine was used to dose the water?</string>
+    <string name="chemical_type_reminder">Reminder: the chemical type is</string>
+    <string name="mg_per_l">mg/L</string>
+
+    <!-- Clarified Water Turbidity -->
+    <string name="clarified_water_turbidity_caps">CLARIFIED WATER TURBIDITY</string>
+    <string name="what_is_the_clarified_turbidity">What is the turbidity of the clarified water coming into the plant in NTU?</string>
+
+    <!-- Clarified Water Turbidity -->
+    <string name="coagulant_dosage_caps">COAGULANT DOSAGE</string>
 
 </resources>
