@@ -25,6 +25,8 @@
     <string name="password">Password</string>
     <string name="input_verification_code">"Please input the 6-digit verification code that has been sent to your phone number: "</string>
     <string name="create">CREATE</string>
+
+    <!-- Home -->
     <string name="types_of_entries">Types of Entries</string>
     <string name="plant_flow">Plant Flow</string>
     <string name="raw_water_turbidity">Raw Water Turbidity</string>
@@ -61,7 +63,7 @@
 
     <!-- Clarified Water Turbidity -->
     <string name="clarified_water_turbidity_caps">CLARIFIED WATER TURBIDITY</string>
-    <string name="what_is_the_clarified_turbidity">What is the turbidity of the clarified water coming into the plant in NTU?</string>
+    <string name="what_is_the_clarified_turbidity">What is the turbidity of the clarified water in plant in NTU?</string>
 
     <!-- Coagulant Dosage -->
     <string name="coagulant_dosage_caps">COAGULANT DOSAGE</string>
@@ -89,7 +91,19 @@
     <string name="at">at</string>
     <string name="entry_details">Entry details:</string>
 
-    <!-- Clarified Water Turbidity -->
+    <!-- Color -->
+    <string name="what_is_the_water_color">What is the color of the water of the plant in NTU?</string>
+    <string name="color_caps">COLOR</string>
+
+    <!-- Create Parameter -->
+    <string name="create_a_parameter">Create a Parameter</string>
+    <string name="parameter_name">Parameter Name</string>
+    <string name="unit_of_measure">Unit of Measure</string>
+    <string name="your_parameter">"Your Parameter: "</string>
+
+    <!-- Filtered Water Turbidity -->
+    <string name="filtered_water_turbidity_caps">FILTERED WATER TURBIDITY</string>
+    <string name="what_is_the_filtered_water_turbidity">What is the turbidity of the filtered water in the plant in NTU?</string>
 
 
 </resources>

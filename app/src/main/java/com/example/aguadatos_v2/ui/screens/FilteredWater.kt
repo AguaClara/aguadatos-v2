@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -92,7 +93,7 @@ public fun FilteredWater(
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = "FILTERED WATER TURBIDITY",
+                    text = stringResource(R.string.filtered_water_turbidity_caps),
                     fontSize = 24.sp,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
@@ -103,7 +104,7 @@ public fun FilteredWater(
 
             //explanation text
             Text(
-                text = "What is the turbidity of the filtered water coming into the plant in NTU?",
+                text = stringResource(R.string.what_is_the_filtered_water_turbidity),
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 16.dp, start = 16.dp),
                 fontFamily = fontFamily
@@ -111,7 +112,9 @@ public fun FilteredWater(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 //filtered water input text field
@@ -136,7 +139,7 @@ public fun FilteredWater(
             }
 
             Text(
-                text = "Reminder: the chemical type is $selectedChemical",
+                text = stringResource(R.string.chemical_type_reminder) + " $selectedChemical",
                 fontSize = 14.sp,
                 fontStyle = FontStyle.Italic,
                 color = Color.Gray.copy(alpha = 0.8f),
@@ -156,7 +159,7 @@ public fun FilteredWater(
                     .align(Alignment.End)
                     .height(40.dp)
             ) {
-                Text(text = "SUBMIT")
+                Text(text = stringResource(R.string.submit))
             }
         }
     }

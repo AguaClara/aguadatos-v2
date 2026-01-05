@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -88,7 +89,7 @@ fun CreateParameter() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Create a Parameter",
+                text = stringResource(R.string.create_a_parameter),
                 fontSize = 25.sp,
                 color = Color.Black,
                 fontFamily = fontFamily,
@@ -101,7 +102,7 @@ fun CreateParameter() {
             .fillMaxWidth()
             .padding(horizontal = 18.dp)){
             Text(
-                text = "Parameter Name",
+                text = stringResource(R.string.parameter_name),
                 color = Color.Black,
                 fontSize = 16.sp,
                 fontFamily = fontFamily,
@@ -122,7 +123,7 @@ fun CreateParameter() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Unit of Measure",
+                text = stringResource(R.string.unit_of_measure),
                 color = Color.Black,
                 fontSize = 18.sp,
                 fontFamily = fontFamily,
@@ -143,7 +144,7 @@ fun CreateParameter() {
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = buildAnnotatedString {append("Your Parameter: ")
+                text = buildAnnotatedString {append(stringResource(R.string.your_parameter))
                     if (parameterName != "" && measurementunitName != "")
                         withStyle( style = SpanStyle(color = Color(0xff4153af
                         ))){append("$parameterName in $measurementunitName")}},
@@ -166,7 +167,7 @@ fun CreateParameter() {
                     shape = RoundedCornerShape(12.dp)
                 )
 
-                {Text(text = "CREATE", fontSize = 15.sp,
+                {Text(text = stringResource(R.string.create), fontSize = 15.sp,
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.W500)}
             }
