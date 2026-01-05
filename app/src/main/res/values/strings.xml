@@ -63,7 +63,33 @@
     <string name="clarified_water_turbidity_caps">CLARIFIED WATER TURBIDITY</string>
     <string name="what_is_the_clarified_turbidity">What is the turbidity of the clarified water coming into the plant in NTU?</string>
 
-    <!-- Clarified Water Turbidity -->
+    <!-- Coagulant Dosage -->
     <string name="coagulant_dosage_caps">COAGULANT DOSAGE</string>
+    <string name="slider_position">Slider Position</string>
+    <string name="water_inflow_rate">Water Inflow Rate:</string>
+    <string name="start_volume">Start Volume:</string>
+    <string name="liters_per_second">lts/s</string>
+    <string name="end_volume">End Volume:</string>
+    <string name="time_elapsed">Time Elapsed:</string>
+    <string name="results">Results</string>
+    <string name="chemical_dose">Chemical Dose:</string>
+    <string name="chemical_flow_rate">Chemical Flow Rate:</string>
+    <string name="slider_position_over_dose">Slider Position over Dose:</string>
+    <string name="active_tank">Active Tank</string>
+    <string name="please_confirm_your_entry">Please confirm your entry:</string>
+    <string name="date">Date:</string>
+    <string name="chemical_type">Chemical Type:</string>
+    <string name="calibration">Calibration</string>
+    <string name="inflow_rate">Inflow Rate</string>
+    <string name="output">Output</string>
+    <string name="go_back">GO BACK</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="submission_complete">Submission complete</string>
+    <string name="submitted_on">Submitted on</string>
+    <string name="at">at</string>
+    <string name="entry_details">Entry details:</string>
+
+    <!-- Clarified Water Turbidity -->
+
 
 </resources>

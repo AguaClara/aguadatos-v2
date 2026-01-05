@@ -30,6 +30,9 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import java.io.Serializable
 import java.time.LocalDate
@@ -50,6 +53,12 @@ data class CoagulantSubmission(
   val chemicalDose: String,
   val chemicalFlowRate: String
 ) : Serializable
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewCoagulant(){
+  Coagulant({},{submission -> }, {}, {}, {}, {})
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,6 +86,8 @@ public fun Coagulant(
   var targetChemDose by remember { mutableStateOf("")}
   var newSliderPos by remember { mutableStateOf(0f)}
 
+  val selectedChemical by remember {mutableStateOf("PAC")} //take this value from server or previous screen
+  var clarifiedWater by remember { mutableStateOf("") }
 
   Scaffold(
     containerColor = Color(0xffe4effc),
@@ -112,7 +123,7 @@ public fun Coagulant(
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-          text = "COAGULANT DOSAGE",
+          text = stringResource(R.string.coagulant_dosage_caps),
           fontSize = 24.sp,
           modifier = Modifier.weight(1f),
           textAlign = TextAlign.Center
@@ -120,7 +131,8 @@ public fun Coagulant(
         Spacer(modifier = Modifier.width(44.dp))
       }
       Text(
-        text = "Reminder: the chemical type is ___ and the chemical concentration is #",
+        // TODO: Add chemical concentration to reminder
+        text = stringResource(R.string.chemical_type_reminder) + " $selectedChemical",
         fontSize = 14.sp,
         fontStyle = FontStyle.Italic,
         color = Color.Gray.copy(alpha = 0.8f),
@@ -175,7 +187,7 @@ public fun Coagulant(
           Box(
             modifier = Modifier
               .fillMaxWidth()
-              .height(450.dp)
+              .height(500.dp)
               .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
               .background(Color.Transparent)
               .padding(0.dp)
@@ -214,7 +226,7 @@ public fun Coagulant(
               horizontalAlignment = Alignment.Start
             ) {
               Text(
-                text = "Slider Position",
+                text = stringResource(R.string.slider_position),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 12.dp, top = 12.dp),
                 fontSize = 18.sp
@@ -255,7 +267,7 @@ public fun Coagulant(
                   horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                   Text(
-                    text = "Water Inflow Rate:",
+                    text = stringResource(R.string.water_inflow_rate),
                     modifier = Modifier
                       .width(120.dp),
                     fontWeight = FontWeight.Bold
@@ -265,15 +277,16 @@ public fun Coagulant(
                     value = waterInflow,
                     onValueChange = { waterInflow = it },
                     shape = RoundedCornerShape(8.dp),
-                    colors = TextFieldDefaults.textFieldColors(
-                      containerColor = Color.White,
-                      focusedIndicatorColor = Color.Black
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                      focusedContainerColor = Color.White,
+                      unfocusedContainerColor = Color.White
                     ),
                     modifier = Modifier
-                      .width(70.dp)
-                      .height(30.dp)
+                      .width(80.dp)
+                      .height(50.dp)
                   )
-                  Text(text = "lts/s", fontWeight = FontWeight.Bold)
+                  Text(text = stringResource(R.string.liters_per_second), fontWeight = FontWeight.Bold)
                 }
 
                 Row(
@@ -281,21 +294,22 @@ public fun Coagulant(
                   horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                   Text(
-                    text = "Start Volume:",
+                    text = stringResource(R.string.start_volume),
                     modifier = Modifier.width(100.dp),
                     fontWeight = FontWeight.Bold
                   )
                   OutlinedTextField(
                     value = startVolume,
                     onValueChange = { startVolume = it },
-                    shape = RoundedCornerShape(8.dp),
-                    colors = TextFieldDefaults.textFieldColors(
-                      containerColor = Color.White,
-                      focusedIndicatorColor = Color.Black
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                      focusedContainerColor = Color.White,
+                      unfocusedContainerColor = Color.White
                     ),
+                    shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
-                      .width(70.dp)
-                      .height(30.dp)
+                      .width(80.dp)
+                      .height(50.dp)
                   )
                   Text(text = "mL", fontWeight = FontWeight.Bold)
                 }
@@ -304,7 +318,7 @@ public fun Coagulant(
                   horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                   Text(
-                    text = "End Volume:",
+                    text = stringResource(R.string.end_volume),
                     modifier = Modifier.width(100.dp),
                     fontWeight = FontWeight.Bold
                   )
@@ -312,13 +326,14 @@ public fun Coagulant(
                     value = endVolume,
                     onValueChange = { endVolume = it },
                     shape = RoundedCornerShape(8.dp),
-                    colors = TextFieldDefaults.textFieldColors(
-                      containerColor = Color.White,
-                      focusedIndicatorColor = Color.Black
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                      focusedContainerColor = Color.White,
+                      unfocusedContainerColor = Color.White
                     ),
                     modifier = Modifier
-                      .width(70.dp)
-                      .height(30.dp)
+                      .width(80.dp)
+                      .height(50.dp)
                   )
                   Text(text = "mL", fontWeight = FontWeight.Bold)
                 }
@@ -327,7 +342,7 @@ public fun Coagulant(
                   horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                   Text(
-                    text = "Time Elapsed:",
+                    text = stringResource(R.string.time_elapsed),
                     modifier = Modifier.width(100.dp),
                     fontWeight = FontWeight.Bold
                   )
@@ -336,13 +351,14 @@ public fun Coagulant(
                     value = timeElapsed,
                     onValueChange = { timeElapsed = it },
                     shape = RoundedCornerShape(8.dp),
-                    colors = TextFieldDefaults.textFieldColors(
-                      containerColor = Color.White,
-                      focusedIndicatorColor = Color.Black
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                      focusedContainerColor = Color.White,
+                      unfocusedContainerColor = Color.White
                     ),
                     modifier = Modifier
-                      .width(70.dp)
-                      .height(30.dp)
+                      .width(80.dp)
+                      .height(45.dp)
                   )
                   Text(text = "s", fontWeight = FontWeight.Bold)
                 }
@@ -354,19 +370,19 @@ public fun Coagulant(
                   color = Color.Black
                 )
                 Text(
-                  text = "Results",
+                  text = stringResource(R.string.results),
                   fontWeight = FontWeight.Bold,
                   modifier = Modifier.padding(start = 4.dp, top = 4.dp),
                   fontSize = 20.sp
                 )
                 Text(
-                  text = "Chemical Dose: ---",
+                  text = stringResource(R.string.chemical_dose) + " ",
                   fontWeight = FontWeight.Bold,
                   modifier = Modifier.padding(start = 10.dp, top = 10.dp),
                   fontSize = 16.sp
                 )
                 Text(
-                  text = "Chemical Flow Rate: $chemFlowRate",
+                  text = stringResource(R.string.chemical_flow_rate) + " $chemFlowRate",
                   fontWeight = FontWeight.Bold,
                   modifier = Modifier.padding(start = 10.dp, top = 10.dp),
                   fontSize = 16.sp
@@ -424,7 +440,7 @@ public fun Coagulant(
                 .padding(top = 12.dp, start = 4.dp, end = 4.dp)
             ) {
               Text(
-                text = "Chemical Flow Rate: $chemFlowRate mL/s",
+                text = stringResource(R.string.chemical_flow_rate) + " $chemFlowRate mL/s",
                 modifier = Modifier
                   .fillMaxWidth()
                   .padding(16.dp),
@@ -432,7 +448,7 @@ public fun Coagulant(
                 fontWeight = FontWeight.Bold
               )
               Text(
-                text = "Slider Position over Dose:",
+                text = stringResource(R.string.slider_position_over_dose),
                 modifier = Modifier
                   .fillMaxWidth()
                   .padding(start = 16.dp, top = 16.dp),
@@ -465,7 +481,9 @@ public fun Coagulant(
                 Text(text = "100%")
               }
               Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
               ) {
                 Text(
@@ -505,7 +523,9 @@ public fun Coagulant(
                 text = "Results",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(16.dp)
               )
               Text(
                 text = "New Slider Position:",
@@ -550,7 +570,7 @@ public fun Coagulant(
           .padding(8.dp)
       ) {
         Text(
-          text = "Active Tank",
+          text = stringResource(R.string.active_tank),
           fontWeight = FontWeight.Bold,
           fontSize = 16.sp
         )
@@ -578,7 +598,7 @@ public fun Coagulant(
             startVolume = startVolume,
             endVolume = endVolume,
             timeElapsed = timeElapsed,
-            chemicalDose = "TODO",
+            chemicalDose = "___", //TODO
             chemicalFlowRate = chemFlowRate
           )
           onSubmitClick(submission)
@@ -594,7 +614,7 @@ public fun Coagulant(
           .height(50.dp)
           .padding(8.dp)
       ) {
-        Text(text = "SUBMIT")
+        Text(text = stringResource(R.string.submit))
       }
     }
   }
@@ -646,7 +666,7 @@ public fun ConfirmScreen(
         verticalAlignment = Alignment.CenterVertically
       ) {
         Text(
-          text = "COAGULANT DOSAGE",
+          text = stringResource(R.string.coagulant_dosage_caps),
           fontSize = 24.sp,
           modifier = Modifier.weight(1f),
           textAlign = TextAlign.Center
@@ -669,7 +689,7 @@ public fun ConfirmScreen(
             .padding(20.dp)
         ) {
           Text(
-            text = "Please confirm your entry:",
+            text = stringResource(R.string.please_confirm_your_entry),
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 12.dp)
@@ -677,12 +697,12 @@ public fun ConfirmScreen(
 
           // Date / Chemical Type
           Text(
-            text = "• Date: $date",
+            text = "• " + stringResource(R.string.date) + " $date",
             fontSize = 18.sp,
             modifier = Modifier.padding(bottom = 4.dp)
           )
           Text(
-            text = "• Chemical Type: $chemicalType",
+            text = "• " + stringResource(R.string.chemical_type) + " $chemicalType",
             fontSize = 18.sp,
             modifier = Modifier.padding(bottom = 12.dp)
           )
@@ -691,30 +711,30 @@ public fun ConfirmScreen(
 
           // Calibration section
           Text(
-            text = "Calibration",
+            text = stringResource(R.string.calibration),
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
           )
 
           Text(
-            text = "• Slider Position: ${"%.1f".format(sliderPosition)} %",
+            text = "• " + stringResource(R.string.slider_position) + ": ${"%.1f".format(sliderPosition)} %",
             fontSize = 18.sp
           )
           Text(
-            text = "• Inflow Rate: $inflowRate mL/s",
+            text = "• " + stringResource(R.string.inflow_rate) + ": $inflowRate mL/s",
             fontSize = 18.sp
           )
           Text(
-            text = "• Start Volume: $startVolume mL",
+            text = "• " + stringResource(R.string.start_volume) + " $startVolume mL",
             fontSize = 18.sp
           )
           Text(
-            text = "• End Volume: $endVolume mL",
+            text = "• " + stringResource(R.string.end_volume) + " $endVolume mL",
             fontSize = 18.sp
           )
           Text(
-            text = "• Time Elapsed: $timeElapsed s",
+            text = "• " + stringResource(R.string.time_elapsed) + " $timeElapsed s",
             fontSize = 18.sp
           )
 
@@ -726,17 +746,17 @@ public fun ConfirmScreen(
 
           // Output section
           Text(
-            text = "Output",
+            text = stringResource(R.string.output),
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
           )
           Text(
-            text = "• Chemical Dose: $chemicalDose mg/L",
+            text = "• " + stringResource(R.string.chemical_dose) + " $chemicalDose mg/L",
             fontSize = 18.sp
           )
           Text(
-            text = "• Chemical Flow Rate: $chemicalFlowRate mL/s",
+            text = "• " + stringResource(R.string.chemical_flow_rate) + " $chemicalFlowRate mL/s",
             fontSize = 18.sp
           )
         }
@@ -756,7 +776,7 @@ public fun ConfirmScreen(
           shape = RoundedCornerShape(20.dp),
           modifier = Modifier.weight(1f)
         ) {
-          Text("GO BACK", fontSize = 16.sp)
+          Text(stringResource(R.string.go_back), fontSize = 16.sp)
         }
         Spacer(modifier = Modifier.width(12.dp))
 
@@ -769,7 +789,7 @@ public fun ConfirmScreen(
           shape = RoundedCornerShape(20.dp),
           modifier = Modifier.weight(1f)
         ) {
-          Text("CONFIRM", fontSize = 16.sp)
+          Text(stringResource(R.string.confirm), fontSize = 16.sp)
         }
         Spacer(modifier = Modifier.height(8.dp))
       }
@@ -822,7 +842,7 @@ fun SubmittedConfirmScreen(
         verticalAlignment = Alignment.CenterVertically
       ) {
         Text(
-          text = "COAGULANT DOSAGE",
+          text = stringResource(R.string.coagulant_dosage_caps),
           fontSize = 24.sp,
           modifier = Modifier.weight(1f),
           textAlign = TextAlign.Center
@@ -845,20 +865,20 @@ fun SubmittedConfirmScreen(
             .padding(20.dp)
         ) {
           Text(
-            text = "Submission complete",
+            text = stringResource(R.string.submission_complete),
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
           )
 
           Text(
-            text = "Submitted on $date at $time",
+            text = stringResource(R.string.submitted_on) + " $date " + stringResource(R.string.at) + " $time",
             fontSize = 18.sp,
             modifier = Modifier.padding(bottom = 16.dp)
           )
 
           Text(
-            text = "Entry details:",
+            text = stringResource(R.string.entry_details),
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 12.dp)
@@ -866,12 +886,12 @@ fun SubmittedConfirmScreen(
 
           // Date / Chemical Type
           Text(
-            text = "• Date: $date",
+            text = "• " + stringResource(R.string.date) + " $date",
             fontSize = 18.sp,
             modifier = Modifier.padding(bottom = 4.dp)
           )
           Text(
-            text = "• Chemical Type: $chemicalType",
+            text = "• " + stringResource(R.string.chemical_type) + " $chemicalType",
             fontSize = 18.sp,
             modifier = Modifier.padding(bottom = 12.dp)
           )
@@ -880,30 +900,30 @@ fun SubmittedConfirmScreen(
 
           // Calibration
           Text(
-            text = "Calibration",
+            text = stringResource(R.string.calibration),
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
           )
 
           Text(
-            text = "• Slider Position: ${"%.1f".format(sliderPosition)} %",
+            text = "• " + stringResource(R.string.slider_position) + ": ${"%.1f".format(sliderPosition)} %",
             fontSize = 18.sp
           )
           Text(
-            text = "• Inflow Rate: $inflowRate mL/s",
+            text = "• " + stringResource(R.string.inflow_rate) + ": $inflowRate mL/s",
             fontSize = 18.sp
           )
           Text(
-            text = "• Start Volume: $startVolume mL",
+            text = "• " + stringResource(R.string.start_volume) + " $startVolume mL",
             fontSize = 18.sp
           )
           Text(
-            text = "• End Volume: $endVolume mL",
+            text = "• " + stringResource(R.string.end_volume) + " $endVolume mL",
             fontSize = 18.sp
           )
           Text(
-            text = "• Time Elapsed: $timeElapsed s",
+            text = "• " + stringResource(R.string.time_elapsed) + " $timeElapsed s",
             fontSize = 18.sp
           )
 
@@ -915,17 +935,17 @@ fun SubmittedConfirmScreen(
 
           // Output
           Text(
-            text = "Output",
+            text = stringResource(R.string.output),
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
           )
           Text(
-            text = "• Chemical Dose: $chemicalDose mg/L",
+            text = "• " + stringResource(R.string.chemical_dose) + " $chemicalDose mg/L",
             fontSize = 18.sp
           )
           Text(
-            text = "• Chemical Flow Rate: $chemicalFlowRate mL/s",
+            text = "• " + stringResource(R.string.chemical_flow_rate) + " $chemicalFlowRate mL/s",
             fontSize = 18.sp
           )
         }
@@ -944,7 +964,7 @@ fun SubmittedConfirmScreen(
           shape = RoundedCornerShape(20.dp),
           modifier = Modifier.weight(1f)
         ) {
-          Text("Back", fontSize = 16.sp)
+          Text(stringResource(R.string.back), fontSize = 16.sp)
         }
         Spacer(modifier = Modifier.width(12.dp))
 
