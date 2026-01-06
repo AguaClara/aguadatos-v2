@@ -31,6 +31,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -70,7 +71,7 @@ fun WelcomePage(
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){Text(text = "Welcome to AguaDatos !",
+    ){Text(text = stringResource(R.string.welcome_to_aguadatos),
         fontSize = 30.sp,
         textAlign = TextAlign.Center,
         color = Color.Black,
@@ -88,7 +89,7 @@ fun WelcomePage(
             contentColor = Color.Black
         )
     ) {
-        Text(text = "Create an account ", fontSize = 20.sp,
+        Text(text = stringResource(R.string.create_an_account), fontSize = 20.sp,
             fontFamily = fontFamily,
             fontWeight = FontWeight.W600)
         Image(painter = painterResource(R.drawable.right_arrow), contentDescription = "Arrow",
@@ -97,12 +98,13 @@ fun WelcomePage(
     Spacer(modifier = Modifier.height(16.dp))
     TextButton(
         onClick = onLoginClick,
-        modifier = Modifier.clickable { }
+        modifier = Modifier
+            .clickable { }
             .align(Alignment.End)
             .padding(end = 25.dp)
     ) {
         Text(
-            text = "Already have an account? Log in",
+            text = stringResource(R.string.already_have_an_account_log_in),
             fontSize = 10.sp,
             textDecoration = TextDecoration.Underline,
             color = Color.Gray,

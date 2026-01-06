@@ -2,7 +2,11 @@
     <string name="app_name" translatable="false">AguaDatosApp</string>
     <string name="aguadatos" translatable="false">AguaDatos</string>
 
-    <!-- Signup -->
+    <!-- Welcome Page -->
+    <string name="welcome_to_aguadatos">Welcome to AguaDatos !</string>
+    <string name="create_an_account">"Create an account "</string>
+
+    <!-- Signup/Login -->
     <string name="first_and_last_name">First and last name</string>
     <string name="plant_code">Plant Code</string>
     <string name="ex">Ex. </string>
@@ -105,5 +109,8 @@
     <string name="filtered_water_turbidity_caps">FILTERED WATER TURBIDITY</string>
     <string name="what_is_the_filtered_water_turbidity">What is the turbidity of the filtered water in the plant in NTU?</string>
 
+    <!-- Plant Flow -->
+    <string name="plant_flow_caps">PLANT FLOW</string>
+    <string name="what_is_the_inflow_rate">What is the inflow rate of the plant in liters per second?</string>
 
 </resources>

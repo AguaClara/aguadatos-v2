@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -84,7 +85,7 @@ public fun PlantFlow(
                 //back arrow
                 Image(
                     painter = painterResource(id = R.drawable.back_arrow),
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.back),
                     modifier = Modifier
                         .size(28.dp)
                         .clickable { onBackClick() }
@@ -93,7 +94,7 @@ public fun PlantFlow(
 
                 //heading
                 Text(
-                    text = "PLANT FLOW",
+                    text = stringResource(R.string.plant_flow_caps),
                     fontSize = 24.sp,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
@@ -104,7 +105,7 @@ public fun PlantFlow(
 
             //explanation text
             Text(
-                text = "What is the inflow rate of the plant in liters per second?",
+                text = stringResource(R.string.what_is_the_inflow_rate),
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 16.dp, start = 16.dp),
                 fontFamily = fontFamily
@@ -112,7 +113,9 @@ public fun PlantFlow(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 //plant flow input text field
@@ -140,7 +143,7 @@ public fun PlantFlow(
             }
 
             Text(
-                text = "Reminder: the chemical type is $selectedChemical",
+                text = stringResource(R.string.chemical_type_reminder) + " $selectedChemical",
                 fontSize = 14.sp,
                 fontStyle = FontStyle.Italic,
                 color = Color.Gray.copy(alpha = 0.8f),
@@ -160,7 +163,7 @@ public fun PlantFlow(
                     .align(Alignment.End)
                     .height(40.dp)
             ) {
-                Text(text = "SUBMIT", fontFamily = fontFamily)
+                Text(text = stringResource(R.string.confirm), fontFamily = fontFamily)
             }
         }
     }

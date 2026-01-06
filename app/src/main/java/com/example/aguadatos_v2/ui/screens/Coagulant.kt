@@ -187,7 +187,7 @@ public fun Coagulant(
           Box(
             modifier = Modifier
               .fillMaxWidth()
-              .height(500.dp)
+              .height(480.dp)
               .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
               .background(Color.Transparent)
               .padding(0.dp)
@@ -372,17 +372,17 @@ public fun Coagulant(
                 Text(
                   text = stringResource(R.string.results),
                   fontWeight = FontWeight.Bold,
-                  modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+//                  modifier = Modifier.padding(start = 4.dp, top = 4.dp),
                   fontSize = 20.sp
                 )
                 Text(
-                  text = stringResource(R.string.chemical_dose) + " ",
+                  text = stringResource(R.string.chemical_dose) + " ---",
                   fontWeight = FontWeight.Bold,
                   modifier = Modifier.padding(start = 10.dp, top = 10.dp),
                   fontSize = 16.sp
                 )
                 Text(
-                  text = stringResource(R.string.chemical_flow_rate) + " $chemFlowRate",
+                  text = stringResource(R.string.chemical_flow_rate) + " ---$chemFlowRate",
                   fontWeight = FontWeight.Bold,
                   modifier = Modifier.padding(start = 10.dp, top = 10.dp),
                   fontSize = 16.sp
@@ -562,31 +562,31 @@ public fun Coagulant(
 
         }
       }
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start,
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(8.dp)
-      ) {
-        Text(
-          text = stringResource(R.string.active_tank),
-          fontWeight = FontWeight.Bold,
-          fontSize = 16.sp
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Switch(
-          checked = !isOn,
-          onCheckedChange = { isOn = !it },
-          colors = SwitchDefaults.colors(
-            uncheckedThumbColor = Color(0xFFE0F3E3),
-            uncheckedTrackColor = Color(0xFF7CBB84),
-            checkedThumbColor = Color.White,
-            checkedTrackColor = Color.Gray
-          ),
-          modifier = Modifier.scale(1f)
-        )
-      }
+//      Row(
+//        verticalAlignment = Alignment.CenterVertically,
+//        horizontalArrangement = Arrangement.Start,
+//        modifier = Modifier
+//          .fillMaxWidth()
+//          .padding(8.dp)
+//      ) {
+//        Text(
+//          text = stringResource(R.string.active_tank),
+//          fontWeight = FontWeight.Bold,
+//          fontSize = 16.sp
+//        )
+//        Spacer(modifier = Modifier.width(12.dp))
+//        Switch(
+//          checked = !isOn,
+//          onCheckedChange = { isOn = !it },
+//          colors = SwitchDefaults.colors(
+//            uncheckedThumbColor = Color(0xFFE0F3E3),
+//            uncheckedTrackColor = Color(0xFF7CBB84),
+//            checkedThumbColor = Color.White,
+//            checkedTrackColor = Color.Gray
+//          ),
+//          modifier = Modifier.scale(1f)
+//        )
+//      }
 
       Button (
         onClick = {
@@ -598,8 +598,8 @@ public fun Coagulant(
             startVolume = startVolume,
             endVolume = endVolume,
             timeElapsed = timeElapsed,
-            chemicalDose = "___", //TODO
-            chemicalFlowRate = chemFlowRate
+            chemicalDose = "---", //TODO
+            chemicalFlowRate = "---", //TODO
           )
           onSubmitClick(submission)
         },
