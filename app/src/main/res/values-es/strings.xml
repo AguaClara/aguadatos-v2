@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><!-- Welcome Page -->
+    <string name="welcome_to_aguadatos">¡Bienvenido a AguaDatos!</string>
+    <string name="create_an_account">Crear una cuenta</string>
+
+    <!-- Signup/Login -->
+    <string name="first_and_last_name">Nombre y apellido</string>
+    <string name="plant_code">Código de planta</string>
+    <string name="ex">Ej.</string>
+    <string name="enter_your_password">Ingrese su contraseña</string>
+    <string name="lock_icon">Ícono de candado</string>
+    <string name="hide_password">Ocultar contraseña</string>
+    <string name="show_password">Mostrar contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="already_have_an_account_log_in">¿Ya tiene una cuenta? Iniciar sesión</string>
+
+    <string name="includes_lowercase_character">Incluye letra minúscula</string>
+    <string name="includes_uppercase_character">Incluye letra mayúscula</string>
+    <string name="includes_numbers">Incluye números</string>
+    <string name="includes_symbols">Incluye símbolos</string>
+    <string name="phone_number">Número de teléfono</string>
+    <string name="your_plant">Su planta:</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="aguadatos_logo">Logo de AguaDatos</string>
+    <string name="password">Contraseña</string>
+    <string name="input_verification_code">Por favor ingrese el código de verificación de 6 dígitos que fue enviado a su número de teléfono:</string>
+    <string name="create">CREAR</string>
+
+    <!-- Home -->
+    <string name="types_of_entries">Tipos de registros</string>
+    <string name="plant_flow">Caudal de planta</string>
+    <string name="raw_water_turbidity">Turbidez del agua cruda</string>
+    <string name="coagulant_dosage">Dosificación de coagulante</string>
+    <string name="filtered_water_turbidity">Turbidez del agua filtrada</string>
+    <string name="clarified_water_turbidity">Turbidez del agua clarificada</string>
+    <string name="chlorine_dosage">Dosificación de cloro</string>
+    <string name="color">Color</string>
+    <string name="tank_volumes">Volúmenes de tanques</string>
+    <string name="invalid_user_name">Nombre de usuario inválido</string>
+    <string name="invalid_phone_number">Número de teléfono inválido</string>
+    <string name="invalid_password">Contraseña inválida</string>
+    <string name="password_mismatch">La contraseña de confirmación no coincide</string>
+
+    <!-- RawWater -->
+    <string name="pac">PAC</string>
+    <string name="what_is_the_turbidity_of_the_raw_water">¿Cuál es la turbidez del agua cruda que ingresa a la planta en NTU?</string>
+    <string name="reminder_the_chemical_type_is">Recordatorio: el tipo de químico es</string>
+    <string name="submit">ENVIAR</string>
+    <string name="ntu">NTU</string>
+    <string name="raw_water">AGUA CRUDA</string>
+    <string name="back">Atrás</string>
+    <string name="home">Inicio</string>
+
+    <!-- Login -->
+    <string name="log_in">Iniciar sesión</string>
+    <string name="dont_have_an_account_sign_up">¿No tiene una cuenta? Regístrese</string>
+
+    <!-- Chlorine Dosage -->
+    <string name="chlorine_dosage_caps">DOSIFICACIÓN DE CLORO</string>
+    <string name="how_much_chlorine">¿Cuánto cloro se utilizó para dosificar el agua?</string>
+    <string name="chemical_type_reminder">Recordatorio: el tipo de químico es</string>
+    <string name="mg_per_l">mg/L</string>
+
+    <!-- Clarified Water Turbidity -->
+    <string name="clarified_water_turbidity_caps">TURBIDEZ DEL AGUA CLARIFICADA</string>
+    <string name="what_is_the_clarified_turbidity">¿Cuál es la turbidez del agua clarificada en la planta en NTU?</string>
+
+    <!-- Coagulant Dosage -->
+    <string name="coagulant_dosage_caps">DOSIFICACIÓN DE COAGULANTE</string>
+    <string name="slider_position">Posición del control deslizante</string>
+    <string name="water_inflow_rate">Caudal de entrada de agua:</string>
+    <string name="start_volume">Volumen inicial:</string>
+    <string name="liters_per_second">L/s</string>
+    <string name="end_volume">Volumen final:</string>
+    <string name="time_elapsed">Tiempo transcurrido:</string>
+    <string name="results">Resultados</string>
+    <string name="chemical_dose">Dosis de químico:</string>
+    <string name="chemical_flow_rate">Caudal del químico:</string>
+    <string name="slider_position_over_dose">Posición del control sobre la dosis:</string>
+    <string name="active_tank">Tanque activo</string>
+    <string name="please_confirm_your_entry">Por favor confirme su registro:</string>
+    <string name="date">Fecha:</string>
+    <string name="chemical_type">Tipo de químico:</string>
+    <string name="calibration">Calibración</string>
+    <string name="inflow_rate">Caudal de entrada</string>
+    <string name="output">Salida</string>
+    <string name="go_back">REGRESAR</string>
+    <string name="confirm">CONFIRMAR</string>
+    <string name="submission_complete">Envío completado</string>
+    <string name="submitted_on">Enviado el</string>
+    <string name="at">a las</string>
+    <string name="entry_details">Detalles del registro:</string>
+
+    <!-- Color -->
+    <string name="what_is_the_water_color">¿Cuál es el color del agua de la planta en NTU?</string>
+    <string name="color_caps">COLOR</string>
+
+    <!-- Create Parameter -->
+    <string name="create_a_parameter">Crear un parámetro</string>
+    <string name="parameter_name">Nombre del parámetro</string>
+    <string name="unit_of_measure">Unidad de medida</string>
+    <string name="your_parameter">Su parámetro:</string>
+
+    <!-- Filtered Water Turbidity -->
+    <string name="filtered_water_turbidity_caps">TURBIDEZ DEL AGUA FILTRADA</string>
+    <string name="what_is_the_filtered_water_turbidity">¿Cuál es la turbidez del agua filtrada en la planta en NTU?</string>
+
+    <!-- Plant Flow -->
+    <string name="plant_flow_caps">CAUDAL DE PLANTA</string>
+    <string name="what_is_the_inflow_rate">¿Cuál es el caudal de entrada de la planta en litros por segundo?</string>
+</resources>

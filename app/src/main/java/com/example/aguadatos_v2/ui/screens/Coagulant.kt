@@ -130,14 +130,14 @@ public fun Coagulant(
         )
         Spacer(modifier = Modifier.width(44.dp))
       }
-      Text(
-        // TODO: Add chemical concentration to reminder
-        text = stringResource(R.string.chemical_type_reminder) + " $selectedChemical",
-        fontSize = 14.sp,
-        fontStyle = FontStyle.Italic,
-        color = Color.Gray.copy(alpha = 0.8f),
-        modifier = Modifier.padding(bottom = 24.dp)
-      )
+//      Text(
+//        // TODO: Add chemical concentration and selected chemical reminder
+//        text = stringResource(R.string.chemical_type_reminder) + " $selectedChemical",
+//        fontSize = 14.sp,
+//        fontStyle = FontStyle.Italic,
+//        color = Color.Gray.copy(alpha = 0.8f),
+//        modifier = Modifier.padding(bottom = 24.dp)
+//      )
       Box(
         modifier = Modifier
           .clip(RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))
