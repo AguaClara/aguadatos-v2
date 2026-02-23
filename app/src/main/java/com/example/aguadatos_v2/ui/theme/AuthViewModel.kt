@@ -12,19 +12,19 @@ import kotlinx.coroutines.launch
 
 data class SignUpState(
   val name: String = "",
-  val phone: String = "",
+  val email: String = "",
   val plantCode : String = "",
   var password: String = ""
 )
 
 data class LoginState(
   val name: String = "",
-  val phone: String = "",
+  val email: String = "",
   var password: String = ""
 )
 
 data class VerificationState(
-  val phone: String = "",
+  val email: String = "",
   val code: String = ""
 )
 
@@ -39,13 +39,13 @@ class AuthViewModel : ViewModel() {
 
   fun updateSignUpState(
     name: String? = null,
-    phone: String? = null,
+    email: String? = null,
     plantCode: String? = null,
     password: String? = null
   ) {
     signUpState.value = signUpState.value.copy(
       name      = name ?: signUpState.value.name,
-      phone     = phone ?: signUpState.value.phone,
+      email     = email ?: signUpState.value.email,
       plantCode = plantCode ?: signUpState.value.plantCode,
       password  = password ?: signUpState.value.password
     )
@@ -53,22 +53,22 @@ class AuthViewModel : ViewModel() {
 
   fun updateLoginState(
     name: String? = null,
-    phone: String? = null,
+    email: String? = null,
     password: String? = null
   ) {
     loginState.value = loginState.value.copy(
       name      = name ?: signUpState.value.name,
-      phone     = phone ?: signUpState.value.phone,
+      email     = email ?: signUpState.value.email,
       password  = password ?: signUpState.value.password
     )
   }
 
   fun updateVerificationState(
     code: String? = null,
-    phone: String? = null
+    email: String? = null
   ) {
     verificationState.value = verificationState.value.copy(
-      phone = phone ?: verificationState.value.phone,
+      email = email ?: verificationState.value.email,
       code  = code ?: verificationState.value.code
     )
   }
@@ -104,22 +104,22 @@ class AuthViewModel : ViewModel() {
     code: String,
     onSuccess: () -> Unit,
     onError: (String) -> Unit) {
-    val phoneNumber = signUpState.value.phone
+    val email = signUpState.value.email
     onSuccess()
-//    Amplify.Auth.confirmSignUp(
-//      phoneNumber,
-//      code,
-//      { onSuccess },
-//      { onError }
-//    )
+    Amplify.Auth.confirmSignUp(
+      email,
+      code,
+      { onSuccess },
+      { onError }
+    )
   }
 
   fun resendCode(
     onSuccess: () -> Unit,
     onError: (String) -> Unit) {
-    val phoneNumber = signUpState.value.phone
+    val email = signUpState.value.email
     Amplify.Auth.resendSignUpCode(
-      phoneNumber,
+      email,
       { onSuccess },
       { onError }
     )

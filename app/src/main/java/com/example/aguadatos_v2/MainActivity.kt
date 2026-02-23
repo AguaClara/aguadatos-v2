@@ -119,12 +119,26 @@ class MainActivity : ComponentActivity() {
 
           //chlorine route
           composable("chlorine"){
-            Chlorine(onBackClick = {navController.navigate("home")}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            Chlorine(
+              onBackClick = {navController.navigate("home")},
+              {},
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              {},
+              {}
+            )
           }
 
           //clarified water route
           composable("clarified_water"){
-            ClarifiedWater(onBackClick = {navController.navigate("home")}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            ClarifiedWater(
+              onBackClick = {navController.navigate("home")},
+              {},
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              {},
+              {}
+            )
           }
 
           //color route
