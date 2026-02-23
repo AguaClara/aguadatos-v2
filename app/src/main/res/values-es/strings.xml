@@ -99,6 +99,7 @@
     <!-- Create Parameter -->
     <string name="tank_volume_caps">VOLUMEN DEL TANQUE</string>
     <string name="what_is_the_volume">"¿Cuál es el volumen de los tanques en litros? "</string>
+    <string name="tank_2_volume">Volumen del segundo tanque:</string>
     <string name="create_a_parameter">Crear un parámetro</string>
     <string name="parameter_name">Nombre del parámetro</string>
     <string name="unit_of_measure">Unidad de medida</string>
@@ -111,4 +112,8 @@
     <!-- Plant Flow -->
     <string name="plant_flow_caps">CAUDAL DE PLANTA</string>
     <string name="what_is_the_inflow_rate">¿Cuál es el caudal de entrada de la planta en litros por segundo?</string>
+    <string name="coagulant">Coagulante</string>
+    <string name="chlorine">Cloro</string>
+
+    <string name="tank_1_volume">Volumen del primer tanque:</string>
 </resources>

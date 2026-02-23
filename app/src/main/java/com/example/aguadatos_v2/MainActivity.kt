@@ -33,6 +33,7 @@ import com.example.aguadatos_v2.ui.screens.PlantFlow
 import com.example.aguadatos_v2.ui.screens.RawWater
 import com.example.aguadatos_v2.ui.screens.Records
 import com.example.aguadatos_v2.ui.screens.SignUp
+import com.example.aguadatos_v2.ui.screens.TankVolumes
 import com.example.aguadatos_v2.ui.screens.VerificationCode
 import com.example.aguadatos_v2.ui.screens.WelcomePage
 
@@ -104,7 +105,7 @@ class MainActivity : ComponentActivity() {
               onClarifiedWaterTurbidity = { navController.navigate("clarified_water") },
               onChlorineDosage = { navController.navigate("chlorine") },
               onColor = { navController.navigate("color") },
-              onTankVolumes = {},
+              onTankVolumes = { navController.navigate("tank_volumes") },
               onHomeClick = {},
               onRecordsClick = {},
               onGraphsClick = {},
@@ -120,7 +121,7 @@ class MainActivity : ComponentActivity() {
           //chlorine route
           composable("chlorine"){
             Chlorine(
-              onBackClick = {navController.navigate("home")},
+              onBackClick = {navController.popBackStack()},
               {},
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
@@ -132,7 +133,7 @@ class MainActivity : ComponentActivity() {
           //clarified water route
           composable("clarified_water"){
             ClarifiedWater(
-              onBackClick = {navController.navigate("home")},
+              onBackClick = {navController.popBackStack()},
               {},
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
@@ -143,28 +144,40 @@ class MainActivity : ComponentActivity() {
 
           //color route
           composable("color") {
-            Color(onBackClick = {navController.navigate("home")},{}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            Color(onBackClick = {navController.popBackStack()},{}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+          }
+
+          //tank volumes route
+          composable("tank_volumes") {
+            TankVolumes(
+                onBackClick = { navController.popBackStack() },
+                onSubmitClick = {},
+                onHomeClick = { navController.navigate("home") },
+                onRecordsClick = { navController.navigate("records") },
+                onGraphsClick = {},
+                onProfileClick = { navController.navigate("plant_configuration") }
+            )
           }
 
           //filtered water route
           composable("filtered_water"){
-            FilteredWater(onBackClick = {navController.navigate("home")}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            FilteredWater(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
           }
 
           //plant flow route
           composable("plant_flow"){
-            PlantFlow(onBackClick = {navController.navigate("home")}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            PlantFlow(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
           }
 
           //raw water route
           composable("raw_water"){
-            RawWater(onBackClick = {navController.navigate("home")}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            RawWater(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
           }
 
           //coagulant route
           composable("coagulant"){
             Coagulant(
-              onBackClick = {navController.navigate("home")},
+              onBackClick = {navController.popBackStack()},
               onSubmitClick = { submission ->
                 navController.currentBackStackEntry
                   ?.savedStateHandle
@@ -223,7 +236,9 @@ class MainActivity : ComponentActivity() {
 
           //plant configuration route
           composable("plant_configuration") {
-            PlantConfiguration()
+            PlantConfiguration(
+                onBackClick = { navController.popBackStack() }
+            )
           }
 
           //plant configuration other route
