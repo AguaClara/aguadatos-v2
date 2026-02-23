@@ -109,6 +109,7 @@ fun SignUp(
 
   var userName by remember {mutableStateOf("")}
   var plantCode by remember {mutableStateOf("")}
+  var email by remember {mutableStateOf("")}
   var phoneNumber by remember {mutableStateOf("")}
   val formattedNumber = formatNumber(phoneNumber)
 
@@ -121,6 +122,7 @@ fun SignUp(
   val validName = userName.isNotBlank()
   val validPlantCode = plantCode.isNotBlank()
   val phoneValid = phoneNumber.isNotBlank() && e164Regex.matches(formattedNumber)
+  val emailValid = true // TODO
   val hasLower = password.any { it.isLowerCase() }
   val hasUpper = password.any { it.isUpperCase() }
   val hasDigit = password.any { it.isDigit() }
@@ -256,8 +258,11 @@ fun SignUp(
           fontFamily = fontFamily
         )
         OutlinedTextField(
-          value = phoneNumber,
-          onValueChange = { phoneNumber = it },
+//          value = phoneNumber,
+//          onValueChange = { phoneNumber = it },
+
+          value = email,
+          onValueChange = { email = it },
           placeholder = {
             Text("Ex. +504 1234-5678",
               color = Color.Gray, fontFamily = fontFamily)
@@ -384,7 +389,8 @@ fun SignUp(
             // TODO
             val error = when {
                 !validName -> invalid_user_name_error
-                !phoneValid ->invalid_phone_number_error
+//                !phoneValid -> invalid_phone_number_error
+                !emailValid -> "Email Error" // TODO
                 !hasDigit || !hasLower || !hasUpper || !hasSymbol -> invalid_password_error
                 password != confPassword -> password_mismatch_error
                 else -> null
@@ -399,20 +405,18 @@ fun SignUp(
               }
             }
             else {
-              onSignUp()
+//              onSignUp()
+              authViewModel.updateSignUpState(
+                name = userName,
+                email = email,
+                plantCode = plantCode,
+                password = password
+              )
+              authViewModel.signUp(
+                onSuccess = onSignUp,
+                onError = { msg -> Log.e("SignUp error: ", msg) }
+              )
             }
-//            if (verifyFields()) {
-//              authViewModel.updateSignUpState(
-//                name = userName,
-//                phone = formattedNumber,
-//                plantCode = plantCode,
-//                password = password
-//              )
-//              authViewModel.signUp(
-//                onSuccess = onSignUp,
-//                onError = { msg -> Log.e("SignUp error: ", msg) }
-//              )
-//            }
           },
           modifier = Modifier
             .fillMaxWidth()

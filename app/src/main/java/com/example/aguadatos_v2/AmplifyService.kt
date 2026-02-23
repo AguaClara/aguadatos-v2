@@ -37,7 +37,7 @@ class AguaDatosAmplify : AmplifyService {
   override fun signUp(state: SignUpState, onSuccess: () -> Unit) {
     val attributes = listOf(
       AuthUserAttribute(AuthUserAttributeKey.name(), state.name),
-      AuthUserAttribute(AuthUserAttributeKey.phoneNumber(), state.phone),
+      AuthUserAttribute(AuthUserAttributeKey.email(), state.email),
 //      AuthUserAttribute(AuthUserAttributeKey.custom("plantCode"), state.plantCode)
     )
     val options = AuthSignUpOptions.builder()
@@ -45,7 +45,7 @@ class AguaDatosAmplify : AmplifyService {
     .build()
 
     Amplify.Auth.signUp(
-      state.phone,
+      state.email,
       state.password,
       options,
       { result ->
@@ -58,16 +58,16 @@ class AguaDatosAmplify : AmplifyService {
 
   override fun verifyCode(state: VerificationState, onSuccess: () -> Unit) {
     Amplify.Auth.confirmSignUp(
-      state.phone,
+      state.email,
       state.code,
-      { onSuccess },
+      { onSuccess() },
       { Log.e("Auth", "Verification failed", it) }
     )
   }
 
   override fun login(state : LoginState, onSuccess: () -> Unit) {
     Amplify.Auth.signIn(
-      state.phone,
+      state.email,
       state.password,
       { onSuccess() },
       { Log.e("Auth", "Login failed", it) }
