@@ -37,10 +37,17 @@ import androidx.navigation.compose.rememberNavController
 import java.io.Serializable
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.ui.graphics.vector.ImageVector
+import kotlin.math.roundToInt
+
 
 /*
 * tried to finish this screen as well, but since internship ends, I dont have time (double check with patrick for what to do)
 * */
+
 
 data class CoagulantSubmission(
   val date: String,
@@ -231,13 +238,39 @@ public fun Coagulant(
                 modifier = Modifier.padding(start = 12.dp, top = 12.dp),
                 fontSize = 18.sp
               )
+              Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(horizontal = 12.dp).fillMaxWidth()
+              ) {
+                IconButton(onClick = {
+                  sliderPos = (sliderPos - 1f).coerceIn(0f, 100f) }
+                ) {
+                  Icon(imageVector = Icons.Filled.Remove, contentDescription = "Decrease")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                  text = "${sliderPos.toInt()}%",
+                  fontSize = 16.sp,
+                  fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                IconButton(
+                  onClick = {
+                    sliderPos = (sliderPos + 1f).coerceIn(0f, 100f) }
+                ) {
+                  Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase")
+                }
+              }
               Slider(
                 value = sliderPos,
-                onValueChange = { sliderPos = it },
+                onValueChange = { sliderPos = it.roundToInt().toFloat() },
                 valueRange = 0f..100f,
+                steps = 19, // 5% increments
                 modifier = Modifier
                   .padding(start = 10.dp, end = 10.dp)
-                  .fillMaxWidth(),
+                  .fillMaxWidth()
+                  .height(40.dp),
                 colors = SliderDefaults.colors(
                   thumbColor = Color(0xFF3C89E1),
                   activeTrackColor = Color(0xFF3C89E1),
@@ -252,7 +285,7 @@ public fun Coagulant(
               ) {
                 Text(text = "0%")
                 Spacer(modifier = Modifier.weight(0.12f))
-                Text(text = "35%")
+                Text(text = "30%")
                 Spacer(modifier = Modifier.weight(0.30f))
                 Text(text = "100%")
               }
@@ -562,31 +595,6 @@ public fun Coagulant(
 
         }
       }
-//      Row(
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.Start,
-//        modifier = Modifier
-//          .fillMaxWidth()
-//          .padding(8.dp)
-//      ) {
-//        Text(
-//          text = stringResource(R.string.active_tank),
-//          fontWeight = FontWeight.Bold,
-//          fontSize = 16.sp
-//        )
-//        Spacer(modifier = Modifier.width(12.dp))
-//        Switch(
-//          checked = !isOn,
-//          onCheckedChange = { isOn = !it },
-//          colors = SwitchDefaults.colors(
-//            uncheckedThumbColor = Color(0xFFE0F3E3),
-//            uncheckedTrackColor = Color(0xFF7CBB84),
-//            checkedThumbColor = Color.White,
-//            checkedTrackColor = Color.Gray
-//          ),
-//          modifier = Modifier.scale(1f)
-//        )
-//      }
 
       Button (
         onClick = {

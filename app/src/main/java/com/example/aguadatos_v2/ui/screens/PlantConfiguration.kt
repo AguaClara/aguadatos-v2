@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
@@ -37,10 +38,12 @@ import com.example.aguadatos_v2.R
 @Preview(showBackground = true)
 @Composable
 fun PreviewPlantConfiguration() {
-    PlantConfiguration()
+    PlantConfiguration(onBackClick = {} )
 }
 @Composable
-fun PlantConfiguration() {
+fun PlantConfiguration(
+    onBackClick: () -> Unit
+) {
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
         providerPackage = "com.google.android.gms",
@@ -56,11 +59,23 @@ fun PlantConfiguration() {
     val plant = "Gracias"
     val checkedStates = remember { mutableStateListOf(true, true, false, false, false, false) }
     val labels = listOf("Plant Flow in NTU", "Raw Water in NTU", "Coagulant Dose", "Filtered Water Turbidity in NTU", "Clarified Water Turbidity in NTU", "Chlorine Dose")
+
+
+
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xffe4effc))
         .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        horizontalAlignment = Alignment.Start) {
+        Image(
+            painter = painterResource(id = R.drawable.back_arrow),
+            contentDescription = stringResource(R.string.back),
+            modifier = Modifier
+                .size(28.dp)
+                .clickable { onBackClick() }
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+
         Image(painter = painterResource(R.drawable.logo),
             contentDescription = "adlogo",
             modifier = Modifier.align(Alignment.Start)

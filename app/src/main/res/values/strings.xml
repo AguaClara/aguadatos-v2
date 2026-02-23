@@ -99,6 +99,14 @@
     <string name="what_is_the_water_color">What is the color of the water of the plant in NTU?</string>
     <string name="color_caps">COLOR</string>
 
+    <!-- Tank Volumes -->
+    <string name="tank_volume_caps">TANK VOLUME</string>
+    <string name="what_is_the_volume">What is the volume of the tanks in liters?</string>
+    <string name="coagulant">Coagulant</string>
+    <string name="chlorine">Chlorine</string>
+    <string name="tank_1_volume">Volume of Tank 1:</string>
+    <string name="tank_2_volume">Volume of Tank 2:</string>
+
     <!-- Create Parameter -->
     <string name="create_a_parameter">Create a Parameter</string>
     <string name="parameter_name">Parameter Name</string>
@@ -112,5 +120,6 @@
     <!-- Plant Flow -->
     <string name="plant_flow_caps">PLANT FLOW</string>
     <string name="what_is_the_inflow_rate">What is the inflow rate of the plant in liters per second?</string>
+
 
 </resources>

@@ -97,6 +97,8 @@
     <string name="color_caps">COLOR</string>
 
     <!-- Create Parameter -->
+    <string name="tank_volume_caps">VOLUMEN DEL TANQUE</string>
+    <string name="what_is_the_volume">"¿Cuál es el volumen de los tanques en litros? "</string>
     <string name="create_a_parameter">Crear un parámetro</string>
     <string name="parameter_name">Nombre del parámetro</string>
     <string name="unit_of_measure">Unidad de medida</string>
