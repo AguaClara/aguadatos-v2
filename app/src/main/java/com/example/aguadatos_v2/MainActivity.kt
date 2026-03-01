@@ -33,11 +33,14 @@ import com.example.aguadatos_v2.ui.screens.PlantFlow
 import com.example.aguadatos_v2.ui.screens.RawWater
 import com.example.aguadatos_v2.ui.screens.Records
 import com.example.aguadatos_v2.ui.screens.SignUp
+import com.example.aguadatos_v2.ui.screens.SubmittedConfirmScreen
 import com.example.aguadatos_v2.ui.screens.TankVolumes
 import com.example.aguadatos_v2.ui.screens.VerificationCode
 import com.example.aguadatos_v2.ui.screens.WelcomePage
 
 import com.example.aguadatos_v2.ui.theme.AuthViewModel
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 //main activity handles navigation
 class MainActivity : ComponentActivity() {
@@ -191,36 +194,15 @@ class MainActivity : ComponentActivity() {
 
           // confirmation route
           composable("confirmation") {
+
             val submission =
               navController.previousBackStackEntry
                 ?.savedStateHandle
                 ?.get<CoagulantSubmission>("coagulantSubmission")
-            if (submission == null) {
+
+            if (submission != null) {
+
               ConfirmScreen(
-                date = "",
-                sliderPosition = 0f,
-                inflowRate = "",
-                startVolume = "",
-                endVolume = "",
-                timeElapsed = "",
-                chemicalDose = "",
-                chemicalFlowRate = "",
-                onBackClick = { navController.popBackStack() },
-                onSubmitClick = { navController.navigate("home") },
-                onHomeClick = { navController.navigate("home") },
-                onRecordsClick = { navController.navigate("records") },
-                chemicalType = "",
-                onGraphsClick = { /* TODO() */},
-                onProfileClick = { /* TODO() */}
-              )
-            } else {
-              ConfirmScreen(
-                onBackClick = { navController.popBackStack() },
-                onSubmitClick = { navController.navigate("confirmation") },
-                onGraphsClick = { navController.navigate("graphs") },
-                onHomeClick = { navController.navigate("home") },
-                onProfileClick = { navController.navigate("profile") },
-                onRecordsClick = { navController.navigate("records") },
                 date = submission.date,
                 chemicalType = submission.chemicalType,
                 sliderPosition = submission.sliderPosition,
@@ -229,7 +211,53 @@ class MainActivity : ComponentActivity() {
                 endVolume = submission.endVolume,
                 timeElapsed = submission.timeElapsed,
                 chemicalDose = submission.chemicalDose,
-                chemicalFlowRate = submission.chemicalFlowRate
+                chemicalFlowRate = submission.chemicalFlowRate,
+
+                onBackClick = { navController.popBackStack() },
+
+                onSubmitClick = {
+                  println("CONFIRM CLICKED")
+
+                  navController.currentBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("coagulantSubmission", submission)
+
+                  navController.navigate("submitted_confirm")
+                },
+
+                onHomeClick = { navController.navigate("home") },
+                onGraphsClick = { navController.navigate("graphs") },
+                onRecordsClick = { navController.navigate("records") },
+                onProfileClick = { navController.navigate("profile") }
+              )
+            }
+          }
+
+          //submitted confirm route
+          composable("submitted_confirm") {
+
+            val submission =
+              navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.get<CoagulantSubmission>("coagulantSubmission")
+
+            if (submission != null) {
+              SubmittedConfirmScreen(
+                date = submission.date,
+                time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
+                chemicalType = submission.chemicalType,
+                sliderPosition = submission.sliderPosition,
+                inflowRate = submission.inflowRate,
+                startVolume = submission.startVolume,
+                endVolume = submission.endVolume,
+                timeElapsed = submission.timeElapsed,
+                chemicalDose = submission.chemicalDose,
+                chemicalFlowRate = submission.chemicalFlowRate,
+                onBackClick = { navController.popBackStack() },
+                onHomeClick = { navController.navigate("home") },
+                onGraphsClick = { navController.navigate("graphs") },
+                onRecordsClick = { navController.navigate("records") },
+                onProfileClick = { navController.navigate("profile") }
               )
             }
           }
@@ -237,7 +265,8 @@ class MainActivity : ComponentActivity() {
           //plant configuration route
           composable("plant_configuration") {
             PlantConfiguration(
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+
             )
           }
 

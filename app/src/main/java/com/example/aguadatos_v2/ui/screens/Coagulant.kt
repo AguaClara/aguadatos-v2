@@ -40,6 +40,7 @@ import java.time.format.DateTimeFormatter
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.math.roundToInt
 
@@ -164,7 +165,7 @@ public fun Coagulant(
             Box(
               modifier = Modifier
                 .weight(1f)
-                .height(40.dp)
+                .height(48.dp)
                 .clip(RoundedCornerShape(18.dp))
                 .background(
                   color = if (isSelected) Color(0xFF3C89E1) else Color.Transparent,
@@ -241,7 +242,9 @@ public fun Coagulant(
               Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(horizontal = 12.dp).fillMaxWidth()
+                modifier = Modifier
+                  .padding(horizontal = 12.dp)
+                  .fillMaxWidth()
               ) {
                 IconButton(onClick = {
                   sliderPos = (sliderPos - 1f).coerceIn(0f, 100f) }
@@ -428,7 +431,7 @@ public fun Coagulant(
           Box(
             modifier = Modifier
               .fillMaxWidth()
-              .height(380.dp)
+              .height(460.dp)
               .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
               .background(Color.Transparent)
               .padding(0.dp)
@@ -488,13 +491,41 @@ public fun Coagulant(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
               )
+              Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                  .padding(horizontal = 12.dp)
+                  .fillMaxWidth()
+              ) {
+                IconButton(onClick = {
+                  sliderPosOverDose = (sliderPosOverDose - 1f).coerceIn(0f, 100f) }
+                ) {
+                  Icon(imageVector = Icons.Filled.Remove, contentDescription = "Decrease")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                  text = "${sliderPosOverDose.toInt()}%",
+                  fontSize = 16.sp,
+                  fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                IconButton(
+                  onClick = {
+                    sliderPosOverDose = (sliderPosOverDose + 1f).coerceIn(0f, 100f) }
+                ) {
+                  Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase")
+                }
+              }
               Slider(
                 value = sliderPosOverDose,
-                onValueChange = { sliderPosOverDose = it },
+                onValueChange = { sliderPosOverDose = it.roundToInt().toFloat() },
                 valueRange = 0f..100f,
+                steps = 19, // 5% increments
                 modifier = Modifier
                   .padding(start = 10.dp, end = 10.dp)
-                  .fillMaxWidth(),
+                  .fillMaxWidth()
+                  .height(40.dp),
                 colors = SliderDefaults.colors(
                   thumbColor = Color(0xFF3C89E1),
                   activeTrackColor = Color(0xFF3C89E1),
@@ -509,7 +540,7 @@ public fun Coagulant(
               ) {
                 Text(text = "0%")
                 Spacer(modifier = Modifier.weight(0.12f))
-                Text(text = "35%")
+                Text(text = "30%")
                 Spacer(modifier = Modifier.weight(0.30f))
                 Text(text = "100%")
               }
@@ -566,13 +597,41 @@ public fun Coagulant(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 28.dp)
               )
+              Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                  .padding(horizontal = 12.dp)
+                  .fillMaxWidth()
+              ) {
+                IconButton(onClick = {
+                  newSliderPos = (newSliderPos - 1f).coerceIn(0f, 100f) }
+                ) {
+                  Icon(imageVector = Icons.Filled.Remove, contentDescription = "Decrease")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                  text = "${newSliderPos.toInt()}%",
+                  fontSize = 16.sp,
+                  fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                IconButton(
+                  onClick = {
+                    newSliderPos = (newSliderPos + 1f).coerceIn(0f, 100f) }
+                ) {
+                  Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase")
+                }
+              }
               Slider(
                 value = newSliderPos,
-                onValueChange = { newSliderPos = it },
+                onValueChange = { newSliderPos = it.roundToInt().toFloat() },
                 valueRange = 0f..100f,
+                steps = 19, // 5% increments
                 modifier = Modifier
-                  .padding(start = 30.dp, end = 30.dp)
-                  .fillMaxWidth(),
+                  .padding(start = 10.dp, end = 10.dp)
+                  .fillMaxWidth()
+                  .height(40.dp),
                 colors = SliderDefaults.colors(
                   thumbColor = Color(0xFF3C89E1),
                   activeTrackColor = Color(0xFF3C89E1),
@@ -582,13 +641,14 @@ public fun Coagulant(
               Row(
                 modifier = Modifier
                   .fillMaxWidth()
-                  .padding(start = 30.dp, top = 0.dp),
+                  .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
               ) {
-                Text(text = "0%", fontSize = 18.sp)
-                Spacer(modifier = Modifier.weight(0.10f))
-                Text(text = "35%", fontSize = 18.sp)
-                Spacer(modifier = Modifier.weight(0.26f))
+                Text(text = "0%")
+                Spacer(modifier = Modifier.weight(0.12f))
+                Text(text = "30%")
+                Spacer(modifier = Modifier.weight(0.30f))
+                Text(text = "100%")
               }
             }
           }
@@ -789,7 +849,7 @@ public fun ConfirmScreen(
         Spacer(modifier = Modifier.width(12.dp))
 
         Button(
-          onClick = onSubmitClick,
+          onClick = { onSubmitClick() },
           colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFF77AF87),
             contentColor = Color.White
@@ -822,7 +882,7 @@ fun SubmittedConfirmScreen(
   onHomeClick: () -> Unit,
   onProfileClick: () -> Unit,
   onRecordsClick: () -> Unit,
-  onBackClick: () -> Unit
+  onBackClick: () -> Unit,
 ) {
   Scaffold(
     containerColor = Color(0xffe4effc),
@@ -935,10 +995,10 @@ fun SubmittedConfirmScreen(
             fontSize = 18.sp
           )
 
-          Divider(
+          HorizontalDivider(
+            modifier = Modifier.padding(top = 16.dp),
             thickness = 1.dp,
-            color = Color(0xFFE0E0E0),
-            modifier = Modifier.padding(top = 16.dp)
+            color = Color(0xFFE0E0E0)
           )
 
           // Output
