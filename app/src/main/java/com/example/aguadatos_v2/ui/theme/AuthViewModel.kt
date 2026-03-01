@@ -78,23 +78,29 @@ class AuthViewModel : ViewModel() {
   }
   fun signUp(
     onSuccess: () -> Unit,
-    onError: (msg : String) -> Unit) {
-    amplifyService.signUp(signUpState.value) {
-      viewModelScope.launch(Dispatchers.Main) { onSuccess() }
-    }
+    onError: (msg : String) -> Unit
+  ) {
+    amplifyService.signUp(
+      signUpState.value,
+      { viewModelScope.launch(Dispatchers.Main) { onSuccess() } },
+      onError
+    )
   }
 
   fun login(
     onSuccess: () -> Unit,
-    onError: (msg : String) -> Unit) {
-    amplifyService.login(loginState.value) {
-      viewModelScope.launch(Dispatchers.Main) { onSuccess() }
-    }
+    onError: (msg : String) -> Unit
+  ) {
+    amplifyService.login(
+      loginState.value,
+      { viewModelScope.launch(Dispatchers.Main) { onSuccess() } }
+    )
   }
 
   fun logout(
     onSuccess: () -> Unit,
-    onError: (msg : String) -> Unit) {
+    onError: (msg : String) -> Unit
+  ) {
     amplifyService.logout() {
       viewModelScope.launch(Dispatchers.Main) { onSuccess() }
     }
@@ -103,14 +109,18 @@ class AuthViewModel : ViewModel() {
   fun confirmCode(
     code: String,
     onSuccess: () -> Unit,
-    onError: (String) -> Unit) {
+    onError: (String) -> Unit
+  ) {
     val email = signUpState.value.email
-    onSuccess()
     Amplify.Auth.confirmSignUp(
       email,
       code,
-      { onSuccess },
-      { onError }
+      {
+        viewModelScope.launch(Dispatchers.Main) { onSuccess() }
+      },
+      { error ->
+        viewModelScope.launch(Dispatchers.Main) { onError(error.localizedMessage ?: "Confirm code error") }
+      }
     )
   }
 
@@ -120,8 +130,12 @@ class AuthViewModel : ViewModel() {
     val email = signUpState.value.email
     Amplify.Auth.resendSignUpCode(
       email,
-      { onSuccess },
-      { onError }
+      {
+        viewModelScope.launch(Dispatchers.Main) { onSuccess() }
+      },
+      { error ->
+        viewModelScope.launch(Dispatchers.Main) { onError(error.localizedMessage ?: "Resend code error") }
+      }
     )
 
   }

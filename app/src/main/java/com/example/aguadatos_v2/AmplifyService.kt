@@ -16,7 +16,7 @@ import com.example.aguadatos_v2.ui.theme.VerificationState
 
 interface AmplifyService {
   fun configureAmplify(context : Context)
-  fun signUp(state : SignUpState, onSuccess : () -> Unit)
+  fun signUp(state : SignUpState, onSuccess : () -> Unit, onError: (String) -> Unit)
   fun verifyCode(state : VerificationState, onSuccess: () -> Unit)
   fun login(state : LoginState, onSuccess: () -> Unit)
   fun logout(onSuccess: () -> Unit)
@@ -34,7 +34,7 @@ class AguaDatosAmplify : AmplifyService {
     }
   }
 
-  override fun signUp(state: SignUpState, onSuccess: () -> Unit) {
+  override fun signUp(state: SignUpState, onSuccess: () -> Unit, onError: (String) -> Unit) {
     val attributes = listOf(
       AuthUserAttribute(AuthUserAttributeKey.name(), state.name),
       AuthUserAttribute(AuthUserAttributeKey.email(), state.email),
@@ -52,7 +52,10 @@ class AguaDatosAmplify : AmplifyService {
         Log.i("Auth", "SignUp succeeded: $result")
         onSuccess()
       },
-      { Log.e("Auth", "SignUp failed", it) }
+      { error ->
+        Log.e("Auth", "SignUp failed: ${error.localizedMessage}", error)
+        onError(error.localizedMessage ?: "Sign up failed")
+      }
     )
   }
 

@@ -68,8 +68,8 @@ class MainActivity : ComponentActivity() {
           composable("signup"){
             SignUp (
               authViewModel = authViewModel,
-//              onSignUp = { navController.navigate("verification_code") },
-              onSignUp = { navController.navigate("home") },
+              onSignUp = { navController.navigate("verification_code") },
+//              onSignUp = { navController.navigate("home") },
               onLogInClick = { navController.navigate("login") }
             )
           }

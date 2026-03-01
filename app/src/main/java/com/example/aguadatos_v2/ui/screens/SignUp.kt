@@ -385,6 +385,7 @@ fun SignUp(
 
         //sign up button
         Button(
+//          onClick = { onSignUp() },
           onClick = {
             // TODO
             val error = when {
@@ -414,7 +415,15 @@ fun SignUp(
               )
               authViewModel.signUp(
                 onSuccess = onSignUp,
-                onError = { msg -> Log.e("SignUp error: ", msg) }
+                onError = { msg ->
+                  scope.launch {
+                    snackbarHostState.showSnackbar(
+                      message = msg,
+                      duration = SnackbarDuration.Short
+                    )
+                  }
+                }
+//                onError = { msg -> Log.e("SignUp error: ", msg) }
               )
             }
           },
@@ -451,4 +460,3 @@ fun SignUp(
     }
   }
 }
-

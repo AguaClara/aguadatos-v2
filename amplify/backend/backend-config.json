@@ -18,7 +18,7 @@
     }
   },
   "auth": {
-    "aguadatosv2e431ca11": {
+    "aguadatosv2b9196919b9196919": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -31,11 +31,12 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
+          "EMAIL",
           "NAME"
         ],
         "socialProviders": [],
         "usernameAttributes": [
-          "PHONE_NUMBER"
+          "EMAIL"
         ],
         "verificationMechanisms": [
           "EMAIL"
@@ -53,7 +54,7 @@
             "AppClientID"
           ],
           "category": "auth",
-          "resourceName": "aguadatosv2e431ca11"
+          "resourceName": "aguadatosv2b9196919b9196919"
         }
       ],
       "providerPlugin": "awscloudformation",
