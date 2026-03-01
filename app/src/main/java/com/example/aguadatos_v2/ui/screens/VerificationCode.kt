@@ -127,22 +127,7 @@ fun VerificationCode(
             onUpdateCodeValuesByIndex = {index, value ->
                 verificationCode[index] = value
             },
-            onCodeInputComplete = {
-                // code to validate verification code with server goes here
-                val code = verificationCode.joinToString("")
-                authViewModel.confirmCode(
-                    code = code,
-                    onSuccess = { onSubmitClick() },
-                    onError = {
-                        // TODO: Error popup, then resend code
-                        msg -> Log.e("Verify error: ", msg);
-                        authViewModel.resendCode(
-                            onSuccess = { Log.i("Verify", "Code resent") },
-                            onError = { msg -> Log.e("Resend error: ", msg); }
-                        )
-                    }
-                )
-            },
+            onCodeInputComplete = {},
             fontFamily = fontFamily
         )
 
@@ -150,7 +135,18 @@ fun VerificationCode(
 
         //submit button
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            Button(onClick = onSubmitClick,
+            Button(
+                onClick = {
+                    val code = verificationCode.joinToString("")
+                    authViewModel.confirmCode(
+                        code = code,
+                        onSuccess = { onSubmitClick() },
+                        onError = { msg ->
+                            Log.e("Verify error", msg)
+                            // TODO show snackbar instead of log
+                        }
+                    )
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xff7cbb84),
                     contentColor = Color.White
@@ -163,6 +159,19 @@ fun VerificationCode(
                 fontFamily = fontFamily,
                 fontWeight = FontWeight.W500)}
         }
+
+        Text(
+            text = "Resend Code",
+            color = Color.Blue,
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .clickable {
+                    authViewModel.resendCode(
+                        onSuccess = { Log.i("Verify", "Code resent") },
+                        onError = { msg -> Log.e("Resend error", msg) }
+                    )
+                }
+        )
     }
 }
 

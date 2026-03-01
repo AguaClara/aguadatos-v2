@@ -1,8 +1,8 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "resourceNameTruncated": "aguadae431ca11",
-    "userPoolName": "aguadatosv2e431ca11_userpool_e431ca11",
+    "resourceNameTruncated": "aguadab9196919",
+    "userPoolName": "aguadatosv2b9196919_userpool_b9196919",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -18,6 +18,7 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
+      "email",
       "name"
     ],
     "aliasAttributes": [],
@@ -31,18 +32,21 @@
       "email",
       "name"
     ],
-    "userpoolClientLambdaRole": "aguadae431ca11_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "aguadab9196919_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": true,
-    "sharedId": "e431ca11",
-    "resourceName": "aguadatosv2e431ca11",
+    "sharedId": "b9196919",
+    "resourceName": "aguadatosv2b9196919b9196919",
     "authSelections": "userPoolOnly",
     "useDefault": "manual",
     "usernameAttributes": [
-      "phone_number"
+      "email"
     ],
+    "userPoolGroups": false,
+    "adminQueries": false,
     "triggers": {},
+    "hostedUI": false,
     "userPoolGroupList": [
-      "operator"
+      "developer"
     ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -61,13 +65,10 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "userPoolGroups": true,
-    "adminQueries": false,
-    "hostedUI": false,
+    "authProviders": [],
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "permissions": [],
-    "authProviders": []
+    "permissions": []
   }
 }
