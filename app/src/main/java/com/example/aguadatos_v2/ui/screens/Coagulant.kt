@@ -40,10 +40,11 @@ import java.time.format.DateTimeFormatter
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.math.roundToInt
-
+import kotlinx.coroutines.delay
 
 /*
 * tried to finish this screen as well, but since internship ends, I dont have time (double check with patrick for what to do)
@@ -89,6 +90,9 @@ public fun Coagulant(
   var startVolume by remember { mutableStateOf("") }
   var endVolume by remember { mutableStateOf("") }
   var timeElapsed by remember { mutableStateOf("")}
+  var accumulatedMillis by remember { mutableStateOf(0L) }
+  var startTimeMillis by remember { mutableStateOf<Long?>(null) }
+  var isTimerRunning by remember { mutableStateOf(false) }
 
   var chemFlowRate by remember { mutableStateOf("") }
   var targetChemDose by remember { mutableStateOf("")}
@@ -96,6 +100,22 @@ public fun Coagulant(
 
   val selectedChemical by remember {mutableStateOf("PAC")} //take this value from server or previous screen
   var clarifiedWater by remember { mutableStateOf("") }
+
+  LaunchedEffect(isTimerRunning) {
+    if (isTimerRunning) {
+      // Ensure we have a start time
+      if (startTimeMillis == null) {
+        startTimeMillis = System.currentTimeMillis()
+      }
+      while (isTimerRunning) {
+        val base = accumulatedMillis + (System.currentTimeMillis() - (startTimeMillis ?: System.currentTimeMillis()))
+        val secondsPart = base / 1000
+        val centisPart = ((base % 1000) / 10).toInt().toString().padStart(2, '0')
+        timeElapsed = "$secondsPart:$centisPart"
+        delay(50)
+      }
+    }
+  }
 
   Scaffold(
     containerColor = Color(0xffe4effc),
@@ -195,7 +215,7 @@ public fun Coagulant(
           Box(
             modifier = Modifier
               .fillMaxWidth()
-              .height(480.dp)
+              .height(460.dp)
               .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
               .background(Color.Transparent)
               .padding(0.dp)
@@ -243,26 +263,46 @@ public fun Coagulant(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                  .padding(horizontal = 12.dp)
+                  .padding(horizontal = 12.dp, vertical = 8.dp)
                   .fillMaxWidth()
               ) {
-                IconButton(onClick = {
-                  sliderPos = (sliderPos - 1f).coerceIn(0f, 100f) }
+                IconButton(
+                  onClick = {
+                    sliderPos = (sliderPos - 1f).coerceIn(0f, 100f)
+                  },
+                  modifier = Modifier
+                    .size(40.dp)
+                    .padding(vertical = 8.dp)
+                    .height(28.dp)
+                    .background(Color.White, shape = RoundedCornerShape(20.dp))
                 ) {
-                  Icon(imageVector = Icons.Filled.Remove, contentDescription = "Decrease")
+                  Icon(
+                    imageVector = Icons.Filled.Remove,
+                    contentDescription = "Decrease",
+                    tint = Color.Black
+                  )
                 }
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(12.dp))
                 Text(
                   text = "${sliderPos.toInt()}%",
                   fontSize = 16.sp,
                   fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(12.dp))
                 IconButton(
                   onClick = {
-                    sliderPos = (sliderPos + 1f).coerceIn(0f, 100f) }
+                    sliderPos = (sliderPos + 1f).coerceIn(0f, 100f)
+                  },
+                  modifier = Modifier
+                    .size(40.dp)
+                    .height(28.dp)
+                    .background(Color.White, shape = RoundedCornerShape(20.dp))
                 ) {
-                  Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase")
+                  Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Increase",
+                    tint = Color.Black
+                  )
                 }
               }
               Slider(
@@ -330,8 +370,8 @@ public fun Coagulant(
                   horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                   Text(
-                    text = stringResource(R.string.start_volume),
-                    modifier = Modifier.width(100.dp),
+                    text = stringResource(R.string.volume),
+                    modifier = Modifier.width(60.dp),
                     fontWeight = FontWeight.Bold
                   )
                   OutlinedTextField(
@@ -354,30 +394,6 @@ public fun Coagulant(
                   horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                   Text(
-                    text = stringResource(R.string.end_volume),
-                    modifier = Modifier.width(100.dp),
-                    fontWeight = FontWeight.Bold
-                  )
-                  OutlinedTextField(
-                    value = endVolume,
-                    onValueChange = { endVolume = it },
-                    shape = RoundedCornerShape(8.dp),
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(
-                      focusedContainerColor = Color.White,
-                      unfocusedContainerColor = Color.White
-                    ),
-                    modifier = Modifier
-                      .width(80.dp)
-                      .height(50.dp)
-                  )
-                  Text(text = "mL", fontWeight = FontWeight.Bold)
-                }
-                Row(
-                  verticalAlignment = Alignment.CenterVertically,
-                  horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                  Text(
                     text = stringResource(R.string.time_elapsed),
                     modifier = Modifier.width(100.dp),
                     fontWeight = FontWeight.Bold
@@ -385,7 +401,19 @@ public fun Coagulant(
 
                   OutlinedTextField(
                     value = timeElapsed,
-                    onValueChange = { timeElapsed = it },
+                    onValueChange = {
+                      timeElapsed = it
+                      if (!isTimerRunning) {
+                        val parts = it.split(":")
+                        accumulatedMillis = if (parts.size == 2) {
+                          val sec = parts[0].toLongOrNull() ?: 0L
+                          val cs = parts[1].toLongOrNull() ?: 0L
+                          sec * 1000L + (cs.coerceIn(0L, 99L) * 10L)
+                        } else {
+                          (it.toLongOrNull() ?: 0L) * 1000L
+                        }
+                      }
+                    },
                     shape = RoundedCornerShape(8.dp),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
@@ -397,6 +425,43 @@ public fun Coagulant(
                       .height(45.dp)
                   )
                   Text(text = "s", fontWeight = FontWeight.Bold)
+                  Button(
+                    onClick = {
+                      if (isTimerRunning) {
+                        // Stopping: capture final accumulated time
+                        val endBase = accumulatedMillis + (System.currentTimeMillis() - (startTimeMillis ?: System.currentTimeMillis()))
+                        accumulatedMillis = endBase
+                        startTimeMillis = null
+                        isTimerRunning = false
+                      } else {
+                        val parts = timeElapsed.split(":")
+                        accumulatedMillis = if (parts.size == 2) {
+                          val sec = parts[0].toLongOrNull() ?: 0L
+                          val cs = parts[1].toLongOrNull() ?: 0L
+                          sec * 1000L + (cs.coerceIn(0L, 99L) * 10L)
+                        } else {
+                          (timeElapsed.toLongOrNull() ?: 0L) * 1000L
+                        }
+                        startTimeMillis = System.currentTimeMillis()
+                        isTimerRunning = true
+                      }
+                    },
+                    modifier = Modifier
+                      .size(40.dp)
+                      .border(1.5.dp, Color.Black, RoundedCornerShape(8.dp)),
+                    colors = ButtonDefaults.buttonColors(
+                      containerColor = if (isTimerRunning) Color(0xFF3C89E1) else Color.White,
+                      contentColor = if (isTimerRunning) Color.White else Color(0xFF3C89E1)
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = PaddingValues(4.dp)
+                  ) {
+                    Image(
+                      painter = painterResource(R.drawable.timer),
+                      contentDescription = "Timer",
+                      modifier = Modifier.fillMaxSize()
+                    )
+                  }
                 }
                 HorizontalDivider(
                   modifier = Modifier
@@ -491,6 +556,7 @@ public fun Coagulant(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
               )
+              Spacer(modifier = Modifier.height(8.dp))
               Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -498,23 +564,40 @@ public fun Coagulant(
                   .padding(horizontal = 12.dp)
                   .fillMaxWidth()
               ) {
-                IconButton(onClick = {
-                  sliderPosOverDose = (sliderPosOverDose - 1f).coerceIn(0f, 100f) }
+                IconButton(
+                  onClick = {
+                    sliderPosOverDose = (sliderPosOverDose - 1f).coerceIn(0f, 100f)
+                  },
+                  modifier = Modifier
+                    .size(40.dp)
+                    .background(Color.White, shape = RoundedCornerShape(20.dp))
                 ) {
-                  Icon(imageVector = Icons.Filled.Remove, contentDescription = "Decrease")
+                  Icon(
+                    imageVector = Icons.Filled.Remove,
+                    contentDescription = "Decrease",
+                    tint = Color.Black
+                  )
                 }
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(12.dp))
                 Text(
                   text = "${sliderPosOverDose.toInt()}%",
                   fontSize = 16.sp,
                   fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(12.dp))
                 IconButton(
                   onClick = {
-                    sliderPosOverDose = (sliderPosOverDose + 1f).coerceIn(0f, 100f) }
+                    sliderPosOverDose = (sliderPosOverDose + 1f).coerceIn(0f, 100f)
+                  },
+                  modifier = Modifier
+                    .size(40.dp)
+                    .background(Color.White, shape = RoundedCornerShape(20.dp))
                 ) {
-                  Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase")
+                  Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Increase",
+                    tint = Color.Black
+                  )
                 }
               }
               Slider(
@@ -794,7 +877,7 @@ public fun ConfirmScreen(
             fontSize = 18.sp
           )
           Text(
-            text = "• " + stringResource(R.string.start_volume) + " $startVolume mL",
+            text = "• " + stringResource(R.string.volume) + " $startVolume mL",
             fontSize = 18.sp
           )
           Text(
@@ -983,7 +1066,7 @@ fun SubmittedConfirmScreen(
             fontSize = 18.sp
           )
           Text(
-            text = "• " + stringResource(R.string.start_volume) + " $startVolume mL",
+            text = "• " + stringResource(R.string.volume) + " $startVolume mL",
             fontSize = 18.sp
           )
           Text(
