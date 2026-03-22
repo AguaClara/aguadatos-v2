@@ -165,7 +165,7 @@ public fun Chlorine(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(460.dp)
+                            .height(500.dp)
                             .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
                             .background(Color.Transparent)
                             .padding(0.dp)
@@ -209,7 +209,7 @@ public fun Chlorine(
                                 modifier = Modifier.padding(start = 12.dp, top = 12.dp),
                                 fontSize = 18.sp
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(26.dp))
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center,
@@ -224,7 +224,7 @@ public fun Chlorine(
                                     modifier = Modifier
                                         .width(40.dp)
                                         .height(28.dp)
-                                        .background(Color.White, shape = RoundedCornerShape(14.dp))
+                                        .background(Color.White, shape = RoundedCornerShape(20.dp))
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Remove,
@@ -232,13 +232,13 @@ public fun Chlorine(
                                         tint = Color.Black
                                     )
                                 }
-                                Spacer(modifier = Modifier.width(12.dp))
+                                Spacer(modifier = Modifier.width(22.dp))
                                 Text(
                                     text = "${sliderPos.toInt()}%",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Spacer(modifier = Modifier.width(12.dp))
+                                Spacer(modifier = Modifier.width(22.dp))
                                 IconButton(
                                     onClick = {
                                         sliderPos = (sliderPos + 1f).coerceIn(0f, 100f)
@@ -246,7 +246,7 @@ public fun Chlorine(
                                     modifier = Modifier
                                         .width(40.dp)
                                         .height(28.dp)
-                                        .background(Color.White, shape = RoundedCornerShape(14.dp))
+                                        .background(Color.White, shape = RoundedCornerShape(20.dp))
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Add,
@@ -255,6 +255,7 @@ public fun Chlorine(
                                     )
                                 }
                             }
+                            Spacer(modifier = Modifier.height(12.dp))
                             Slider(
                                 value = sliderPos,
                                 onValueChange = { sliderPos = it.roundToInt().toFloat() },
@@ -440,7 +441,7 @@ public fun Chlorine(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(460.dp)
+                            .height(500.dp)
                             .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
                             .background(Color.Transparent)
                             .padding(0.dp)
@@ -496,7 +497,7 @@ public fun Chlorine(
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(22.dp))
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center,
@@ -511,7 +512,7 @@ public fun Chlorine(
                                     modifier = Modifier
                                         .width(40.dp)
                                         .height(28.dp)
-                                        .background(Color.White, shape = RoundedCornerShape(14.dp))
+                                        .background(Color.White, shape = RoundedCornerShape(20.dp))
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Remove,
@@ -519,13 +520,13 @@ public fun Chlorine(
                                         tint = Color.Black
                                     )
                                 }
-                                Spacer(modifier = Modifier.width(12.dp))
+                                Spacer(modifier = Modifier.width(22.dp))
                                 Text(
                                     text = "${sliderPosOverDose.toInt()}%",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Spacer(modifier = Modifier.width(12.dp))
+                                Spacer(modifier = Modifier.width(22.dp))
                                 IconButton(
                                     onClick = {
                                         sliderPosOverDose = (sliderPosOverDose + 1f).coerceIn(0f, 100f)
@@ -533,7 +534,7 @@ public fun Chlorine(
                                     modifier = Modifier
                                         .width(40.dp)
                                         .height(28.dp)
-                                        .background(Color.White, shape = RoundedCornerShape(14.dp))
+                                        .background(Color.White, shape = RoundedCornerShape(20.dp))
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Add,
@@ -542,6 +543,7 @@ public fun Chlorine(
                                     )
                                 }
                             }
+                            Spacer(modifier = Modifier.height(12.dp))
                             Slider(
                                 value = sliderPosOverDose,
                                 onValueChange = { sliderPosOverDose = it.roundToInt().toFloat() },
@@ -569,6 +571,7 @@ public fun Chlorine(
                                 Spacer(modifier = Modifier.weight(0.30f))
                                 Text(text = "100%")
                             }
+                            Spacer(modifier = Modifier.height(12.dp))
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -622,7 +625,7 @@ public fun Chlorine(
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(start = 28.dp)
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(22.dp))
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center,
@@ -637,7 +640,7 @@ public fun Chlorine(
                                     modifier = Modifier
                                         .width(40.dp)
                                         .height(28.dp)
-                                        .background(Color.White, shape = RoundedCornerShape(14.dp))
+                                        .background(Color.White, shape = RoundedCornerShape(20.dp))
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Remove,
@@ -645,13 +648,13 @@ public fun Chlorine(
                                         tint = Color.Black
                                     )
                                 }
-                                Spacer(modifier = Modifier.width(12.dp))
+                                Spacer(modifier = Modifier.width(22.dp))
                                 Text(
                                     text = "${newSliderPos.toInt()}%",
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Spacer(modifier = Modifier.width(12.dp))
+                                Spacer(modifier = Modifier.width(22.dp))
                                 IconButton(
                                     onClick = {
                                         newSliderPos = (newSliderPos + 1f).coerceIn(0f, 100f)
@@ -659,7 +662,7 @@ public fun Chlorine(
                                     modifier = Modifier
                                         .width(40.dp)
                                         .height(28.dp)
-                                        .background(Color.White, shape = RoundedCornerShape(14.dp))
+                                        .background(Color.White, shape = RoundedCornerShape(20.dp))
                                 ) {
                                     Icon(
                                         imageVector = Icons.Filled.Add,
@@ -668,6 +671,7 @@ public fun Chlorine(
                                     )
                                 }
                             }
+                            Spacer(modifier = Modifier.height(12.dp))
                             Slider(
                                 value = newSliderPos,
                                 onValueChange = { newSliderPos = it.roundToInt().toFloat() },
