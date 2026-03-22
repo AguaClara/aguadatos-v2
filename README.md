@@ -14,4 +14,4 @@ POST stands for Plant Operations Smartphone Tracker. We are dedicated to designi
 
 ### Meeting Times/Places:
 
-Monday 5:00-7:00pm
+Sunday 12:00-2:00pm
