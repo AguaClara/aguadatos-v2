@@ -1,8 +1,6 @@
 package com.example.aguadatos_v2
 
-import android.R.attr.data
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,7 +12,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.example.aguadatos_v2.ui.screens.Chlorine
 import com.example.aguadatos_v2.ui.screens.ClarifiedWater
 import com.example.aguadatos_v2.ui.screens.Coagulant
@@ -38,7 +35,8 @@ import com.example.aguadatos_v2.ui.screens.TankVolumes
 import com.example.aguadatos_v2.ui.screens.VerificationCode
 import com.example.aguadatos_v2.ui.screens.WelcomePage
 
-import com.example.aguadatos_v2.ui.theme.AuthViewModel
+import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -51,6 +49,7 @@ class MainActivity : ComponentActivity() {
       //uses navController and navHost to handle all navigation routes
       val navController = rememberNavController()
       val authViewModel: AuthViewModel = viewModel()
+      val dataViewModel: DataViewModel = viewModel()
       authViewModel.configureAmplify(this)
 
       Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -174,7 +173,15 @@ class MainActivity : ComponentActivity() {
 
           //raw water route
           composable("raw_water"){
-            RawWater(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            RawWater(
+              dataViewModel = dataViewModel,
+              onBackClick = {navController.popBackStack()},
+              {},
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              {},
+              {}
+            )
           }
 
           //coagulant route

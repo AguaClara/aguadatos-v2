@@ -1,4 +1,4 @@
-package com.example.aguadatos_v2.ui.theme
+package com.example.aguadatos_v2.ui.viewmodels
 
 import com.amplifyframework.core.Amplify
 import com.example.aguadatos_v2.AguaDatosAmplify
@@ -93,7 +93,8 @@ class AuthViewModel : ViewModel() {
   ) {
     amplifyService.login(
       loginState.value,
-      { viewModelScope.launch(Dispatchers.Main) { onSuccess() } }
+      { viewModelScope.launch(Dispatchers.Main) { onSuccess() } },
+      onError
     )
   }
 

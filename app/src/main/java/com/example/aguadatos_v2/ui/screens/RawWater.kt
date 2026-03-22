@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +25,9 @@ import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
+
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 
 
 /*
@@ -35,6 +39,7 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 
 @Composable
 public fun RawWater(
+    dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onHomeClick: () -> Unit,
@@ -154,7 +159,20 @@ public fun RawWater(
 
             //submit button
             Button(
-                onClick = onSubmitClick, /*submit data to server code goes here*/
+                onClick = { /*submit data to server code goes here*/
+                    dataViewModel.submitInflowEntry(
+                        plantID = "test-plant-id",
+                        operatorID = "test-operator-id",
+                        inflowRate = 12.5,
+                        notes = "Test entry",
+                        onSuccess = {
+                            Log.i("TEST", "Entry submitted successfully")
+                        },
+                        onError = { error ->
+                            Log.e("TEST", error)
+                        }
+                    )
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

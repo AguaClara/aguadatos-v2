@@ -1,6 +1,5 @@
 package com.example.aguadatos_v2.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,7 +42,7 @@ import com.example.aguadatos_v2.ui.components.RequirementLine
 import com.example.aguadatos_v2.R
 
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.aguadatos_v2.ui.theme.AuthViewModel
+import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 import kotlinx.coroutines.launch
 
 

@@ -9,17 +9,33 @@ import com.amplifyframework.auth.AuthUserAttribute
 import com.amplifyframework.auth.AuthUserAttributeKey
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.auth.options.AuthSignUpOptions
+import java.util.Date
+import com.amplifyframework.core.model.temporal.Temporal
+import com.amplifyframework.datastore.generated.model.InflowEntry
+import com.amplifyframework.datastore.generated.model.Operator
+import com.amplifyframework.datastore.generated.model.Plant
 
-import com.example.aguadatos_v2.ui.theme.LoginState
-import com.example.aguadatos_v2.ui.theme.SignUpState
-import com.example.aguadatos_v2.ui.theme.VerificationState
+import com.example.aguadatos_v2.ui.viewmodels.LoginState
+import com.example.aguadatos_v2.ui.viewmodels.SignUpState
+import com.example.aguadatos_v2.ui.viewmodels.VerificationState
+
+import com.amplifyframework.api.graphql.model.ModelMutation
 
 interface AmplifyService {
   fun configureAmplify(context : Context)
   fun signUp(state : SignUpState, onSuccess : () -> Unit, onError: (String) -> Unit)
-  fun verifyCode(state : VerificationState, onSuccess: () -> Unit)
-  fun login(state : LoginState, onSuccess: () -> Unit)
-  fun logout(onSuccess: () -> Unit)
+  fun verifyCode(state : VerificationState, onSuccess : () -> Unit)
+  fun login(state : LoginState, onSuccess : () -> Unit, onError : (String) -> Unit)
+  fun logout(onSuccess : () -> Unit)
+  fun isLoggedIn(callback : (Boolean) -> Unit)
+  fun submitInflowEntry(
+    plantID: String,
+    operatorID: String,
+    inflowRate: Double,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
 }
 
 class AguaDatosAmplify : AmplifyService {
@@ -28,7 +44,13 @@ class AguaDatosAmplify : AmplifyService {
       Amplify.addPlugin(AWSApiPlugin())
       Amplify.addPlugin(AWSCognitoAuthPlugin())
       Amplify.configure(context)
+
+      Amplify.Auth.fetchAuthSession(
+        { result -> Log.i("Auth", "Logged in: ${result.isSignedIn}") },
+        { error -> Log.e("Auth", "Session error", error) }
+      )
       Log.i("AguaDatosv2Amplify", "Initialized Amplify project [AguaDatosv2]")
+
     } catch (error: AmplifyException) {
       Log.e("AguaDatosv2Amplify", "Could not initialize Amplify", error)
     }
@@ -68,16 +90,55 @@ class AguaDatosAmplify : AmplifyService {
     )
   }
 
-  override fun login(state : LoginState, onSuccess: () -> Unit) {
+  override fun login(state : LoginState, onSuccess: () -> Unit, onError: (String) -> Unit) {
     Amplify.Auth.signIn(
       state.email,
       state.password,
       { onSuccess() },
-      { Log.e("Auth", "Login failed", it) }
+      { error ->
+        Log.e("Auth", "Login failed", error)
+        onError(error.localizedMessage ?: "Login Failed")
+      }
     )
   }
 
   override fun logout(onSuccess: () -> Unit) {
     Amplify.Auth.signOut({ onSuccess() } )
+  }
+
+  override fun isLoggedIn(callback: (Boolean) -> Unit) {
+    Amplify.Auth.fetchAuthSession(
+      { result -> callback(result.isSignedIn) },
+      { callback(false) }
+    )
+  }
+
+  override fun submitInflowEntry(
+    plantID: String,
+    operatorID: String,
+    inflowRate: Double,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  ) {
+    val entry = InflowEntry.builder()
+      .createdAt(Temporal.DateTime(Date(),0))
+      .inflowRate(inflowRate)
+      .plant(Plant.justId(plantID))
+      .operator(Operator.justId(operatorID))
+      .notes(notes)
+      .build()
+
+    Amplify.API.mutate(
+      ModelMutation.create(entry),
+      {
+        Log.i("API", "Inflow entry successful")
+        onSuccess()
+      },
+      { error ->
+        Log.e("API", "Inflow entry failed", error)
+        onError(error.localizedMessage ?: "Entry Failed")
+      }
+    )
   }
 }
