@@ -156,16 +156,18 @@ public fun TankVolumes(
                                shape = RoundedCornerShape(8.dp),
                                colors = OutlinedTextFieldDefaults.colors(
                                    focusedContainerColor = Color.White,
-                                   unfocusedContainerColor = Color.White
+                                   unfocusedContainerColor = Color.White,
+                                   focusedTextColor = Color.Black,
+                                   unfocusedTextColor = Color.Black,
                                ),
                                modifier = Modifier
                                    .width(90.dp)
-                                   .height(25.dp)
+                                   .height(48.dp)
                            )
                            Spacer(modifier = Modifier.width(8.dp))
 
                            Text(
-                               text = "Liters",
+                               text = "L",
                                fontWeight = FontWeight.Bold,
                                fontFamily = fontFamily
                            )
@@ -186,16 +188,18 @@ public fun TankVolumes(
                                shape = RoundedCornerShape(8.dp),
                                colors = OutlinedTextFieldDefaults.colors(
                                    focusedContainerColor = Color.White,
-                                   unfocusedContainerColor = Color.White
+                                   unfocusedContainerColor = Color.White,
+                                   focusedTextColor = Color.Black,
+                                   unfocusedTextColor = Color.Black,
                                ),
                                modifier = Modifier
                                    .width(90.dp)
-                                   .height(25.dp)
+                                   .height(48.dp)
                            )
                            Spacer(modifier = Modifier.width(8.dp))
 
                            Text(
-                               text = "Liters",
+                               text = "L",
                                fontWeight = FontWeight.Bold,
                                fontFamily = fontFamily
                            )
@@ -227,16 +231,18 @@ public fun TankVolumes(
                             shape = RoundedCornerShape(8.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White
+                                unfocusedContainerColor = Color.White,
+                                focusedTextColor = Color.Black,
+                                unfocusedTextColor = Color.Black,
                             ),
                             modifier = Modifier
                                 .width(90.dp)
-                                .height(25.dp)
+                                .height(48.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
-                            text = "Liters",
+                            text = "L",
                             fontWeight = FontWeight.Bold,
                             fontFamily = fontFamily
                         )
@@ -257,16 +263,18 @@ public fun TankVolumes(
                             shape = RoundedCornerShape(8.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White
+                                unfocusedContainerColor = Color.White,
+                                focusedTextColor = Color.Black,
+                                unfocusedTextColor = Color.Black,
                             ),
                             modifier = Modifier
                                 .width(90.dp)
-                                .height(25.dp)
+                                .height(48.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
-                            text = "Liters",
+                            text = "L",
                             fontWeight = FontWeight.Bold,
                             fontFamily = fontFamily
                         )

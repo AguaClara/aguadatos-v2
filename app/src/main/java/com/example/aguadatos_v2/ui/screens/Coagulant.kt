@@ -215,7 +215,7 @@ public fun Coagulant(
           Box(
             modifier = Modifier
               .fillMaxWidth()
-              .height(460.dp)
+              .height(500.dp)
               .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
               .background(Color.Transparent)
               .padding(0.dp)
@@ -251,7 +251,8 @@ public fun Coagulant(
               .background(Color.Transparent),
           ) {
             Column(
-              horizontalAlignment = Alignment.Start
+              horizontalAlignment = Alignment.Start,
+              modifier = Modifier.padding(12.dp)
             ) {
               Text(
                 text = stringResource(R.string.slider_position),
@@ -259,6 +260,7 @@ public fun Coagulant(
                 modifier = Modifier.padding(start = 12.dp, top = 12.dp),
                 fontSize = 18.sp
               )
+              Spacer(modifier = Modifier.height(12.dp))
               Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -272,7 +274,6 @@ public fun Coagulant(
                   },
                   modifier = Modifier
                     .size(40.dp)
-                    .padding(vertical = 8.dp)
                     .height(28.dp)
                     .background(Color.White, shape = RoundedCornerShape(20.dp))
                 ) {
@@ -282,13 +283,13 @@ public fun Coagulant(
                     tint = Color.Black
                   )
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(22.dp))
                 Text(
                   text = "${sliderPos.toInt()}%",
                   fontSize = 16.sp,
                   fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(22.dp))
                 IconButton(
                   onClick = {
                     sliderPos = (sliderPos + 1f).coerceIn(0f, 100f)
@@ -496,7 +497,7 @@ public fun Coagulant(
           Box(
             modifier = Modifier
               .fillMaxWidth()
-              .height(460.dp)
+              .height(500.dp)
               .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
               .background(Color.Transparent)
               .padding(0.dp)
@@ -538,7 +539,7 @@ public fun Coagulant(
             Column(
               modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 12.dp, start = 4.dp, end = 4.dp)
+                .padding(top = 22.dp, start = 4.dp, end = 4.dp)
             ) {
               Text(
                 text = stringResource(R.string.chemical_flow_rate) + " $chemFlowRate mL/s",
@@ -556,12 +557,12 @@ public fun Coagulant(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
               )
-              Spacer(modifier = Modifier.height(8.dp))
+              Spacer(modifier = Modifier.height(12.dp))
               Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                  .padding(horizontal = 12.dp)
+                  .padding(horizontal = 12.dp, vertical = 12.dp)
                   .fillMaxWidth()
               ) {
                 IconButton(
@@ -578,13 +579,13 @@ public fun Coagulant(
                     tint = Color.Black
                   )
                 }
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(22.dp))
                 Text(
                   text = "${sliderPosOverDose.toInt()}%",
                   fontSize = 16.sp,
                   fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(22.dp))
                 IconButton(
                   onClick = {
                     sliderPosOverDose = (sliderPosOverDose + 1f).coerceIn(0f, 100f)
@@ -627,6 +628,7 @@ public fun Coagulant(
                 Spacer(modifier = Modifier.weight(0.30f))
                 Text(text = "100%")
               }
+              Spacer(modifier = Modifier.height(12.dp))
               Row(
                 modifier = Modifier
                   .fillMaxWidth()
