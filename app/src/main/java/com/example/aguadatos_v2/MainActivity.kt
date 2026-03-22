@@ -37,6 +37,7 @@ import com.example.aguadatos_v2.ui.screens.SubmittedConfirmScreen
 import com.example.aguadatos_v2.ui.screens.TankVolumes
 import com.example.aguadatos_v2.ui.screens.VerificationCode
 import com.example.aguadatos_v2.ui.screens.WelcomePage
+import com.example.aguadatos_v2.ui.screens.Graph
 
 import com.example.aguadatos_v2.ui.theme.AuthViewModel
 import java.time.LocalTime
@@ -111,7 +112,7 @@ class MainActivity : ComponentActivity() {
               onTankVolumes = { navController.navigate("tank_volumes") },
               onHomeClick = {},
               onRecordsClick = {},
-              onGraphsClick = {},
+              onGraphsClick = {navController.navigate("graphs")},
               onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
@@ -119,6 +120,16 @@ class MainActivity : ComponentActivity() {
           //records route
           composable("records"){
             Records()
+          }
+
+          //graphs route
+          composable(route = "graphs"){
+            Graph(
+              onBackClick = {navController.popBackStack()},
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              onProfileClick = {navController.navigate("plant_configuration")}
+            )
           }
 
           //chlorine route
