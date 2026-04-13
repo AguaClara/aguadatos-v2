@@ -61,8 +61,8 @@ fun Graph (
 
     val labels = listOf(
         "PLANT FLOW",
-        "RAW WATER",
-        "COAG. DOSE",
+        "RAW\nWATER",
+        "COAG.\nDOSE",
         "CHLORINE DOSE",
         "FILTER TURBID.",
         "CLARIFIED TURBID."
@@ -121,9 +121,9 @@ fun Graph (
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 5.dp)
-                            .height(55.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            .padding(horizontal = 15.dp)
+                            .height(65.dp),
+                        horizontalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
                         // First button in the row
                         GraphButton(
