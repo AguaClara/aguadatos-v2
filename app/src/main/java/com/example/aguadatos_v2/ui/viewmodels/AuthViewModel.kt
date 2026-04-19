@@ -181,4 +181,11 @@ class AuthViewModel : ViewModel() {
 //            .plantID("default-plant-id") // temp for now
 //            .build()
     }
+
+    fun isLoggedIn(callback: (Boolean) -> Unit) {
+        Amplify.Auth.fetchAuthSession(
+            { result -> callback(result.isSignedIn) },
+            { callback(false) }
+        )
+    }
 }

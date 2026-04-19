@@ -62,8 +62,8 @@ import kotlinx.coroutines.launch
 * Sign up composable:
 *
 * Intent & Design:
-*  - SignUp screen to collect sign up information, including full name, plant, phone number, and password
-*  - Performs client-side verification of passwords matching, password strength, and phone number validity
+*  - SignUp screen to collect sign up information, including full name, plant, email, and password
+*  - Performs client-side verification of passwords matching, password strength, and email validity
 * */
 
 
@@ -413,7 +413,9 @@ fun SignUp(
                 password = password
               )
               authViewModel.signUp(
-                onSuccess = onSignUp,
+                onSuccess = {
+                  scope.launch { onSignUp() }
+                },
                 onError = { msg ->
                   scope.launch {
                     snackbarHostState.showSnackbar(
