@@ -1,32 +1,17 @@
 {
   "api": {
     "aguadatosv2": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "aguadatosv2b9196919b9196919"
-        }
-      ],
+      "dependsOn": [],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "apiKeyConfig": {
-                "apiKeyExpirationDate": "2026-03-29T16:55:13.746Z",
-                "apiKeyExpirationDays": 7,
-                "description": ""
-              },
-              "authenticationType": "API_KEY"
-            }
-          ],
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authaguadatosv2b9196919b9196919"
-            }
+            "apiKeyConfig": {
+              "apiKeyExpirationDate": "2027-04-12T16:28:32.525Z",
+              "apiKeyExpirationDays": 365,
+              "description": "aguadatos api key"
+            },
+            "authenticationType": "API_KEY"
           }
         }
       },

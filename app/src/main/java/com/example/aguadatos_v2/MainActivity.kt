@@ -196,7 +196,8 @@ class MainActivity : ComponentActivity() {
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
               {},
-              {})
+              {}
+            )
           }
 
           // confirmation route

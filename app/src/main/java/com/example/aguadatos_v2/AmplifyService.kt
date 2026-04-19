@@ -20,6 +20,7 @@ import com.example.aguadatos_v2.ui.viewmodels.SignUpState
 import com.example.aguadatos_v2.ui.viewmodels.VerificationState
 
 import com.amplifyframework.api.graphql.model.ModelMutation
+import com.amplifyframework.datastore.generated.model.RawEntry
 
 interface AmplifyService {
   fun configureAmplify(context : Context)
@@ -32,6 +33,15 @@ interface AmplifyService {
     plantID: String,
     operatorID: String,
     inflowRate: Double,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
+  fun submitRawEntry(
+    plantID: String,
+    operatorID: String,
+    turbidity: Double,
     notes: String?,
     onSuccess: () -> Unit,
     onError: (String) -> Unit
@@ -132,11 +142,36 @@ class AguaDatosAmplify : AmplifyService {
     Amplify.API.mutate(
       ModelMutation.create(entry),
       {
-        Log.i("API", "Inflow entry successful")
         onSuccess()
       },
       { error ->
-        Log.e("API", "Inflow entry failed", error)
+        onError(error.localizedMessage ?: "Entry Failed")
+      }
+    )
+  }
+
+  override fun submitRawEntry(
+    plantID: String,
+    operatorID: String,
+    turbidity: Double,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  ) {
+    val entry = RawEntry.builder()
+      .createdAt(Temporal.DateTime(Date(),0))
+      .turbidity(turbidity)
+      .plant(Plant.justId(plantID))
+      .operator(Operator.justId(operatorID))
+      .notes(notes)
+      .build()
+
+    Amplify.API.mutate(
+      ModelMutation.create(entry),
+      {
+        onSuccess()
+      },
+      { error ->
         onError(error.localizedMessage ?: "Entry Failed")
       }
     )

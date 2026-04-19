@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement.Horizontal
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,8 +29,11 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import kotlinx.coroutines.launch
 
 
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 /*
 * Raw water composable:
 * Intent & Design:
@@ -63,8 +67,12 @@ public fun RawWater(
     val selectedChemical by remember {mutableStateOf("")} //take this value from server or previous screen
     var rawWater by remember { mutableStateOf("") }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     Scaffold(
         containerColor = Color(0xffdbecff),
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             BottomNavigationBar(
                 onHomeClick = onHomeClick,
@@ -159,17 +167,28 @@ public fun RawWater(
 
             //submit button
             Button(
-                onClick = { /*submit data to server code goes here*/
-                    dataViewModel.submitInflowEntry(
-                        plantID = "test-plant-id",
-                        operatorID = "test-operator-id",
-                        inflowRate = 12.5,
+                onClick = {
+                    val turbidity = rawWater.toDoubleOrNull()
+                    val plantID = "test-plant-id"
+                    val operatorID = "test-operator-id"
+                    if (turbidity == null) {
+                        return@Button
+                    }
+                    /*submit data to server code goes here*/
+                    dataViewModel.submitRawEntry(
+                        plantID = plantID,
+                        operatorID = operatorID,
+                        turbidity = turbidity,
                         notes = "Test entry",
                         onSuccess = {
-                            Log.i("TEST", "Entry submitted successfully")
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Submit Successful")
+                            }
                         },
                         onError = { error ->
-                            Log.e("TEST", error)
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Submit failed ($error)")
+                            }
                         }
                     )
                 },
