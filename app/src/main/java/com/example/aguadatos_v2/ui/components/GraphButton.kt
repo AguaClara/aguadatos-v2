@@ -58,7 +58,9 @@ fun GraphButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier
         )
     )
     Button(
-        onClick = { isClicked = !isClicked},
+        onClick = { isClicked = !isClicked
+                  onClick()}
+        ,
         modifier = modifier
             .heightIn(min = 65.dp)
             .fillMaxWidth(),

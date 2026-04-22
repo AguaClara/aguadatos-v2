@@ -9,10 +9,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -67,6 +70,7 @@ fun Graph (
         "FILTER TURBID.",
         "CLARIFIED TURBID."
     )
+    val clickedButtons = remember { mutableStateListOf<String>() }
 
     Scaffold(
         containerColor = Color(0xffdbecff),
@@ -114,6 +118,7 @@ fun Graph (
             Column(
                 Modifier
                     .fillMaxWidth()
+                    .wrapContentHeight()
                     .padding(5.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
@@ -122,13 +127,18 @@ fun Graph (
                         Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 15.dp)
-                            .height(65.dp),
+                            .height(60.dp),
                         horizontalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
                         // First button in the row
                         GraphButton(
                             text = labels[i],
-                            onClick = {},
+                            onClick = {
+                                if (clickedButtons.contains(labels[i])) {
+                                    clickedButtons.remove(labels[i])
+                                }
+                                else { clickedButtons.add(labels[i]) }
+                            },
                             modifier = Modifier
                                 .weight(1f)
                                 .fillMaxHeight()
@@ -137,7 +147,12 @@ fun Graph (
                         if (i + 1 < labels.size) {
                             GraphButton(
                                 text = labels[i + 1],
-                                onClick = {},
+                                onClick = {
+                                    if (clickedButtons.contains(labels[i+1])) {
+                                        clickedButtons.remove(labels[i+1])
+                                    }
+                                    else { clickedButtons.add(labels[i+1]) }
+                                },
                                 modifier = Modifier
                                     .weight(1f)
                                     .fillMaxHeight()
@@ -147,7 +162,12 @@ fun Graph (
                         if (i + 2 < labels.size) {
                             GraphButton(
                                 text = labels[i+2],
-                                onClick = {},
+                                onClick = {
+                                    if (clickedButtons.contains(labels[i+2])) {
+                                        clickedButtons.remove(labels[i+2])
+                                    }
+                                    else { clickedButtons.add(labels[i+2]) }
+                                },
                                 modifier = Modifier
                                     .weight(1f)
                                     .fillMaxHeight()
@@ -156,6 +176,20 @@ fun Graph (
                     }
                 }
             }
+            Column (
+                Modifier
+                    .fillMaxWidth()
+            ) {
+                if (clickedButtons.isNotEmpty()) {
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+                    )
+
+                }
+            }
+
         }
 
     }
