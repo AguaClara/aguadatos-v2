@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
+import com.example.aguadatos_v2.ui.components.DataGraph
 import com.example.aguadatos_v2.ui.components.GraphButton
 
 
@@ -63,12 +65,12 @@ fun Graph (
     )
 
     val labels = listOf(
-        "PLANT FLOW",
-        "RAW\nWATER",
-        "COAG.\nDOSE",
-        "CHLORINE DOSE",
-        "FILTER TURBID.",
-        "CLARIFIED TURBID."
+        "Plant Flow",
+        "Raw Water",
+        "Coag. Dose",
+        "Chlorine Dose",
+        "Filter Turbid.",
+        "Clarified Turbid."
     )
     val clickedButtons = remember { mutableStateListOf<String>() }
 
@@ -187,6 +189,22 @@ fun Graph (
                         modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
                     )
 
+                }
+            }
+            LazyColumn(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
+                items(clickedButtons.size) {
+                    clickedButtons.forEach { button ->
+                        DataGraph(
+                            text = button,
+                            onClick = {},
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.size(10.dp))
+                    }
                 }
             }
 

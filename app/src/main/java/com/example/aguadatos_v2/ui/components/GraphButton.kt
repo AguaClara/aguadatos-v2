@@ -35,10 +35,10 @@ fun GraphButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier
     var isClicked by remember { mutableStateOf(false)}
     val backgroundColor = if (isClicked) {
         when (text) {
-            "RAW\nWATER"         -> Color(AndroidColor.parseColor("#377D22"))
-            "COAG.\nDOSE"        -> Color(AndroidColor.parseColor("#2C98B9"))
-            "CLARIFIED TURBID." -> Color(AndroidColor.parseColor("#4153AF"))
-            "FILTER TURBID."  -> Color(AndroidColor.parseColor("#ED6237"))
+            "Raw Water"         -> Color(AndroidColor.parseColor("#377D22"))
+            "Coag. Dose"        -> Color(AndroidColor.parseColor("#2C98B9"))
+            "Clarified Turbid." -> Color(AndroidColor.parseColor("#4153AF"))
+            "Filter Turbid."  -> Color(AndroidColor.parseColor("#ED6237"))
             else -> Color.Gray
         }
     } else {
@@ -76,7 +76,7 @@ fun GraphButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = text,
+                text = (text.uppercase()).replace(" ", "\n"),
                 fontFamily = fontFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp,
