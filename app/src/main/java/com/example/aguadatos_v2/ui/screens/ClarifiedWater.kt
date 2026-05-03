@@ -35,7 +35,7 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 @Composable
 public fun ClarifiedWater(
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (String) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -150,7 +150,7 @@ public fun ClarifiedWater(
 
             //submit button
             Button(
-                onClick = onSubmitClick /*submit data to server code goes here*/,
+                onClick = { onSubmitClick(clarifiedWater) }/*submit data to server code goes here*/,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

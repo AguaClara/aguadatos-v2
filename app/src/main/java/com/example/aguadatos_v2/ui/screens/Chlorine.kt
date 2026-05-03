@@ -41,11 +41,21 @@ import kotlin.math.roundToInt
 *  - only allows digits and decimal points typed
 * */
 
+data class ChlorineSubmission(
+    val sliderPos: Float,
+    val newSliderPos: Float,
+    val waterInflow: String,
+    val startVolume: String,
+    val endVolume: String,
+    val timeElapsed: String,
+    val sliderPosOverDose: Float,
+    val chemFlowRate: String
+)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun Chlorine(
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (ChlorineSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -703,8 +713,20 @@ public fun Chlorine(
                     }
                 }
             }
+            //submit button
             Button(
-                onClick = onSubmitClick,
+                onClick = {
+                    onSubmitClick(ChlorineSubmission(
+                        sliderPos = sliderPos,
+                        newSliderPos = newSliderPos,
+                        waterInflow = waterInflow,
+                        startVolume = startVolume,
+                        endVolume = endVolume,
+                        timeElapsed = timeElapsed,
+                        sliderPosOverDose = sliderPosOverDose,
+                        chemFlowRate = chemFlowRate
+                    ))
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

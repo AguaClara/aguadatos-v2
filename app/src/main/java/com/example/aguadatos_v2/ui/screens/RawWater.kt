@@ -45,7 +45,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 public fun RawWater(
     dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (String) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -167,6 +167,7 @@ public fun RawWater(
 
             //submit button
             Button(
+                onClick = { onSubmitClick(rawWater) }, /*submit data to server code goes here*/
                 onClick = {
                     val turbidity = rawWater.toDoubleOrNull()
                     val plantID = "test-plant-id"

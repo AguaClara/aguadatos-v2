@@ -3,12 +3,21 @@ package com.example.aguadatos_v2.data
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * RecordDao (Data Access Object)
+ *
+ * This defines all database operations for the AguaDatos Records page. Each screen that collects
+ * operator entry data has a corresponding insert function here.
+ */
 @Dao
 interface RecordDao {
     // Coagulant
+
+    // Inserts a new Coagulant Dosage entry into the database.
     @Insert
     suspend fun insertCoagulant(record: CoagulantRecord)
 
+    // Returns all Coagulant Dosage entries, ordered by timestamp in descending order.
     @Query("SELECT * FROM coagulant_records ORDER BY timestamp DESC")
     fun getAllCoagulant(): Flow<List<CoagulantRecord>>
 
