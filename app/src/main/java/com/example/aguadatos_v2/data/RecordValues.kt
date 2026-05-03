@@ -3,6 +3,11 @@ package com.example.aguadatos_v2.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Collection of data classes that store operator data entry from each of the submission screens
+ * on the Home page. Collects information from Coagulant Dosage, Chlorine Dosage, Raw Water
+ * Turbidity, Filtered Water Turbidity, and Clarified Water Turbidity pages.
+ */
 @Entity(tableName = "coagulant_records")
 data class CoagulantRecord(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,

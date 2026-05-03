@@ -96,6 +96,7 @@ class MainActivity : ComponentActivity() {
             ConfirmPlant()
           }
 
+          //login route
           composable("login") {
             LoginPage(
               onLoginClick = { navController.navigate("home") },
@@ -115,7 +116,7 @@ class MainActivity : ComponentActivity() {
               onColor = { navController.navigate("color") },
               onTankVolumes = { navController.navigate("tank_volumes") },
               onHomeClick = {},
-              onRecordsClick = {},
+              onRecordsClick = {navController.navigate("records")},
               onGraphsClick = {navController.navigate("graphs")},
               onProfileClick = { navController.navigate("plant_configuration") }
             )
@@ -123,7 +124,13 @@ class MainActivity : ComponentActivity() {
 
           //records route
           composable("records") {
-            Records(recordViewModel = recordViewModel)
+            Records(
+              recordViewModel = recordViewModel,
+              onHomeClick = { navController.navigate("home") },
+              onRecordsClick = {},
+              onGraphsClick = {},
+              onProfileClick = { navController.navigate("plant_configuration") }
+            )
           }
 
           //graphs route
@@ -140,16 +147,16 @@ class MainActivity : ComponentActivity() {
           composable("chlorine") {
             Chlorine(
               onBackClick = { navController.popBackStack() },
-              onSubmitClick = {
+              onSubmitClick = { submission ->
                 recordViewModel.saveChlorine(
-                  sliderPos = 0f,
-                  newSliderPos = 0f,
-                  waterInflow = "",
-                  startVolume = "",
-                  endVolume = "",
-                  timeElapsed = "",
-                  sliderPosOverDose = 0f,
-                  chemFlowRate = ""
+                  sliderPos = submission.sliderPos,
+                  newSliderPos = submission.newSliderPos,
+                  waterInflow = submission.waterInflow,
+                  startVolume = submission.startVolume,
+                  endVolume = submission.endVolume,
+                  timeElapsed = submission.timeElapsed,
+                  sliderPosOverDose = submission.sliderPosOverDose,
+                  chemFlowRate = submission.chemFlowRate
                 )
                 navController.popBackStack()
               },
@@ -158,12 +165,13 @@ class MainActivity : ComponentActivity() {
               {}, {}
             )
           }
+
           //clarified water route
           composable("clarified_water"){
             ClarifiedWater(
               onBackClick = {navController.popBackStack()},
-              {
-                recordViewModel.saveClarifiedWater("")
+              { value ->
+                recordViewModel.saveClarifiedWater(value)
                 navController.popBackStack()
               },
               onHomeClick = {navController.navigate("home")},
@@ -193,8 +201,8 @@ class MainActivity : ComponentActivity() {
           //filtered water route
           composable("filtered_water"){
             FilteredWater(onBackClick = {navController.popBackStack()},
-              onSubmitClick = {
-              recordViewModel.saveFilteredWater("")
+              onSubmitClick = { value ->
+              recordViewModel.saveFilteredWater(value)
               navController.popBackStack()
             }, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
           }
@@ -207,8 +215,8 @@ class MainActivity : ComponentActivity() {
           //raw water route
           composable("raw_water"){
             RawWater(onBackClick = {navController.popBackStack()},
-              onSubmitClick = {
-                recordViewModel.saveRawWater("")
+              onSubmitClick = { value ->
+                recordViewModel.saveRawWater(value)
                 navController.popBackStack()
               }, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
           }
