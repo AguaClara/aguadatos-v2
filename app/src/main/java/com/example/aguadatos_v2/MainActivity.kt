@@ -213,24 +213,19 @@ class MainActivity : ComponentActivity() {
           }
 
           //raw water route
-          composable("raw_water"){
-            RawWater(onBackClick = {navController.popBackStack()},
-              onSubmitClick = { value ->
-                recordViewModel.saveRawWater(value)
+          composable("raw_water") {
+            val dataViewModel: DataViewModel = viewModel()
             RawWater(
               dataViewModel = dataViewModel,
-              onBackClick = {
-                recordViewModel.saveRawWater("")
+              onBackClick = { navController.popBackStack() },
+              onSubmitClick = { value ->
+                recordViewModel.saveRawWater(value)
                 navController.popBackStack()
               },
-              onSubmitClick = {
-                recordViewModel.saveRawWater("")
-                navController.popBackStack()
-              },
-              onHomeClick = {navController.navigate("home")},
-              onRecordsClick = {navController.navigate("records")},
-              {},
-              {}
+              onHomeClick = { navController.navigate("home") },
+              onRecordsClick = { navController.navigate("records") },
+              onGraphsClick = {},
+              onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
