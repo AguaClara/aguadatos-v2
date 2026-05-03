@@ -41,9 +41,9 @@ fun DataGraph(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) 
         "Filter Turbid." -> title = "Filtered Turbidity"
         "Clarified Turbid." -> title = "Clarified Turbidity"
     }
-    var unit = "NTU"
+    var unit = ""
     when (text) {
-        "Plant Flow" -> unit = " (Unknown)"
+        "Plant Flow" -> unit = " (mL/s)"
         "Raw Water" -> unit = " (NTU)"
         "Coag. Dose" -> unit = " (mg/L)"
         "Chlorine Dose" -> unit = " (mg/L)"
@@ -77,7 +77,9 @@ fun DataGraph(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) 
                 color = Color.LightGray,
                 modifier = Modifier.padding(vertical = 60.dp, horizontal = 7.dp)
             )
+            // add buttons for timeframe
         }
+        // add new box for graphs
     }
 
 

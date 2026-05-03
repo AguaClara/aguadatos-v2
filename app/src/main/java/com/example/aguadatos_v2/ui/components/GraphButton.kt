@@ -39,7 +39,7 @@ fun GraphButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier
             "Coag. Dose"        -> Color(AndroidColor.parseColor("#2C98B9"))
             "Clarified Turbid." -> Color(AndroidColor.parseColor("#4153AF"))
             "Filter Turbid."  -> Color(AndroidColor.parseColor("#ED6237"))
-            else -> Color.Gray
+            else -> Color.Gray // change the color when new color is decided on
         }
     } else {
         Color.White
