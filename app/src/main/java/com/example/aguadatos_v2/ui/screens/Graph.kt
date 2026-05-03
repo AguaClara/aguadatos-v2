@@ -72,6 +72,8 @@ fun Graph (
         "Filter Turbid.",
         "Clarified Turbid."
     )
+
+    // stores clicked buttons
     val clickedButtons = remember { mutableStateListOf<String>() }
 
     Scaffold(
@@ -116,7 +118,7 @@ fun Graph (
                 )
                 Spacer(modifier = Modifier.size(28.dp))
             }
-            // columns
+            // columns for graph buttons
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -160,7 +162,7 @@ fun Graph (
                                     .fillMaxHeight()
                             )
                         }
-
+                        // Third button in row
                         if (i + 2 < labels.size) {
                             GraphButton(
                                 text = labels[i+2],
@@ -191,6 +193,7 @@ fun Graph (
 
                 }
             }
+            // scrollable column with graphs
             LazyColumn(
                 Modifier
                     .weight(1f)

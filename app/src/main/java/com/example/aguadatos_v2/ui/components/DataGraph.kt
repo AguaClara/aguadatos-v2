@@ -35,6 +35,22 @@ fun DataGraph(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) 
         fontProvider = provider,
     )
     )
+    var title = text;
+    when (text) {
+        "Coag. Dose" -> title = "Coagulant Dose"
+        "Filter Turbid." -> title = "Filtered Turbidity"
+        "Clarified Turbid." -> title = "Clarified Turbidity"
+    }
+    var unit = ""
+    when (text) {
+        "Plant Flow" -> unit = " (mL/s)"
+        "Raw Water" -> unit = " (NTU)"
+        "Coag. Dose" -> unit = " (mg/L)"
+        "Chlorine Dose" -> unit = " (mg/L)"
+        "Filter Turbid." -> unit = " (mg/L)"
+        "Clarified Turbid." -> unit = " (mg/L)"
+    }
+    
     Box (
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -49,7 +65,7 @@ fun DataGraph(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) 
             contentAlignment = Alignment.TopStart
         ) {
             Text(
-                text = text,
+                text = title + unit,
                 color = Color.Black,
                 modifier = Modifier.padding(10.dp),
                 fontFamily = fontFamily,
@@ -61,7 +77,9 @@ fun DataGraph(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) 
                 color = Color.LightGray,
                 modifier = Modifier.padding(vertical = 60.dp, horizontal = 7.dp)
             )
+            // add buttons for timeframe
         }
+        // add new box for graphs
     }
 
 
