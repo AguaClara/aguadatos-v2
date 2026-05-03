@@ -36,7 +36,7 @@ interface AmplifyService {
   )
 }
 
-class AguaDatosAmplify : AmplifyService {
+object AguaDatosAmplify : AmplifyService {
   override fun configureAmplify(context: Context) {
     try {
       Amplify.addPlugin(AWSApiPlugin())

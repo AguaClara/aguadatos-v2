@@ -43,7 +43,7 @@ data class VerificationState(
 )
 
 class AuthViewModel : ViewModel() {
-    private val amplifyService: AmplifyService = AguaDatosAmplify()
+    private val amplifyService: AmplifyService = AguaDatosAmplify
     var signUpState = mutableStateOf(SignUpState())
         private set
     var loginState = mutableStateOf(LoginState())
@@ -89,9 +89,6 @@ class AuthViewModel : ViewModel() {
         )
     }
 
-    fun configureAmplify(context : Context) {
-        amplifyService.configureAmplify(context)
-    }
     fun signUp(
         onSuccess: () -> Unit,
         onError: (msg : String) -> Unit
