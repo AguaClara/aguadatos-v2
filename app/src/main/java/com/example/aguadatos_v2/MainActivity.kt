@@ -1,6 +1,8 @@
 package com.example.aguadatos_v2
 
 import android.os.Bundle
+import android.util.Log
+import android.util.Log.i
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -34,6 +36,9 @@ import com.example.aguadatos_v2.ui.screens.SubmittedConfirmScreen
 import com.example.aguadatos_v2.ui.screens.TankVolumes
 import com.example.aguadatos_v2.ui.screens.VerificationCode
 import com.example.aguadatos_v2.ui.screens.WelcomePage
+import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.LaunchedEffect
 import com.example.aguadatos_v2.ui.screens.Graph
 
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
@@ -52,6 +57,7 @@ class MainActivity : ComponentActivity() {
       val authViewModel: AuthViewModel = viewModel()
       val dataViewModel: DataViewModel = viewModel()
       authViewModel.configureAmplify(this)
+      val recordViewModel: RecordViewModel = viewModel()
 
       Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         NavHost(
@@ -60,7 +66,7 @@ class MainActivity : ComponentActivity() {
           modifier = Modifier.padding(innerPadding)
         ) {
 
-          // wecome page route
+          // welcome page route
           composable("welcome") {
             WelcomePage(
               onCreateAccountClick = { navController.navigate("signup") },
@@ -73,7 +79,6 @@ class MainActivity : ComponentActivity() {
             SignUp (
               authViewModel = authViewModel,
               onSignUp = { navController.navigate("verification_code") },
-//              onSignUp = { navController.navigate("home") },
               onLogInClick = { navController.navigate("login") }
             )
           }
@@ -117,8 +122,8 @@ class MainActivity : ComponentActivity() {
           }
 
           //records route
-          composable("records"){
-            Records()
+          composable("records") {
+            Records(recordViewModel = recordViewModel)
           }
 
           //graphs route
@@ -132,22 +137,35 @@ class MainActivity : ComponentActivity() {
           }
 
           //chlorine route
-          composable("chlorine"){
+          composable("chlorine") {
             Chlorine(
-              onBackClick = {navController.popBackStack()},
-              {},
-              onHomeClick = {navController.navigate("home")},
-              onRecordsClick = {navController.navigate("records")},
-              {},
-              {}
+              onBackClick = { navController.popBackStack() },
+              onSubmitClick = {
+                recordViewModel.saveChlorine(
+                  sliderPos = 0f,
+                  newSliderPos = 0f,
+                  waterInflow = "",
+                  startVolume = "",
+                  endVolume = "",
+                  timeElapsed = "",
+                  sliderPosOverDose = 0f,
+                  chemFlowRate = ""
+                )
+                navController.popBackStack()
+              },
+              onHomeClick = { navController.navigate("home") },
+              onRecordsClick = { navController.navigate("records") },
+              {}, {}
             )
           }
-
           //clarified water route
           composable("clarified_water"){
             ClarifiedWater(
               onBackClick = {navController.popBackStack()},
-              {},
+              {
+                recordViewModel.saveClarifiedWater("")
+                navController.popBackStack()
+              },
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
               {},
@@ -174,7 +192,11 @@ class MainActivity : ComponentActivity() {
 
           //filtered water route
           composable("filtered_water"){
-            FilteredWater(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            FilteredWater(onBackClick = {navController.popBackStack()},
+              onSubmitClick = {
+              recordViewModel.saveFilteredWater("")
+              navController.popBackStack()
+            }, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
           }
 
           //plant flow route
@@ -186,8 +208,14 @@ class MainActivity : ComponentActivity() {
           composable("raw_water"){
             RawWater(
               dataViewModel = dataViewModel,
-              onBackClick = {navController.popBackStack()},
-              {},
+              onBackClick = {
+                recordViewModel.saveRawWater("")
+                navController.popBackStack()
+              },
+              onSubmitClick = {
+                recordViewModel.saveRawWater("")
+                navController.popBackStack()
+              },
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
               {},
@@ -261,6 +289,18 @@ class MainActivity : ComponentActivity() {
                 ?.get<CoagulantSubmission>("coagulantSubmission")
 
             if (submission != null) {
+              LaunchedEffect(Unit) {
+                recordViewModel.saveCoagulant(
+                  sliderPosition = submission.sliderPosition,
+                  newSliderPos = 0f,
+                  inflowRate = submission.inflowRate,
+                  startVolume = submission.startVolume,
+                  endVolume = submission.endVolume,
+                  timeElapsed = submission.timeElapsed,
+                  sliderPosOverDose = 0f,
+                  chemicalFlowRate = submission.chemicalFlowRate
+                )
+              }
               SubmittedConfirmScreen(
                 date = submission.date,
                 time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),

@@ -62,7 +62,7 @@ public fun Color(
     )
 
     val selectedChemical by remember {mutableStateOf("PAC")} //take this value from server or previous screen
-    var chlorineDosage by remember { mutableStateOf("") }
+    var chlorineDosage by remember { mutableStateOf("")}
 
 
     Scaffold(
@@ -83,8 +83,6 @@ public fun Color(
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp)
         ) {
-
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,7 +98,6 @@ public fun Color(
                         .clickable { onBackClick() }
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-
                 //heading
                 Text(
                     text = stringResource(R.string.color_caps),

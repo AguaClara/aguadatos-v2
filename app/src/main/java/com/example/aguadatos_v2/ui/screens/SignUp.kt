@@ -251,7 +251,7 @@ fun SignUp(
 
         //Phone number field. Commonly +504 XXXX-XXXX
         Text(
-          text = stringResource(R.string.phone_number),
+          text = stringResource(R.string.email),
           color = Color.Black,
           fontSize = 14.sp,
           fontFamily = fontFamily
@@ -263,7 +263,7 @@ fun SignUp(
           value = email,
           onValueChange = { email = it },
           placeholder = {
-            Text("Ex. +504 1234-5678",
+            Text("ex: kellytran@example.com",
               color = Color.Gray, fontFamily = fontFamily)
           },
           colors = OutlinedTextFieldDefaults.colors(
@@ -274,8 +274,9 @@ fun SignUp(
             .fillMaxWidth()
             .padding(bottom = 8.dp),
           leadingIcon = {Icon(
-            painter = painterResource(id = R.drawable.phone),
-            contentDescription = "phone icon")
+            painter = painterResource(id = R.drawable.email),
+            contentDescription = "phone icon",
+            modifier = Modifier.size(24.dp))
           },
         )
 
