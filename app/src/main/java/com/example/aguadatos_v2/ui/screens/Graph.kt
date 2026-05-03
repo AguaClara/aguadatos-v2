@@ -196,15 +196,13 @@ fun Graph (
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                items(clickedButtons.size) {
-                    clickedButtons.forEach { button ->
-                        DataGraph(
-                            text = button,
-                            onClick = {},
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Spacer(modifier = Modifier.size(10.dp))
-                    }
+                items(clickedButtons.size) { index ->
+                    DataGraph(
+                        text = clickedButtons[index],
+                        onClick = {},
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.size(10.dp))
                 }
             }
 

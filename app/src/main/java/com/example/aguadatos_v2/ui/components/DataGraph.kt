@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,8 +53,13 @@ fun DataGraph(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) 
                 color = Color.Black,
                 modifier = Modifier.padding(10.dp),
                 fontFamily = fontFamily,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.ExtraBold,
                 fontSize = 25.sp
+            )
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = Color.LightGray,
+                modifier = Modifier.padding(vertical = 60.dp, horizontal = 7.dp)
             )
         }
     }
