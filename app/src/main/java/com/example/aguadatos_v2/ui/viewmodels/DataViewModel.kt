@@ -14,6 +14,10 @@ import kotlinx.coroutines.launch
 class DataViewModel : ViewModel() {
     private val amplifyService: AmplifyService = AguaDatosAmplify()
 
+    fun configureAmplify(context : Context) {
+        amplifyService.configureAmplify(context)
+    }
+
     fun submitInflowEntry(
         plantID: String,
         operatorID: String,

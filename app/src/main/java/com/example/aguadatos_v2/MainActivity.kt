@@ -57,6 +57,7 @@ class MainActivity : ComponentActivity() {
       val authViewModel: AuthViewModel = viewModel()
       val dataViewModel: DataViewModel = viewModel()
       authViewModel.configureAmplify(this)
+      dataViewModel.configureAmplify(this)
       val recordViewModel: RecordViewModel = viewModel()
 
       Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
