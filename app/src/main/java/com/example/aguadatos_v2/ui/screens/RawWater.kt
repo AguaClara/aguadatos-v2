@@ -167,7 +167,6 @@ public fun RawWater(
 
             //submit button
             Button(
-                onClick = { onSubmitClick(rawWater) }, /*submit data to server code goes here*/
                 onClick = {
                     val turbidity = rawWater.toDoubleOrNull()
                     val plantID = "test-plant-id"
@@ -175,7 +174,9 @@ public fun RawWater(
                     if (turbidity == null) {
                         return@Button
                     }
-                    /*submit data to server code goes here*/
+                    // Save to local Room database
+                    onSubmitClick(rawWater)
+                    // Submit to server
                     dataViewModel.submitRawEntry(
                         plantID = plantID,
                         operatorID = operatorID,
@@ -200,7 +201,7 @@ public fun RawWater(
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
                     .align(Alignment.End)
-                    .height(40.dp)
+                    .height(40.dp),
             ) {
                 Text(text = stringResource(R.string.submit), fontFamily = fontFamily)
             }
