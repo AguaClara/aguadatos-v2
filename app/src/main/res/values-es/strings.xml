@@ -20,6 +20,7 @@
     <string name="includes_numbers">Incluye números</string>
     <string name="includes_symbols">Incluye símbolos</string>
     <string name="phone_number">Número de teléfono</string>
+    <string name="email">E-mail:</string>
     <string name="your_plant">Su planta:</string>
     <string name="sign_up">Registrarse</string>
     <string name="aguadatos_logo">Logo de AguaDatos</string>
@@ -70,7 +71,7 @@
     <string name="coagulant_dosage_caps">DOSIFICACIÓN DE COAGULANTE</string>
     <string name="slider_position">Posición del control deslizante</string>
     <string name="water_inflow_rate">Caudal de entrada de agua:</string>
-    <string name="start_volume">Volumen inicial:</string>
+    <string name="volume">Volumen:</string>
     <string name="liters_per_second">L/s</string>
     <string name="end_volume">Volumen final:</string>
     <string name="time_elapsed">Tiempo transcurrido:</string>
