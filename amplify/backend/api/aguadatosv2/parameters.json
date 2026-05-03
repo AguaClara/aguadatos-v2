@@ -1,5 +1,6 @@
 {
   "AppSyncApiName": "aguadatosv2",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2026-04-12T16:28:42.633Z"
 }

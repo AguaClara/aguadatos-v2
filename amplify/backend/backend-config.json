@@ -7,7 +7,9 @@
           "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
+              "apiKeyExpirationDate": "2027-04-12T16:28:32.525Z",
+              "apiKeyExpirationDays": 365,
+              "description": "aguadatos api key"
             },
             "authenticationType": "API_KEY"
           }

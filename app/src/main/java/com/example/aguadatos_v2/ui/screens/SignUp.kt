@@ -1,6 +1,5 @@
 package com.example.aguadatos_v2.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,7 +42,7 @@ import com.example.aguadatos_v2.ui.components.RequirementLine
 import com.example.aguadatos_v2.R
 
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.aguadatos_v2.ui.theme.AuthViewModel
+import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 import kotlinx.coroutines.launch
 
 
@@ -63,8 +62,8 @@ import kotlinx.coroutines.launch
 * Sign up composable:
 *
 * Intent & Design:
-*  - SignUp screen to collect sign up information, including full name, plant, phone number, and password
-*  - Performs client-side verification of passwords matching, password strength, and phone number validity
+*  - SignUp screen to collect sign up information, including full name, plant, email, and password
+*  - Performs client-side verification of passwords matching, password strength, and email validity
 * */
 
 
@@ -415,7 +414,9 @@ fun SignUp(
                 password = password
               )
               authViewModel.signUp(
-                onSuccess = onSignUp,
+                onSuccess = {
+                  scope.launch { onSignUp() }
+                },
                 onError = { msg ->
                   scope.launch {
                     snackbarHostState.showSnackbar(

@@ -202,7 +202,7 @@ fun LoginPage(
           containerColor = Color(0xFF4A90E2),
           contentColor = Color.White
         ),
-        enabled = name.isNotBlank() && password.isNotBlank()
+//        enabled = name.isNotBlank() && password.isNotBlank()
       ) {
         Text(stringResource(R.string.log_in), fontSize = 18.sp)
       }

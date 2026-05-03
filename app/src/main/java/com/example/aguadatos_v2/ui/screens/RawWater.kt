@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement.Horizontal
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,8 +26,14 @@ import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
+
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import kotlinx.coroutines.launch
 
 
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 /*
 * Raw water composable:
 * Intent & Design:
@@ -35,6 +43,7 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 
 @Composable
 public fun RawWater(
+    dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: (String) -> Unit,
     onHomeClick: () -> Unit,
@@ -58,8 +67,12 @@ public fun RawWater(
     val selectedChemical by remember {mutableStateOf("")} //take this value from server or previous screen
     var rawWater by remember { mutableStateOf("") }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     Scaffold(
         containerColor = Color(0xffdbecff),
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             BottomNavigationBar(
                 onHomeClick = onHomeClick,
@@ -155,6 +168,31 @@ public fun RawWater(
             //submit button
             Button(
                 onClick = { onSubmitClick(rawWater) }, /*submit data to server code goes here*/
+                onClick = {
+                    val turbidity = rawWater.toDoubleOrNull()
+                    val plantID = "test-plant-id"
+                    val operatorID = "test-operator-id"
+                    if (turbidity == null) {
+                        return@Button
+                    }
+                    /*submit data to server code goes here*/
+                    dataViewModel.submitRawEntry(
+                        plantID = plantID,
+                        operatorID = operatorID,
+                        turbidity = turbidity,
+                        notes = "Test entry",
+                        onSuccess = {
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Submit Successful")
+                            }
+                        },
+                        onError = { error ->
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Submit failed ($error)")
+                            }
+                        }
+                    )
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

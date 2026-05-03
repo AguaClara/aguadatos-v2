@@ -42,7 +42,7 @@ enum ActiveTank {
     TANK_B
 }
 
-type Plant @model {
+type Plant @model @auth(rules: [{ allow: public }]) {
     """
     Represents a water treatment plant.
 
@@ -71,7 +71,7 @@ type Plant @model {
     feedbackEntries: [FeedbackEntry] @hasMany(indexName: "FeedbackByPlant", fields: ["id"])
 }
 
-type Operator @model {
+type Operator @model @auth(rules: [{ allow: public }]) {
     """
     Represents an operator working at a plant.
 
@@ -103,7 +103,7 @@ type Operator @model {
     plant: Plant @belongsTo(fields: ["plantID"])
 }
 
-type InflowEntry @model {
+type InflowEntry @model @auth(rules: [{ allow: public }]) {
     """
     Represents an entry to capture the influent (incoming) water flow data.
 
@@ -131,7 +131,7 @@ type InflowEntry @model {
     operator: Operator @belongsTo(fields: ["operatorID"])
 }
 
-type RawEntry @model {
+type RawEntry @model @auth(rules: [{ allow: public }]) {
     """
     Represents an entry to capture the raw water turbidity data.
 
@@ -149,7 +149,7 @@ type RawEntry @model {
     operator: Operator @belongsTo(fields: ["operatorID"])
 }
 
-type ClarifiedEntry @model {
+type ClarifiedEntry @model @auth(rules: [{ allow: public }]) {
     """
     Represents an entry to capture clarification turbidity data.
 
@@ -167,7 +167,7 @@ type ClarifiedEntry @model {
     operator: Operator @belongsTo(fields: ["operatorID"])
 }
 
-type FilteredEntry @model {
+type FilteredEntry @model @auth(rules: [{ allow: public }]) {
     """
     Represents an entry to capture each filter's turbidity data during filtration.
 
@@ -189,7 +189,7 @@ type FilteredEntry @model {
     operator: Operator @belongsTo(fields: ["operatorID"])
 }
 
-type CalibrationEntry @model {
+type CalibrationEntry @model @auth(rules: [{ allow: public }]) {
     """
     Represents an entry to capture calibrating dosing equipment data. The entry data are
     partitioned into two sections - a required calibration, and an optional tank.
@@ -230,7 +230,7 @@ type CalibrationEntry @model {
     operator: Operator @belongsTo(fields: ["operatorID"])
 }
 
-type DoseEntry @model {
+type DoseEntry @model @auth(rules: [{ allow: public }]) {
     """
     Represents an entry to capture the dosing adjustments data.
 
@@ -266,7 +266,7 @@ type DoseEntry @model {
     operator: Operator @belongsTo(fields: ["operatorID"])
 }
 
-type FeedbackEntry @model {
+type FeedbackEntry @model @auth(rules: [{ allow: public }]) {
     """
     Represents an entry to capture operator feedbacks.
 

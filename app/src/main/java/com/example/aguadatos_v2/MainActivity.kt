@@ -1,6 +1,5 @@
 package com.example.aguadatos_v2
 
-import android.R.attr.data
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.i
@@ -15,7 +14,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.example.aguadatos_v2.ui.screens.Chlorine
 import com.example.aguadatos_v2.ui.screens.ClarifiedWater
 import com.example.aguadatos_v2.ui.screens.Coagulant
@@ -43,7 +41,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.LaunchedEffect
 import com.example.aguadatos_v2.ui.screens.Graph
 
-import com.example.aguadatos_v2.ui.theme.AuthViewModel
+import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -56,6 +55,7 @@ class MainActivity : ComponentActivity() {
       //uses navController and navHost to handle all navigation routes
       val navController = rememberNavController()
       val authViewModel: AuthViewModel = viewModel()
+      val dataViewModel: DataViewModel = viewModel()
       authViewModel.configureAmplify(this)
       val recordViewModel: RecordViewModel = viewModel()
 
@@ -217,8 +217,21 @@ class MainActivity : ComponentActivity() {
             RawWater(onBackClick = {navController.popBackStack()},
               onSubmitClick = { value ->
                 recordViewModel.saveRawWater(value)
+            RawWater(
+              dataViewModel = dataViewModel,
+              onBackClick = {
+                recordViewModel.saveRawWater("")
                 navController.popBackStack()
-              }, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+              },
+              onSubmitClick = {
+                recordViewModel.saveRawWater("")
+                navController.popBackStack()
+              },
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              {},
+              {}
+            )
           }
 
           //coagulant route
@@ -233,7 +246,8 @@ class MainActivity : ComponentActivity() {
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
               {},
-              {})
+              {}
+            )
           }
 
           // confirmation route
