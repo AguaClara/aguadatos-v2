@@ -1,5 +1,7 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,11 +21,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import java.io.Serializable
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 
 /*
 * Plant flow composable:
@@ -32,10 +39,32 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 *  - only allows digits and decimal points typed
 * */
 
+data class PlantFlowSubmission(
+    override val date: String,
+    val inflowRate: String
+) : DataSubmission {
+    override val screenTitle = R.string.plant_flow_caps
+    override val displayRows: List<DisplayRow>
+        get() = listOf(
+            DisplayRow(R.string.plant_flow,inflowRate, "lts/sec")
+        )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPlantFlow() {
+    PlantFlow(
+        {},
+        {submission -> },
+        {}, {}, {}, {}
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun PlantFlow(
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (PlantFlowSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -153,7 +182,13 @@ public fun PlantFlow(
 
             //submit button
             Button(
-                onClick = onSubmitClick /*submit data to server code goes here*/,
+                onClick = {
+                    val submission = PlantFlowSubmission(
+                        date = LocalDate.now().toString(),
+                        inflowRate = plantFlow
+                    )
+                    onSubmitClick(submission)
+                }, /*submit data to server code goes here*/
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White
@@ -163,9 +198,10 @@ public fun PlantFlow(
                     .align(Alignment.End)
                     .height(40.dp)
             ) {
-                Text(text = stringResource(R.string.confirm), fontFamily = fontFamily)
+                Text(text = stringResource(R.string.submit))
             }
         }
     }
 }
+
 

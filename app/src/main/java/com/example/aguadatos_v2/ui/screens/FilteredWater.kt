@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import java.time.LocalDate
 
 
 /*
@@ -33,10 +34,21 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 *  - only allows digits and decimal points typed
 * */
 
+data class FilteredSubmission(
+    override val date: String,
+    val turbidity: String
+) : DataSubmission {
+    override val screenTitle = R.string.filtered_water_turbidity_caps
+    override val displayRows: List<DisplayRow>
+        get() = listOf(
+            DisplayRow(R.string.filtered_water_turbidity,turbidity, "NTU")
+        )
+}
+
 @Composable
 public fun FilteredWater(
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (FilteredSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -149,7 +161,13 @@ public fun FilteredWater(
 
             //submit buttons
             Button(
-                onClick = onSubmitClick /*submit data to server code goes here*/,
+                onClick = {
+                    val submission = FilteredSubmission(
+                        date = LocalDate.now().toString(),
+                        turbidity = filteredWater
+                    )
+                    onSubmitClick(submission)
+                }, /*submit data to server code goes here*/
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White
