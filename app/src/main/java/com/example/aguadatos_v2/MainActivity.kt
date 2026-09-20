@@ -160,8 +160,8 @@ class MainActivity : ComponentActivity() {
             Records(
               recordViewModel = recordViewModel,
               onHomeClick = { navController.navigate("home") },
-              onRecordsClick = {},
-              onGraphsClick = {},
+              onRecordsClick = { navController.navigate("records")},
+              onGraphsClick = { navController.navigate("graphs")},
               onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
@@ -195,7 +195,8 @@ class MainActivity : ComponentActivity() {
               },
               onHomeClick = { navController.navigate("home") },
               onRecordsClick = { navController.navigate("records") },
-              {}, {}
+              onGraphsClick = { navController.navigate("graphs")},
+              onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
@@ -203,20 +204,27 @@ class MainActivity : ComponentActivity() {
           composable("clarified_water"){
             ClarifiedWater(
               onBackClick = {navController.popBackStack()},
-              { submission ->
+              onSubmitClick = { submission ->
                 navController.stashSubmission("filteredSubmission", submission)
                 navController.navigate("confirmation/filteredSubmission")
               },
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
-              {},
-              {}
+              onGraphsClick = { navController.navigate("graphs")},
+              onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
           //color route
           composable("color") {
-            Color(onBackClick = {navController.popBackStack()},{}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            Color(
+              onBackClick = { navController.popBackStack() },
+              onSubmitClick = {},
+              onHomeClick = { navController.navigate("home") },
+              onRecordsClick = { navController.navigate("records") },
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") }
+            )
           }
 
           //tank volumes route
@@ -226,27 +234,36 @@ class MainActivity : ComponentActivity() {
                 onSubmitClick = {},
                 onHomeClick = { navController.navigate("home") },
                 onRecordsClick = { navController.navigate("records") },
-                onGraphsClick = {},
+                onGraphsClick = { navController.navigate("graphs") },
                 onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
           //filtered water route
           composable("filtered_water"){
-            FilteredWater(onBackClick = {navController.popBackStack()},
+            FilteredWater(
+              onBackClick = {navController.popBackStack()},
               onSubmitClick = { submission ->
                 navController.stashSubmission("filteredSubmission", submission)
                 navController.navigate("confirmation/filteredSubmission")
               },
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
-              {},
-              {})
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") }
+            )
           }
 
           //plant flow route
           composable("plant_flow"){
-            PlantFlow(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            PlantFlow(
+              onBackClick = {navController.popBackStack()},
+              onSubmitClick = {},
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") }
+            )
           }
 
           //raw water route
@@ -261,7 +278,7 @@ class MainActivity : ComponentActivity() {
               },
               onHomeClick = { navController.navigate("home") },
               onRecordsClick = { navController.navigate("records") },
-              onGraphsClick = {},
+              onGraphsClick = { navController.navigate("graphs") },
               onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
@@ -277,8 +294,8 @@ class MainActivity : ComponentActivity() {
                 navController.navigate("confirmation") },
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
-              {},
-              {}
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
@@ -386,6 +403,9 @@ class MainActivity : ComponentActivity() {
           composable("plant_configuration_confirm") {
             PlantConfigurationConfirm({})
           }
+
+          // plant confirmation confirm route for pages other than coagulant. {key} depends
+          // on what is submitted from other composables.
           composable(
             "confirmation/{key}",
             arguments = listOf(navArgument("key") { type = NavType.StringType })
@@ -407,6 +427,9 @@ class MainActivity : ComponentActivity() {
               )
             }
           }
+
+          // plant submitted confirm route for pages other than coagulant. {key} is passed from
+          // confirmation/{key}
           composable(
             "submitted_confirm/{key}",
             arguments = listOf(navArgument("key") { type = NavType.StringType })
