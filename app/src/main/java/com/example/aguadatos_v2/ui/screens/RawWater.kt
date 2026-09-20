@@ -27,6 +27,8 @@ import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 import kotlinx.coroutines.launch
@@ -45,7 +47,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 public fun RawWater(
     dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
-    onSubmitClick: (String) -> Unit,
+    onSubmitClick: (DataSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -168,31 +170,14 @@ public fun RawWater(
             //submit button
             Button(
                 onClick = {
-                    val turbidity = rawWater.toDoubleOrNull()
-                    val plantID = "test-plant-id"
-                    val operatorID = "test-operator-id"
-                    if (turbidity == null) {
-                        return@Button
-                    }
                     // Save to local Room database
-                    onSubmitClick(rawWater)
-                    // Submit to server
-                    dataViewModel.submitRawEntry(
-                        plantID = plantID,
-                        operatorID = operatorID,
-                        turbidity = turbidity,
-                        notes = "Test entry",
-                        onSuccess = {
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Submit Successful")
-                            }
-                        },
-                        onError = { error ->
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Submit failed ($error)")
-                            }
-                        }
+                    onSubmitClick(
+                        RawWaterSubmission(
+                            date = LocalDate.now().toString(),
+                            rawWater = rawWater
+                        )
                     )
+                    // Submit to server
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
