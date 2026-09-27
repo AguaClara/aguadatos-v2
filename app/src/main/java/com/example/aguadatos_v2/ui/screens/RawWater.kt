@@ -168,13 +168,14 @@ public fun RawWater(
             //submit button
             Button(
                 onClick = {
+                    // TODO: Un-hardcode fields
                     val turbidity = rawWater.toDoubleOrNull()
                     val plantID = "test-plant-id"
                     val operatorID = "test-operator-id"
                     if (turbidity == null) {
                         return@Button
                     }
-                    /*submit data to server code goes here*/
+                    /*submit data to server code goes here.*/
                     dataViewModel.submitRawEntry(
                         plantID = plantID,
                         operatorID = operatorID,

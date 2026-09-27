@@ -22,16 +22,14 @@ class DataViewModel : ViewModel() {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
-        Amplify.Auth.fetchAuthSession(
-            { result -> Log.i("Auth", "Signed in: ${result.isSignedIn}") },
-            { error -> Log.e("Auth", "Session error", error) }
-        )
         amplifyService.submitInflowEntry(
             plantID = plantID,
             operatorID = operatorID,
             inflowRate = inflowRate,
             notes = notes,
-            onSuccess = { viewModelScope.launch(Dispatchers.Main) { onSuccess() } },
+            onSuccess = {
+                viewModelScope.launch(Dispatchers.Main) { onSuccess() }
+            },
             onError = { error ->
                 viewModelScope.launch(Dispatchers.Main) { onError(error) }
             }
@@ -46,10 +44,6 @@ class DataViewModel : ViewModel() {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
-        Amplify.Auth.fetchAuthSession(
-            { result -> Log.i("Auth", "Signed in: ${result.isSignedIn}") },
-            { error -> Log.e("Auth", "Session error", error) }
-        )
         amplifyService.submitRawEntry(
             plantID = plantID,
             operatorID = operatorID,
