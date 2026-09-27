@@ -36,7 +36,7 @@ interface AmplifyService {
   )
 }
 
-class AguaDatosAmplify : AmplifyService {
+object AguaDatosAmplify : AmplifyService {
   override fun configureAmplify(context: Context) {
     try {
       Amplify.addPlugin(AWSApiPlugin())
@@ -72,8 +72,14 @@ class AguaDatosAmplify : AmplifyService {
 
     Amplify.API.mutate(
       ModelMutation.create(entry),
-      {
-        onSuccess()
+      { response ->
+        if (response.hasErrors()) {
+          Log.e("AmplifyService", "GraphQL errors: ${response.errors}")
+          onError(response.errors.first().message)
+        } else {
+          Log.i("AmplifyService", "Success: ${response.data}")
+          onSuccess()
+        }
       },
       { error ->
         onError(error.localizedMessage ?: "Entry Failed")
@@ -99,12 +105,16 @@ class AguaDatosAmplify : AmplifyService {
 
     Amplify.API.mutate(
       ModelMutation.create(entry),
-      {
-        onSuccess()
+      { response ->
+        if (response.hasErrors()) {
+          Log.e("AmplifyService", "GraphQL errors: ${response.errors}")
+          onError(response.errors.first().message)
+        } else {
+          Log.i("AmplifyService", "Success: ${response.data}")
+          onSuccess()
+        }
       },
-      { error ->
-        onError(error.localizedMessage ?: "Entry Failed")
-      }
+      { error -> onError(error.localizedMessage ?: "Entry Failed") }
     )
   }
 }

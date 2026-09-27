@@ -42,8 +42,14 @@ data class VerificationState(
     val code: String = ""
 )
 
+
 class AuthViewModel : ViewModel() {
-    private val amplifyService: AmplifyService = AguaDatosAmplify()
+    private val amplifyService: AmplifyService = AguaDatosAmplify
+
+    var currentPlantID = mutableStateOf<String?>(null)
+        private set
+    var currentOperatorID = mutableStateOf<String?>(null)
+        private set
     var signUpState = mutableStateOf(SignUpState())
         private set
     var loginState = mutableStateOf(LoginState())
@@ -89,9 +95,6 @@ class AuthViewModel : ViewModel() {
         )
     }
 
-    fun configureAmplify(context : Context) {
-        amplifyService.configureAmplify(context)
-    }
     fun signUp(
         onSuccess: () -> Unit,
         onError: (msg : String) -> Unit
@@ -187,5 +190,22 @@ class AuthViewModel : ViewModel() {
             { result -> callback(result.isSignedIn) },
             { callback(false) }
         )
+    }
+
+    fun fetchUserContext(onError: (String) -> Unit = {}) {
+//        Amplify.Auth.fetchUserAttributes(
+//            { attributes ->
+//                val plantID = attributes.firstOrNull {
+//                    it.key.keyString == "custom:plantID"
+//                }?.value
+//                val operatorID = attributes.firstOrNull {
+//                    it.key.keyString == "sub" // or custom:operatorID if you store it separately
+//                }?.value
+//
+//                currentPlantID = plantID
+//                currentOperatorID = operatorID
+//            },
+//            { error -> onError(error.localizedMessage ?: "Failed to fetch user attributes") }
+//        )
     }
 }

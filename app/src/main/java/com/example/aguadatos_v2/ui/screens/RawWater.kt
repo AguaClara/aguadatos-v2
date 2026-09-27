@@ -168,6 +168,7 @@ public fun RawWater(
             //submit button
             Button(
                 onClick = {
+                    // TODO: Un-hardcode fields
                     val turbidity = rawWater.toDoubleOrNull()
                     val plantID = "test-plant-id"
                     val operatorID = "test-operator-id"

@@ -48,6 +48,8 @@ import java.time.format.DateTimeFormatter
 
 //main activity handles navigation
 class MainActivity : ComponentActivity() {
+  private val amplifyService: AmplifyService = AguaDatosAmplify
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -56,8 +58,8 @@ class MainActivity : ComponentActivity() {
       val navController = rememberNavController()
       val authViewModel: AuthViewModel = viewModel()
       val dataViewModel: DataViewModel = viewModel()
-      authViewModel.configureAmplify(this)
       val recordViewModel: RecordViewModel = viewModel()
+      amplifyService.configureAmplify(this);
 
       Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         NavHost(
