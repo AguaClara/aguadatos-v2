@@ -44,6 +44,10 @@ class DataViewModel : ViewModel() {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
+        Log.d(
+            "DataViewModel",
+            "Submitting RawEntry: plantID=$plantID, operatorID=$operatorID, turbidity=$turbidity"
+        )
         amplifyService.submitRawEntry(
             plantID = plantID,
             operatorID = operatorID,

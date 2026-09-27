@@ -95,6 +95,11 @@ object AguaDatosAmplify : AmplifyService {
     onSuccess: () -> Unit,
     onError: (String) -> Unit
   ) {
+
+    Log.d(
+      "AmplifyService",
+      "Submitting RawEntry: plantID=$plantID, operatorID=$operatorID, turbidity=$turbidity"
+    )
     val entry = RawEntry.builder()
       .createdAt(Temporal.DateTime(Date(),0))
       .turbidity(turbidity)
@@ -106,6 +111,9 @@ object AguaDatosAmplify : AmplifyService {
     Amplify.API.mutate(
       ModelMutation.create(entry),
       { response ->
+        Log.d("AmplifyService", "MUTATION CALLBACK RECEIVED")
+        Log.d("AmplifyService", "Response data: ${response.data}")
+        Log.d("AmplifyService", "Response errors: ${response.errors}")
         if (response.hasErrors()) {
           Log.e("AmplifyService", "GraphQL errors: ${response.errors}")
           onError(response.errors.first().message)
@@ -114,7 +122,18 @@ object AguaDatosAmplify : AmplifyService {
           onSuccess()
         }
       },
-      { error -> onError(error.localizedMessage ?: "Entry Failed") }
+      { error ->
+        Log.e("AmplifyService", "========== MUTATION FAILURE ==========")
+        Log.e("AmplifyService", "Class: ${error.javaClass.name}")
+        Log.e("AmplifyService", "Message: ${error.message}")
+        Log.e("AmplifyService", "Cause: ${error.cause?.javaClass?.name}")
+        Log.e("AmplifyService", "Cause message: ${error.cause?.message}")
+        Log.e("AmplifyService", "Full exception:", error)
+        Log.e("AmplifyService", "======================================")
+
+        onError(error.message ?: "Entry Failed")
+      }
     )
+    Log.d("AmplifyService", "Amplify.API.mutate() returned")
   }
 }

@@ -175,8 +175,6 @@ public fun RawWater(
                     if (turbidity == null) {
                         return@Button
                     }
-                    // Save to local Room database
-                    onSubmitClick(rawWater)
                     // Submit to server
                     dataViewModel.submitRawEntry(
                         plantID = plantID,
@@ -184,16 +182,20 @@ public fun RawWater(
                         turbidity = turbidity,
                         notes = "Test entry",
                         onSuccess = {
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Submit Successful")
-                            }
+                            Log.d(
+                                "RawWater",
+                                "Submit Successful"
+                            )
                         },
                         onError = { error ->
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Submit failed ($error)")
-                            }
+                            Log.d(
+                                "RawWater",
+                                "Submit Failed"
+                            )
                         }
                     )
+                    // Save to local Room database
+                    onSubmitClick(rawWater)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
