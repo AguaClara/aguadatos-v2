@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import java.time.LocalDate
 
 
 /*
@@ -36,7 +37,7 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 @Composable
 public fun FilteredWater(
     onBackClick: () -> Unit,
-    onSubmitClick: (String) -> Unit,
+    onSubmitClick: (DataSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -149,7 +150,12 @@ public fun FilteredWater(
 
             //submit buttons
             Button(
-                onClick = { onSubmitClick(filteredWater) } /*submit data to server code goes here*/,
+                onClick = { onSubmitClick(
+                    FilteredSubmission(
+                        date = LocalDate.now().toString(),
+                        turbidity = filteredWater
+                    )
+                ) } /*submit data to server code goes here*/,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

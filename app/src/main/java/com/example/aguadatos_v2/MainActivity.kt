@@ -1,11 +1,13 @@
 package com.example.aguadatos_v2
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.i
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -39,8 +41,17 @@ import com.example.aguadatos_v2.ui.screens.WelcomePage
 import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.example.aguadatos_v2.ui.screens.ClarifiedSubmission
+import com.example.aguadatos_v2.ui.screens.DataSubmission
+import com.example.aguadatos_v2.ui.screens.FilteredSubmission
+import com.example.aguadatos_v2.ui.screens.FlowSubmission
 import com.example.aguadatos_v2.ui.screens.Graph
 
+import com.example.aguadatos_v2.ui.screens.RawWaterSubmission
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 import java.time.LocalTime
@@ -50,6 +61,28 @@ import java.time.format.DateTimeFormatter
 class MainActivity : ComponentActivity() {
   private val amplifyService: AmplifyService = AguaDatosAmplify
 
+
+  /**
+   * NavController helper functions for processing submissions.
+   */
+  inline fun <reified T> NavBackStackEntry.getSubmission(key: String): T? {
+    return this.savedStateHandle.get<T>(key)
+  }
+
+  fun NavController.stashSubmission(key: String, submission: DataSubmission) {
+    this.currentBackStackEntry?.savedStateHandle?.set(key, submission)
+  }
+
+  fun NavBackStackEntry.resolveSubmission(key: String): DataSubmission? {
+    return when (key) {
+      "filteredSubmission" -> this.getSubmission<FilteredSubmission>(key)
+      "rawWaterSubmission"   -> this.getSubmission<RawWaterSubmission>(key)
+      "clarifiedWaterSubmission" -> this.getSubmission<ClarifiedSubmission>(key)
+      // "turbiditySubmission" -> this.getSubmission<TurbiditySubmission>(key)
+      else -> null
+    }
+  }
+  @RequiresApi(Build.VERSION_CODES.O)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -129,8 +162,8 @@ class MainActivity : ComponentActivity() {
             Records(
               recordViewModel = recordViewModel,
               onHomeClick = { navController.navigate("home") },
-              onRecordsClick = {},
-              onGraphsClick = {},
+              onRecordsClick = { navController.navigate("records")},
+              onGraphsClick = { navController.navigate("graphs")},
               onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
@@ -164,7 +197,8 @@ class MainActivity : ComponentActivity() {
               },
               onHomeClick = { navController.navigate("home") },
               onRecordsClick = { navController.navigate("records") },
-              {}, {}
+              onGraphsClick = { navController.navigate("graphs")},
+              onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
@@ -172,20 +206,27 @@ class MainActivity : ComponentActivity() {
           composable("clarified_water"){
             ClarifiedWater(
               onBackClick = {navController.popBackStack()},
-              { value ->
-                recordViewModel.saveClarifiedWater(value)
-                navController.popBackStack()
+              onSubmitClick = { submission ->
+                navController.stashSubmission("filteredSubmission", submission)
+                navController.navigate("confirmation/filteredSubmission")
               },
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
-              {},
-              {}
+              onGraphsClick = { navController.navigate("graphs")},
+              onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
           //color route
           composable("color") {
-            Color(onBackClick = {navController.popBackStack()},{}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            Color(
+              onBackClick = { navController.popBackStack() },
+              onSubmitClick = {},
+              onHomeClick = { navController.navigate("home") },
+              onRecordsClick = { navController.navigate("records") },
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") }
+            )
           }
 
           //tank volumes route
@@ -195,23 +236,36 @@ class MainActivity : ComponentActivity() {
                 onSubmitClick = {},
                 onHomeClick = { navController.navigate("home") },
                 onRecordsClick = { navController.navigate("records") },
-                onGraphsClick = {},
+                onGraphsClick = { navController.navigate("graphs") },
                 onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
           //filtered water route
           composable("filtered_water"){
-            FilteredWater(onBackClick = {navController.popBackStack()},
-              onSubmitClick = { value ->
-              recordViewModel.saveFilteredWater(value)
-              navController.popBackStack()
-            }, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            FilteredWater(
+              onBackClick = {navController.popBackStack()},
+              onSubmitClick = { submission ->
+                navController.stashSubmission("filteredSubmission", submission)
+                navController.navigate("confirmation/filteredSubmission")
+              },
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") }
+            )
           }
 
           //plant flow route
           composable("plant_flow"){
-            PlantFlow(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            PlantFlow(
+              onBackClick = {navController.popBackStack()},
+              onSubmitClick = {},
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") }
+            )
           }
 
           //raw water route
@@ -220,13 +274,13 @@ class MainActivity : ComponentActivity() {
             RawWater(
               dataViewModel = dataViewModel,
               onBackClick = { navController.popBackStack() },
-              onSubmitClick = { value ->
-                recordViewModel.saveRawWater(value)
-                navController.popBackStack()
+              onSubmitClick = { submission ->
+                navController.stashSubmission("rawWaterSubmission", submission)
+                navController.navigate("confirmation/rawWaterSubmission")
               },
               onHomeClick = { navController.navigate("home") },
               onRecordsClick = { navController.navigate("records") },
-              onGraphsClick = {},
+              onGraphsClick = { navController.navigate("graphs") },
               onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
@@ -242,8 +296,8 @@ class MainActivity : ComponentActivity() {
                 navController.navigate("confirmation") },
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
-              {},
-              {}
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
@@ -350,6 +404,62 @@ class MainActivity : ComponentActivity() {
           //plant configuration confirm route
           composable("plant_configuration_confirm") {
             PlantConfigurationConfirm({})
+          }
+
+          // plant confirmation confirm route for pages other than coagulant. {key} depends
+          // on what is submitted from other composables.
+          composable(
+            "confirmation/{key}",
+            arguments = listOf(navArgument("key") { type = NavType.StringType })
+          ) { backStackEntry ->
+            val key = backStackEntry.arguments?.getString("key") ?: return@composable
+            val submission = navController.previousBackStackEntry?.resolveSubmission(key)
+            if (submission != null) {
+              ConfirmScreen(
+                submission = submission,
+                onBackClick = { navController.popBackStack() },
+                onSubmitClick = {
+                  navController.stashSubmission(key, submission)
+                  navController.navigate("submitted_confirm/$key")
+                },
+                onHomeClick = { navController.navigate("home") },
+                onGraphsClick = { navController.navigate("graphs") },
+                onRecordsClick = { navController.navigate("records") },
+                onProfileClick = { navController.navigate("profile") }
+              )
+            }
+          }
+
+          // plant submitted confirm route for pages other than coagulant. {key} is passed from
+          // confirmation/{key}
+          composable(
+            "submitted_confirm/{key}",
+            arguments = listOf(navArgument("key") { type = NavType.StringType })
+          ) { backStackEntry ->
+            val key = backStackEntry.arguments?.getString("key") ?: return@composable
+            val submission = navController.previousBackStackEntry?.resolveSubmission(key)
+
+            if (submission != null) {
+              LaunchedEffect(submission) {
+                when (submission) {
+                  is RawWaterSubmission  -> recordViewModel.saveRawWater(submission.toRecord().rawWater)
+                  is FilteredSubmission  -> recordViewModel.saveFilteredWater(submission.toRecord().filteredWater)
+                  is ClarifiedSubmission -> recordViewModel.saveClarifiedWater(submission.toRecord().clarifiedWater)
+                  else -> null
+                }
+
+              }
+
+              SubmittedConfirmScreen(
+                submission = submission,
+                time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
+                onBackClick = { navController.popBackStack() },
+                onHomeClick = { navController.navigate("home") },
+                onGraphsClick = { navController.navigate("graphs") },
+                onRecordsClick = { navController.navigate("records") },
+                onProfileClick = { navController.navigate("plant_configuration") }
+              )
+            }
           }
         }
       }
