@@ -54,6 +54,7 @@ import com.example.aguadatos_v2.ui.screens.Graph
 import com.example.aguadatos_v2.ui.screens.RawWaterSubmission
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -134,7 +135,20 @@ class MainActivity : ComponentActivity() {
           //login route
           composable("login") {
             LoginPage(
-              onLoginClick = { navController.navigate("home") },
+              onLoginClick = {
+                // do some verification for login info
+                // TODO: replace these with actual vals from API call
+
+                val sessionID : Long? = 9000000L // placeholder value
+                val plantID : Long? = 9000000L // placeholder value
+
+                // writes the user and plant ID to a local user session object for later user
+                UserSession.operatorID = sessionID
+                UserSession.plantId = plantID
+                navController.navigate("home")
+
+
+                             },
               onSignupClick = {navController.navigate(route = "signup")}
             )
           }

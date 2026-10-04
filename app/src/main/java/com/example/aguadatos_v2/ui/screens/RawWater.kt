@@ -36,6 +36,9 @@ import kotlinx.coroutines.launch
 
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
+import kotlinx.serialization.internal.throwMissingFieldException
+
 /*
 * Raw water composable:
 * Intent & Design:
@@ -170,10 +173,10 @@ public fun RawWater(
             //submit button
             Button(
                 onClick = {
-                    // TODO: Un-hardcode fields
                     val turbidity = rawWater.toDoubleOrNull()
-                    val plantID = "test-plant-id"
-                    val operatorID = "test-operator-id"
+                    val plantID = (UserSession.plantId ?: throw IllegalStateException()).toString()
+                    val operatorID = (UserSession.operatorID ?: throw IllegalStateException()).toString()
+
                     if (turbidity == null) {
                         return@Button
                     }
