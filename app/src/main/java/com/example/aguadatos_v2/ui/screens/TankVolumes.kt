@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
 
 @Composable
 public fun TankVolumes(
@@ -306,6 +308,10 @@ public fun TankVolumes(
                 Button(
                     onClick = {
                         onSubmitClick
+
+                        val plantID = (UserSession.plantId ?: throw IllegalStateException()).toString()
+                        val operatorID = (UserSession.operatorID ?: throw IllegalStateException()).toString()
+
                         val coagTank1 = coagulantTank1.toDoubleOrNull()
                         val coagTank2 = coagulantTank2.toDoubleOrNull()
                         val chlorTank1 = chlorineTank1.toDoubleOrNull()
@@ -315,9 +321,27 @@ public fun TankVolumes(
                         }
 
                         //submit to server
-                        dataViewModel.submit
-                        DataViewModel
-                              } ,
+                        dataViewModel.submitTankVolumes(
+                            plantID = plantID,
+                            operatorID = operatorID,
+                            coagulantTank1 = coagTank1,
+                            coagulantTank2 = coagTank2,
+                            chlorineTank1 = chlorTank1,
+                            chlorineTank2 = chlorTank2,
+                            notes = "Test entry",
+                            onSuccess = {
+                                Log.d(
+                                    "TankVolumes",
+                                    "Submit Successful"
+                                )
+                            },
+                            onError = { error ->
+                                Log.d(
+                                    "Tank Volumes",
+                                    "Submit Failed"
+                                )
+                            }
+                        ) } ,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF77AF87),
                         contentColor = Color.White
