@@ -225,7 +225,17 @@ class MainActivity : ComponentActivity() {
 
           //plant flow route
           composable("plant_flow"){
-            PlantFlow(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            val dataViewModel : DataViewModel = viewModel()
+            PlantFlow(
+              dataViewModel = dataViewModel,
+              onBackClick = {navController.popBackStack()},
+              {
+                // TODO: something with record view model??
+                navController.popBackStack()},
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              {},
+              {navController.navigate("plant_configuration")})
           }
 
           //raw water route
