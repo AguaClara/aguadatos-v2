@@ -45,9 +45,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 
 @Composable
 public fun TankVolumes(
+    dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onHomeClick: () -> Unit,
@@ -302,7 +304,20 @@ public fun TankVolumes(
             ) {
                 //submit button
                 Button(
-                    onClick = onSubmitClick /*submit data to server code goes here*/ ,
+                    onClick = {
+                        onSubmitClick
+                        val coagTank1 = coagulantTank1.toDoubleOrNull()
+                        val coagTank2 = coagulantTank2.toDoubleOrNull()
+                        val chlorTank1 = chlorineTank1.toDoubleOrNull()
+                        val chlorTank2 = chlorineTank2.toDoubleOrNull()
+                        if (coagTank1 == null || coagTank2 == null || chlorTank1 == null || chlorTank2 == null){
+                            return@Button
+                        }
+
+                        //submit to server
+                        dataViewModel.submit
+                        DataViewModel
+                              } ,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF77AF87),
                         contentColor = Color.White
