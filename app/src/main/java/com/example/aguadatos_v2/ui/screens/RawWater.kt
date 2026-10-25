@@ -27,6 +27,8 @@ import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 import kotlinx.coroutines.launch
@@ -48,7 +50,7 @@ import kotlinx.serialization.internal.throwMissingFieldException
 public fun RawWater(
     dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
-    onSubmitClick: (String) -> Unit,
+    onSubmitClick: (DataSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -178,6 +180,13 @@ public fun RawWater(
                     if (turbidity == null) {
                         return@Button
                     }
+                    // Save to local Room database
+                    onSubmitClick(
+                        RawWaterSubmission(
+                            date = LocalDate.now().toString(),
+                            rawWater = rawWater
+                        )
+                    )
                     // Submit to server
                     dataViewModel.submitRawEntry(
                         plantID = plantID,
@@ -198,7 +207,6 @@ public fun RawWater(
                         }
                     )
                     // Save to local Room database
-                    onSubmitClick(rawWater)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
