@@ -1,6 +1,7 @@
 package com.example.aguadatos_v2.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,13 +11,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.aguadatos_v2.R
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.aguadatos_v2.data.*
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
+import com.example.aguadatos_v2.data.CoagulantRecord
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -78,10 +88,12 @@ fun Long.toDayLabel(): String {
 @Composable
 fun Records(
     recordViewModel: RecordViewModel = viewModel(),
+    onBackClick: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onRecordsClick: () -> Unit = {},
     onGraphsClick: () -> Unit = {},
-    onProfileClick: () -> Unit = {}
+    onProfileClick: () -> Unit = {},
+    onEditCoagulantClick: (Int) -> Unit = {},
 ) {
     val coagulantRecords by recordViewModel.coagulantRecords.collectAsState()
     val chlorineRecords by recordViewModel.chlorineRecords.collectAsState()
@@ -140,12 +152,22 @@ fun Records(
                 .background(Color(0xFFE4EFFC))
         ) {
             // Header
-            Box(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp, bottom = 8.dp),
-                contentAlignment = Alignment.Center
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.back_arrow),
+                    contentDescription = stringResource(R.string.back),
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .size(28.dp)
+                        .clickable { onBackClick() }
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = "RECORDS",
                     fontSize = 24.sp,
@@ -217,7 +239,28 @@ fun Records(
                     contentPadding = PaddingValues(vertical = 8.dp)
                 ) {
                     items(entriesForDate) { entry ->
-                        RecordEntryCard(entry)
+                        RecordEntryCard(
+                            entry = entry,
+                            onEditClick = {
+                                when (entry) {
+                                    is RecordEntry.Coagulant -> {
+                                        onEditCoagulantClick(entry.record.id)
+                                    }
+                                    is RecordEntry.Chlorine -> {
+                                        // We clicked a Chlorine Record
+                                    }
+                                    is RecordEntry.RawWater -> {
+                                        // We clicked a RawWater Record
+                                    }
+                                    is RecordEntry.FilteredWater -> {
+                                        // We clicked a FilteredWater Record
+                                    }
+                                    is RecordEntry.ClarifiedWater -> {
+                                        // We clicked a ClarifiedWater Record
+                                    }
+                                }
+                            }
+                        )
                     }
                     item {
                         // Data synced footer
@@ -237,7 +280,10 @@ fun Records(
 }
 
 @Composable
-fun RecordEntryCard(entry: RecordEntry) {
+fun RecordEntryCard(
+    entry: RecordEntry,
+    onEditClick: () -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -277,13 +323,39 @@ fun RecordEntryCard(entry: RecordEntry) {
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
-                Icon(
-                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                    contentDescription = if (expanded) "Collapse" else "Expand",
-                    tint = Color.DarkGray
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Edit button
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(
+                                color = Color(0xFF7CBB84),
+                                shape = RoundedCornerShape(6.dp)
+                            )
+                            .clickable { onEditClick() },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = "Edit",
+                            tint = Color.White,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    // Collapse/expand arrow
+                    Icon(
+                        imageVector = if (expanded)
+                            Icons.Filled.KeyboardArrowUp
+                        else
+                            Icons.Filled.KeyboardArrowDown,
+                        contentDescription = if (expanded) "Collapse" else "Expand",
+                        tint = Color.DarkGray,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
-
             // Expanded details
             AnimatedVisibility(visible = expanded) {
                 Column(

@@ -50,7 +50,9 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
             )
         )
     }
-
+    fun updateCoagulant(record: CoagulantRecord) = viewModelScope.launch {
+        dao.updateCoagulant(record)
+    }
     fun saveChlorine(
         sliderPos: Float,
         newSliderPos: Float,

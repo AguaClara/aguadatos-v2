@@ -17,6 +17,10 @@ interface RecordDao {
     @Insert
     suspend fun insertCoagulant(record: CoagulantRecord)
 
+    // Updates an existing Coagulant Dosage entry.
+    @Update
+    suspend fun updateCoagulant(record: CoagulantRecord)
+
     // Returns all Coagulant Dosage entries, ordered by timestamp in descending order.
     @Query("SELECT * FROM coagulant_records ORDER BY timestamp DESC")
     fun getAllCoagulant(): Flow<List<CoagulantRecord>>

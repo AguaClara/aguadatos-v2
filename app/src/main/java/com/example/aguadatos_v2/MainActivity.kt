@@ -9,6 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -39,10 +41,13 @@ import com.example.aguadatos_v2.ui.screens.WelcomePage
 import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import com.example.aguadatos_v2.ui.screens.Graph
 
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.data.CoagulantRecord
+import com.example.aguadatos_v2.ui.screens.EditCoagulant
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -127,10 +132,39 @@ class MainActivity : ComponentActivity() {
             Records(
               recordViewModel = recordViewModel,
               onHomeClick = { navController.navigate("home") },
+              onBackClick = { navController.popBackStack()},
               onRecordsClick = {},
-              onGraphsClick = {},
-              onProfileClick = { navController.navigate("plant_configuration") }
+              onGraphsClick = { navController.navigate("graphs")},
+              onProfileClick = { navController.navigate("plant_configuration") },
+              onEditCoagulantClick = { id ->
+                navController.navigate("edit_coagulant/$id")
+              }
             )
+          }
+
+          // edit coagulant route
+          composable("edit_coagulant/{recordId}") { backStackEntry ->
+            val recordId = backStackEntry.arguments
+              ?.getString("recordId")
+              ?.toIntOrNull()
+
+            val record = recordViewModel.coagulantRecords
+              .collectAsState()
+              .value
+              .find { it.id == recordId }
+
+            if (record != null) {
+              EditCoagulant(
+                record = record,
+                onBackClick = {
+                  navController.popBackStack()
+                },
+                onSaveClick = { updatedRecord ->
+                  recordViewModel.updateCoagulant(updatedRecord)
+                  navController.popBackStack()
+                }
+              )
+            }
           }
 
           //graphs route
