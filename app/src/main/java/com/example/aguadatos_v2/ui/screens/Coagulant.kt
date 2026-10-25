@@ -497,7 +497,7 @@ public fun Coagulant(
           Box(
             modifier = Modifier
               .fillMaxWidth()
-              .height(500.dp)
+              .height(550.dp)
               .clip(RoundedCornerShape(bottomStart = 18.dp, bottomEnd = 18.dp))
               .background(Color.Transparent)
               .padding(0.dp)
@@ -645,14 +645,16 @@ public fun Coagulant(
                   value = targetChemDose,
                   onValueChange = { targetChemDose = it },
                   shape = RoundedCornerShape(8.dp),
-                  colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White,
-                    focusedIndicatorColor = Color.Black
+                  textStyle = LocalTextStyle.current.copy(
+                    color = Color.Black
+                  ),
+                  colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White
                   ),
                   modifier = Modifier
                     .width(80.dp)
-                    .height(30.dp)
-                    .padding(end = 8.dp)
+                    .padding(end = 2.dp)
                 )
                 Text(
                   text = "mg/L",
@@ -686,24 +688,32 @@ public fun Coagulant(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                  .padding(horizontal = 12.dp)
+                  .padding(horizontal = 16.dp)
                   .fillMaxWidth()
               ) {
-                IconButton(onClick = {
-                  newSliderPos = (newSliderPos - 1f).coerceIn(0f, 100f) }
+                IconButton(
+                  onClick = { newSliderPos = (newSliderPos - 1f).coerceIn(0f, 100f) },
+                  modifier = Modifier
+                    .size(40.dp)
+                    .background(Color.White, shape = RoundedCornerShape(20.dp))
                 ) {
-                  Icon(imageVector = Icons.Filled.Remove, contentDescription = "Decrease")
+                  Icon(
+                    imageVector = Icons.Filled.Remove,
+                    contentDescription = "Decrease")
                 }
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(22.dp))
                 Text(
                   text = "${newSliderPos.toInt()}%",
                   fontSize = 16.sp,
                   fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(22.dp))
                 IconButton(
                   onClick = {
-                    newSliderPos = (newSliderPos + 1f).coerceIn(0f, 100f) }
+                    newSliderPos = (newSliderPos + 1f).coerceIn(0f, 100f) },
+                  modifier = Modifier
+                    .size(40.dp)
+                    .background(Color.White, shape = RoundedCornerShape(20.dp))
                 ) {
                   Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase")
                 }
