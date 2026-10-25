@@ -210,7 +210,8 @@ class MainActivity : ComponentActivity() {
                 onHomeClick = { navController.navigate("home") },
                 onRecordsClick = { navController.navigate("records") },
                 onGraphsClick = {},
-                onProfileClick = { navController.navigate("plant_configuration") }
+                onProfileClick = { navController.navigate("plant_configuration") },
+                dataViewModel = dataViewModel
             )
           }
 
