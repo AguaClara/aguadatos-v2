@@ -46,10 +46,10 @@ class DataViewModel : ViewModel() {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
-        Amplify.Auth.fetchAuthSession(
-            { result -> Log.i("Auth", "Signed in: ${result.isSignedIn}") },
-            { error -> Log.e("Auth", "Session error", error) }
-        )
+//        Amplify.Auth.fetchAuthSession(
+//            { result -> Log.i("Auth", "Signed in: ${result.isSignedIn}") },
+//            { error -> Log.e("Auth", "Session error", error) }
+//        )
         amplifyService.submitRawEntry(
             plantID = plantID,
             operatorID = operatorID,

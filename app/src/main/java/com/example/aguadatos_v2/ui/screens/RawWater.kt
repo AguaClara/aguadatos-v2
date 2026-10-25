@@ -174,8 +174,6 @@ public fun RawWater(
                     if (turbidity == null) {
                         return@Button
                     }
-                    // Save to local Room database
-                    onSubmitClick(rawWater)
                     // Submit to server
                     dataViewModel.submitRawEntry(
                         plantID = plantID,

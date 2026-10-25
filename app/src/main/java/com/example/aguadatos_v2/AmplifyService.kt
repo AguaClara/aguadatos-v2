@@ -43,10 +43,10 @@ class AguaDatosAmplify : AmplifyService {
       Amplify.addPlugin(AWSCognitoAuthPlugin())
       Amplify.configure(context)
 
-      Amplify.Auth.fetchAuthSession(
-        { result -> Log.i("Auth", "Logged in: ${result.isSignedIn}") },
-        { error -> Log.e("Auth", "Session error", error) }
-      )
+//      Amplify.Auth.fetchAuthSession(
+//        { result -> Log.i("Auth", "Logged in: ${result.isSignedIn}") },
+//        { error -> Log.e("Auth", "Session error", error) }
+//      )
       Log.i("AguaDatosv2Amplify", "Initialized Amplify project [AguaDatosv2]")
 
     } catch (error: AmplifyException) {

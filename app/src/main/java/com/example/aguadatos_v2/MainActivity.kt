@@ -38,6 +38,7 @@ import com.example.aguadatos_v2.ui.screens.SubmittedConfirmScreen
 import com.example.aguadatos_v2.ui.screens.TankVolumes
 import com.example.aguadatos_v2.ui.screens.VerificationCode
 import com.example.aguadatos_v2.ui.screens.WelcomePage
+//import com.example.aguadatos_v2.ui.screens.EditCoagulant
 import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.LaunchedEffect
@@ -53,15 +54,19 @@ import java.time.format.DateTimeFormatter
 
 //main activity handles navigation
 class MainActivity : ComponentActivity() {
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    val amplifyService = AguaDatosAmplify()
+    amplifyService.configureAmplify(this)
+
     enableEdgeToEdge()
     setContent {
       //uses navController and navHost to handle all navigation routes
       val navController = rememberNavController()
       val authViewModel: AuthViewModel = viewModel()
       val dataViewModel: DataViewModel = viewModel()
-      authViewModel.configureAmplify(this)
       val recordViewModel: RecordViewModel = viewModel()
 
       Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -288,7 +293,6 @@ class MainActivity : ComponentActivity() {
                 ?.get<CoagulantSubmission>("coagulantSubmission")
 
             if (submission != null) {
-
               ConfirmScreen(
                 date = submission.date,
                 chemicalType = submission.chemicalType,
