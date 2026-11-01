@@ -61,4 +61,40 @@ class DataViewModel : ViewModel() {
             }
         )
     }
+
+    fun submitTankVolumes(
+        plantID: String,
+        operatorID: String,
+        coagulantTank1: Double,
+        coagulantTank2: Double,
+        chlorineTank1: Double,
+        chlorineTank2: Double,
+        notes: String?,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        Log.d(
+            "DataViewModel",
+            "Submitting RawEntry: plantID=$plantID, operatorID=$operatorID, " +
+                    "coagulantTank1=$coagulantTank1, " +
+                    "coagulantTank2=$coagulantTank2, " +
+                    "chlorineTank1=$chlorineTank1, " +
+                    "chlorineTank2=$chlorineTank2"
+        )
+        amplifyService.submitTankVolumes(
+            plantID = plantID,
+            operatorID = operatorID,
+            coagulantTank1 = coagulantTank1,
+            coagulantTank2 = coagulantTank2,
+            chlorineTank1 = chlorineTank1,
+            chlorineTank2 = chlorineTank2,
+            notes = notes,
+            onSuccess = {
+                viewModelScope.launch(Dispatchers.Main) { onSuccess() }
+            },
+            onError = { error ->
+                viewModelScope.launch(Dispatchers.Main) { onError(error) }
+            }
+        )
+    }
 }

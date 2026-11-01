@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
 
 /*
 * Plant flow composable:
@@ -34,6 +37,7 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 
 @Composable
 public fun PlantFlow(
+    dataViewModel: DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onHomeClick: () -> Unit,
@@ -153,7 +157,32 @@ public fun PlantFlow(
 
             //submit button
             Button(
-                onClick = onSubmitClick /*submit data to server code goes here*/,
+                onClick = {
+                    val plantFlow = plantFlow.toDoubleOrNull()
+                    val plantID = (UserSession.plantId ?: throw IllegalStateException()).toString()
+                    val operatorID = (UserSession.operatorID ?: throw IllegalStateException()).toString()
+
+                    if (plantFlow == null) {
+                        return@Button
+                    }
+                    // submit to server
+                    print("$plantID  $operatorID")
+                    dataViewModel.submitInflowEntry(
+                        plantID = plantID,
+                        operatorID = operatorID,
+                        inflowRate = plantFlow,
+                        notes = "Test entry",
+                        onSuccess = {Log.d(
+                            "Inflow",
+                            "Submit Successful")
+                        },
+                        onError = { error ->
+                            Log.d("Inflow",
+                                "Submit Failed"
+                            )
+                        }
+                    )
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

@@ -251,7 +251,8 @@ class MainActivity : ComponentActivity() {
                 onHomeClick = { navController.navigate("home") },
                 onRecordsClick = { navController.navigate("records") },
                 onGraphsClick = { navController.navigate("graphs") },
-                onProfileClick = { navController.navigate("plant_configuration") }
+                onProfileClick = { navController.navigate("plant_configuration") },
+                dataViewModel = dataViewModel
             )
           }
 
@@ -273,12 +274,13 @@ class MainActivity : ComponentActivity() {
           //plant flow route
           composable("plant_flow"){
             PlantFlow(
-              onBackClick = {navController.popBackStack()},
-              onSubmitClick = {},
-              onHomeClick = {navController.navigate("home")},
-              onRecordsClick = {navController.navigate("records")},
-              onGraphsClick = { navController.navigate("graphs") },
-              onProfileClick = { navController.navigate("plant_configuration") }
+                onBackClick = { navController.popBackStack() },
+                onSubmitClick = {},
+                onHomeClick = { navController.navigate("home") },
+                onRecordsClick = { navController.navigate("records") },
+                onGraphsClick = { navController.navigate("graphs") },
+                onProfileClick = { navController.navigate("plant_configuration") },
+                dataViewModel = dataViewModel
             )
           }
 
