@@ -173,13 +173,8 @@ public fun RawWater(
             //submit button
             Button(
                 onClick = {
-                    val turbidity = rawWater.toDoubleOrNull()
-                    val plantID = (UserSession.plantId ?: throw IllegalStateException()).toString()
-                    val operatorID = (UserSession.operatorID ?: throw IllegalStateException()).toString()
+                    val turbidity = rawWater.toFloatOrNull() ?: return@Button
 
-                    if (turbidity == null) {
-                        return@Button
-                    }
                     // Save to local Room database
                     onSubmitClick(
                         RawWaterSubmission(
@@ -188,9 +183,9 @@ public fun RawWater(
                         )
                     )
                     // Submit to server
-                    dataViewModel.submitRawEntry(
-                        plantID = plantID,
-                        operatorID = operatorID,
+                    dataViewModel.submitRawWaterEntry(
+                        plantID = UserSession.getPlantID(),
+                        operatorID = UserSession.getOperatorID(),
                         turbidity = turbidity,
                         notes = "Test entry",
                         onSuccess = {
@@ -206,7 +201,6 @@ public fun RawWater(
                             )
                         }
                     )
-                    // Save to local Room database
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),

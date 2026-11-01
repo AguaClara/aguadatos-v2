@@ -139,12 +139,11 @@ class MainActivity : ComponentActivity() {
                 // do some verification for login info
                 // TODO: replace these with actual vals from API call
 
-                val sessionID : Long? = 9000000L // placeholder value
-                val plantID : Long? = 9000000L // placeholder value
+                val sessionID : Long = -1L // placeholder value
+                val plantID : Long = -1L // placeholder value
 
                 // writes the user and plant ID to a local user session object for later user
-                UserSession.operatorID = sessionID
-                UserSession.plantId = plantID
+                UserSession.setSessionInfo(sessionID, plantID);
                 navController.navigate("home")
 
 
@@ -212,7 +211,8 @@ class MainActivity : ComponentActivity() {
               onHomeClick = { navController.navigate("home") },
               onRecordsClick = { navController.navigate("records") },
               onGraphsClick = { navController.navigate("graphs")},
-              onProfileClick = { navController.navigate("plant_configuration") }
+              onProfileClick = { navController.navigate("plant_configuration") },
+              dataViewModel = dataViewModel
             )
           }
 
@@ -227,7 +227,8 @@ class MainActivity : ComponentActivity() {
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
               onGraphsClick = { navController.navigate("graphs")},
-              onProfileClick = { navController.navigate("plant_configuration") }
+              onProfileClick = { navController.navigate("plant_configuration") },
+              dataViewModel = dataViewModel
             )
           }
 
@@ -239,7 +240,8 @@ class MainActivity : ComponentActivity() {
               onHomeClick = { navController.navigate("home") },
               onRecordsClick = { navController.navigate("records") },
               onGraphsClick = { navController.navigate("graphs") },
-              onProfileClick = { navController.navigate("plant_configuration") }
+              onProfileClick = { navController.navigate("plant_configuration") },
+              dataViewModel = dataViewModel
             )
           }
 
@@ -267,7 +269,9 @@ class MainActivity : ComponentActivity() {
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
               onGraphsClick = { navController.navigate("graphs") },
-              onProfileClick = { navController.navigate("plant_configuration") }
+              onProfileClick = { navController.navigate("plant_configuration") },
+              dataViewModel = dataViewModel
+
             )
           }
 
@@ -313,7 +317,8 @@ class MainActivity : ComponentActivity() {
               onHomeClick = {navController.navigate("home")},
               onRecordsClick = {navController.navigate("records")},
               onGraphsClick = { navController.navigate("graphs") },
-              onProfileClick = { navController.navigate("plant_configuration") }
+              onProfileClick = { navController.navigate("plant_configuration") },
+              dataViewModel = dataViewModel
             )
           }
 

@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
 import java.time.LocalDate
 
 
@@ -36,6 +39,7 @@ import java.time.LocalDate
 
 @Composable
 public fun FilteredWater(
+    dataViewModel: DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: (DataSubmission) -> Unit,
     onHomeClick: () -> Unit,
@@ -56,7 +60,7 @@ public fun FilteredWater(
         )
     )
 
-    val selectedChemical by remember {mutableStateOf("PAC")} //take this value from server or previous screen
+    val selectedChemical by remember { mutableStateOf("PAC") } //take this value from server or previous screen
     var filteredWater by remember { mutableStateOf("") }
 
     Scaffold(
@@ -121,14 +125,16 @@ public fun FilteredWater(
                 //filtered water input text field
                 OutlinedTextField(
                     value = filteredWater,
-                    onValueChange = {  newValue ->
+                    onValueChange = { newValue ->
                         // Only allow digits and decimal points
-                        if (newValue.all { it.isDigit() || it== '.' }) {
+                        if (newValue.all { it.isDigit() || it == '.' }) {
                             filteredWater = newValue
-                        }},
+                        }
+                    },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White),
+                        unfocusedContainerColor = Color.White
+                    ),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .width(80.dp)
@@ -150,12 +156,33 @@ public fun FilteredWater(
 
             //submit buttons
             Button(
-                onClick = { onSubmitClick(
-                    FilteredSubmission(
-                        date = LocalDate.now().toString(),
-                        turbidity = filteredWater
+                onClick = {
+                    onSubmitClick(
+                        FilteredSubmission(
+                            date = LocalDate.now().toString(),
+                            turbidity = filteredWater
+                        )
                     )
-                ) } /*submit data to server code goes here*/,
+                    dataViewModel.submitRawWaterEntry(
+                        plantID = UserSession.getPlantID(),
+                        operatorID = UserSession.getOperatorID(),
+                        turbidity = filteredWater.toFloat(),
+                        notes = "Test entry",
+                        onSuccess = {
+                            Log.d(
+                                "FilteredWater",
+                                "Submit Successful"
+                            )
+                        },
+                        onError = { error ->
+                            Log.d(
+                                "FilteredWater",
+                                "Submit Failed"
+                            )
+                        }
+                    )
+
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

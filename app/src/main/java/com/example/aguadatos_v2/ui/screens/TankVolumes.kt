@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
+import com.example.aguadatos_v2.data.RawWaterRecord
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 import com.example.aguadatos_v2.ui.viewmodels.UserSession
@@ -307,23 +308,17 @@ public fun TankVolumes(
                 //submit button
                 Button(
                     onClick = {
-                        onSubmitClick
 
-                        val plantID = (UserSession.plantId ?: throw IllegalStateException()).toString()
-                        val operatorID = (UserSession.operatorID ?: throw IllegalStateException()).toString()
-
-                        val coagTank1 = coagulantTank1.toDoubleOrNull()
-                        val coagTank2 = coagulantTank2.toDoubleOrNull()
-                        val chlorTank1 = chlorineTank1.toDoubleOrNull()
-                        val chlorTank2 = chlorineTank2.toDoubleOrNull()
-                        if (coagTank1 == null || coagTank2 == null || chlorTank1 == null || chlorTank2 == null){
-                            return@Button
-                        }
+                        // TODO make a tank volumes submission for local storage
+                        val coagTank1 = coagulantTank1.toFloat()
+                        val coagTank2 = coagulantTank2.toFloat()
+                        val chlorTank1 = chlorineTank1.toFloat()
+                        val chlorTank2 = chlorineTank2.toFloat()
 
                         //submit to server
-                        dataViewModel.submitTankVolumes(
-                            plantID = plantID,
-                            operatorID = operatorID,
+                        dataViewModel.submitTankVolumesEntry(
+                            plantID = UserSession.getPlantID(),
+                            operatorID = UserSession.getOperatorID(),
                             coagulantTank1 = coagTank1,
                             coagulantTank2 = coagTank2,
                             chlorineTank1 = chlorTank1,
