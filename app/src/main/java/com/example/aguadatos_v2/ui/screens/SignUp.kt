@@ -263,7 +263,7 @@ fun SignUp(
           value = email,
           onValueChange = { email = it },
           placeholder = {
-            Text("ex: kellytran@example.com",
+            Text(stringResource(R.string.email_example),
               color = Color.Gray, fontFamily = fontFamily)
           },
           colors = OutlinedTextFieldDefaults.colors(

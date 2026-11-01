@@ -17,6 +17,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="create_account">Create account</string>
     <string name="already_have_an_account_log_in">Already have an account? Log in</string>
+    <string name="email_example">Ex: kellytran@example.com</string>
 
     <string name="includes_lowercase_character">"Includes lowercase character"</string>
     <string name="includes_uppercase_character">"Includes uppercase character"</string>

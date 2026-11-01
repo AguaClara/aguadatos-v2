@@ -1,6 +1,5 @@
 package com.example.aguadatos_v2.ui.viewmodels
 
-import android.R
 import com.amplifyframework.core.Amplify
 import com.example.aguadatos_v2.AguaDatosAmplify
 import com.example.aguadatos_v2.AmplifyService
@@ -9,8 +8,20 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.amplifyframework.core.model.temporal.Temporal
+import com.amplifyframework.datastore.generated.model.RawEntry
+
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+
 
 class DataViewModel : ViewModel() {
     private val amplifyService: AmplifyService = AguaDatosAmplify
@@ -265,5 +276,71 @@ class DataViewModel : ViewModel() {
                 viewModelScope.launch(Dispatchers.Main) { onError(error) }
             }
         )
+    }
+
+    /**
+     * Retrieve the Raw Water entries from the specified plant and specific date range.
+     * The default endDate is the end of the current day.
+     */
+    suspend fun getRawEntries(
+        plantID: String,
+        startDate: Temporal.DateTime,
+        endDate: Temporal.DateTime = Temporal.DateTime(
+            LocalDate.now()
+                .plusDays(1)
+                .atStartOfDay(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        )
+    ) : List<RawEntry> {
+        return suspendCancellableCoroutine { continuation ->
+            amplifyService.getRawEntries(
+                plantID = plantID,
+                startDate = startDate,
+                endDate = endDate,
+                onSuccess = { entries ->
+                    if (continuation.isActive) {
+                        continuation.resume(entries)
+                    }
+                },
+                onError = { error ->
+                    if (continuation.isActive) {
+                        continuation.resumeWithException(Exception(error))
+                    }
+                }
+            )
+        }
+    }
+
+    fun testGetRawEntries(
+        plantID: String,
+        startDate: Temporal.DateTime
+    ) {
+        viewModelScope.launch {
+            try {
+                Log.d("RawEntryTest", "Starting database query...")
+
+                val entries = getRawEntries(
+                    plantID = plantID,
+                    startDate = startDate
+                )
+
+                Log.d("RawEntryTest", "Number of records: ${entries.size}")
+
+                entries.forEachIndexed { index, entry ->
+                    Log.d("RawEntryTest", """
+                    Record #$index
+                    ID: ${entry.id}
+                    Plant: ${entry.plant?.id}
+                    Operator: ${entry.operator?.id}
+                    Turbidity: ${entry.turbidity}
+                    Created At: ${entry.createdAt}
+                    Notes: ${entry.notes}
+                """.trimIndent())
+                }
+
+            } catch (e: Exception) {
+                Log.e("RawEntryTest", "Query failed: ${e.message}", e)
+            }
+        }
     }
 }
