@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,6 +32,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.ui.text.googlefonts.GoogleFont
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
@@ -54,6 +57,7 @@ data class ChlorineSubmission(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun Chlorine(
+    dataViewModel: DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: (ChlorineSubmission) -> Unit,
     onHomeClick: () -> Unit,
@@ -726,6 +730,31 @@ public fun Chlorine(
                         sliderPosOverDose = sliderPosOverDose,
                         chemFlowRate = chemFlowRate
                     ))
+
+                    dataViewModel.submitChlorineDosageEntry(
+                        plantID = UserSession.getPlantID(),
+                        operatorID = UserSession.getOperatorID(),
+                        sliderPosition = sliderPos,
+                        inflowRate = waterInflow.toFloat(),
+                        startVolume = startVolume.toFloat(),
+                        endVolume = endVolume.toFloat(),
+                        timeElapsed = timeElapsed.toFloat(),
+                        chemicalDose = sliderPosOverDose,
+                        chemicalFlowRate = chemFlowRate.toFloat(),
+                        notes = "Test entry",
+                        onSuccess = {
+                            Log.d(
+                                "Chlorine",
+                                "Submit Successful"
+                            )
+                        },
+                        onError = { error ->
+                            Log.d(
+                                "Chlorine",
+                                "Submit Failed"
+                            )
+                        }
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),

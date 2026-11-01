@@ -158,18 +158,12 @@ public fun PlantFlow(
             //submit button
             Button(
                 onClick = {
-                    val plantFlow = plantFlow.toDoubleOrNull()
-                    val plantID = (UserSession.plantId ?: throw IllegalStateException()).toString()
-                    val operatorID = (UserSession.operatorID ?: throw IllegalStateException()).toString()
+                    val plantFlow = plantFlow.toFloat()
 
-                    if (plantFlow == null) {
-                        return@Button
-                    }
                     // submit to server
-                    print("$plantID  $operatorID")
                     dataViewModel.submitInflowEntry(
-                        plantID = plantID,
-                        operatorID = operatorID,
+                        plantID = UserSession.getPlantID(),
+                        operatorID = UserSession.getOperatorID(),
                         inflowRate = plantFlow,
                         notes = "Test entry",
                         onSuccess = {Log.d(

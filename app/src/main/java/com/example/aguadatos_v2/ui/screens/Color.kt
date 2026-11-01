@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,9 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
 
 @Composable
 public fun Color(
+    dataViewModel: DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onHomeClick: () -> Unit,
@@ -61,8 +65,8 @@ public fun Color(
         )
     )
 
-    val selectedChemical by remember {mutableStateOf("PAC")} //take this value from server or previous screen
-    var chlorineDosage by remember { mutableStateOf("")}
+    val selectedChemical by remember { mutableStateOf("PAC") } //take this value from server or previous screen
+    var color by remember { mutableStateOf("") }
 
 
     Scaffold(
@@ -127,15 +131,17 @@ public fun Color(
             ) {
                 //chlorine dosage input text field
                 OutlinedTextField(
-                    value = chlorineDosage,
-                    onValueChange = {  newValue ->
+                    value = color,
+                    onValueChange = { newValue ->
                         // Only allow digits and decimal points
-                        if (newValue.all { it.isDigit() || it== '.' }) {
-                            chlorineDosage = newValue
-                        }},
+                        if (newValue.all { it.isDigit() || it == '.' }) {
+                            color = newValue
+                        }
+                    },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White),
+                        unfocusedContainerColor = Color.White
+                    ),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .width(80.dp)
@@ -157,7 +163,29 @@ public fun Color(
 
             //submit button
             Button(
-                onClick = onSubmitClick /*submit data to server code goes here*/ ,
+                onClick = {
+                    val colorVal = color.toFloat()
+                    onSubmitClick()
+                    dataViewModel.submitColorEntry(
+                        plantID = UserSession.getPlantID(),
+                        operatorID = UserSession.getOperatorID(),
+                        color = colorVal,
+                        notes = "Test entry",
+                        onSuccess = {
+                            Log.d(
+                                "Color",
+                                "Submit Successful"
+                            )
+                        },
+                        onError = { error ->
+                            Log.d(
+                                "Color",
+                                "Submit Failed"
+                            )
+                        }
+                    )
+
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White
