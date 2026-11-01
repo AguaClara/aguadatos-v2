@@ -35,6 +35,7 @@ import com.example.aguadatos_v2.data.*
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
 import com.example.aguadatos_v2.data.CoagulantRecord
+import com.amplifyframework.datastore.generated.model.RawEntry
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,6 +57,9 @@ sealed class RecordEntry {
     }
     data class Chlorine(val record: ChlorineRecord) : RecordEntry() {
         override val timestamp = record.timestamp
+    }
+    data class CloudRawWater(val record: RawEntry) : RecordEntry() {
+        override val timestamp = record.createdAt.toDate().time
     }
 }
 
@@ -101,10 +105,19 @@ fun Records(
     val filteredWaterRecords by recordViewModel.filteredWaterRecords.collectAsState()
     val clarifiedWaterRecords by recordViewModel.clarifiedWaterRecords.collectAsState()
 
+    val cloudRawWaterRecords by recordViewModel.cloudRawWaterRecords.collectAsState()
+    val isLoadingCloudRecords by recordViewModel.isLoadingCloudRecords.collectAsState()
+    val cloudRecordsError by recordViewModel.cloudRecordsError.collectAsState()
+
+    // Tell Compose to request cloud records when Records screen first enters
+    LaunchedEffect(Unit) {
+        recordViewModel.loadRawEntries()
+    }
     // Combine all records into one sorted list
-    val allEntries = remember(coagulantRecords, chlorineRecords, rawWaterRecords, filteredWaterRecords, clarifiedWaterRecords) {
+    val allEntries = remember(coagulantRecords, chlorineRecords, rawWaterRecords, filteredWaterRecords, clarifiedWaterRecords, cloudRawWaterRecords) {
         (rawWaterRecords.map { RecordEntry.RawWater(it) } +
                 filteredWaterRecords.map { RecordEntry.FilteredWater(it) } +
+                cloudRawWaterRecords.map {RecordEntry.CloudRawWater(it)} +
                 clarifiedWaterRecords.map { RecordEntry.ClarifiedWater(it) } +
                 coagulantRecords.map { RecordEntry.Coagulant(it) } +
                 chlorineRecords.map { RecordEntry.Chlorine(it) })
@@ -258,6 +271,8 @@ fun Records(
                                     is RecordEntry.ClarifiedWater -> {
                                         // We clicked a ClarifiedWater Record
                                     }
+
+                                    is RecordEntry.CloudRawWater -> TODO()
                                 }
                             }
                         )
@@ -379,6 +394,7 @@ fun RecordEntry.entryTitle(): String = when (this) {
     is RecordEntry.ClarifiedWater -> "Entry: Clarified Water Turbidity"
     is RecordEntry.Coagulant -> "Entry: Coagulant Dosage"
     is RecordEntry.Chlorine -> "Entry: Chlorine Dosage"
+    is RecordEntry.CloudRawWater -> "Entry: Raw Water (Cloud)"
 }
 
 fun RecordEntry.entrySubtitle(): String? = when (this) {
@@ -428,6 +444,12 @@ fun RecordEntry.entryDetails() {
                 modifier = Modifier.padding(bottom = 4.dp))
             DetailRow("Slider Overdose", "${record.sliderPosOverDose.toInt()} %")
             DetailRow("New Slider Position", "${record.newSliderPos.toInt()} %")
+        }
+        is RecordEntry.CloudRawWater -> {
+            DetailRow("Raw Water Turbidity", "${record.turbidity}")
+//            DetailRow("Plant ID", record.plantID)
+//            DetailRow("Operator ID", record.operatorID)
+            DetailRow("Notes", record.notes ?: "---")
         }
     }
 }

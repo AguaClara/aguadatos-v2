@@ -13,6 +13,7 @@ import com.amplifyframework.datastore.generated.model.Operator
 import com.amplifyframework.datastore.generated.model.Plant
 
 import com.amplifyframework.api.graphql.model.ModelMutation
+import com.amplifyframework.api.graphql.model.ModelQuery
 import com.amplifyframework.datastore.generated.model.RawEntry
 
 interface AmplifyService {
@@ -32,6 +33,11 @@ interface AmplifyService {
     turbidity: Double,
     notes: String?,
     onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
+  fun getRawEntries(
+    onSuccess: (List<RawEntry>) -> Unit,
     onError: (String) -> Unit
   )
 }
@@ -104,6 +110,23 @@ class AguaDatosAmplify : AmplifyService {
       },
       { error ->
         onError(error.localizedMessage ?: "Entry Failed")
+      }
+    )
+  }
+
+  override fun getRawEntries(onSuccess: (List<RawEntry>) -> Unit, onError: (String) -> Unit) {
+    Amplify.API.query(
+      ModelQuery.list(RawEntry::class.java),
+      { response ->
+        val entries = response.data
+        if (entries != null) {
+          onSuccess(entries.items.toList())
+        } else {
+          onError("No raw water records returned.")
+        }
+      },
+      { error ->
+        onError(error.localizedMessage ?: "Failed to retrieve raw water records.")
       }
     )
   }
