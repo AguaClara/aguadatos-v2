@@ -97,7 +97,7 @@
     <string name="entry_details">Entry details:</string>
 
     <!-- Color -->
-    <string name="what_is_the_water_color">What is the color of the water of the plant in NTU?</string>
+    <string name="what_is_the_water_color">What is the color of the water of the plant in color units?</string>
     <string name="color_caps">COLOR</string>
 
     <!-- Tank Volumes -->

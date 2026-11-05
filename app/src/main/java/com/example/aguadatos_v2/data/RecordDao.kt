@@ -52,4 +52,24 @@ interface RecordDao {
 
     @Query("SELECT * FROM clarified_water_records ORDER BY timestamp DESC")
     fun getAllClarifiedWater(): Flow<List<ClarifiedWaterRecord>>
+
+    // Plant Flow
+    @Insert
+    suspend fun insertPlantFlow(record: PlantFlowRecord)
+    @Query("SELECT * FROM plant_flow_records ORDER BY timestamp DESC")
+    fun getAllPlantFlow(): Flow<List<PlantFlowRecord>>
+    // Color
+    @Insert
+    suspend fun insertColor(record : ColorRecord)
+
+    @Query("SELECT * FROM color_records ORDER BY timestamp DESC")
+    fun getAllColor(): Flow<List<ColorRecord>>
+
+    // Tank Volumes
+    @Insert
+    suspend fun insertTankVolumes(record: TankVolumesRecord)
+
+    @Query("SELECT * FROM tank_volumes_records ORDER BY timestamp DESC")
+    fun getAllTankVolumes(): Flow<List<TankVolumesRecord>>
+
 }

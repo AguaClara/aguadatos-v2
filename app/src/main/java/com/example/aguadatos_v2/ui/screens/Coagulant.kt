@@ -46,10 +46,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
-/*
-* tried to finish this screen as well, but since internship ends, I dont have time (double check with patrick for what to do)
-* */
-
 
 data class CoagulantSubmission(
   val date: String,
@@ -63,11 +59,11 @@ data class CoagulantSubmission(
   val chemicalFlowRate: String
 ) : Serializable
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCoagulant(){
-  Coagulant({},{submission -> }, {}, {}, {}, {})
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCoagulant(){
+//  Coagulant({},{submission -> }, {}, {}, {}, {})
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

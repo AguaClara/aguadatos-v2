@@ -42,7 +42,6 @@ import java.util.*
 // Wrapper to unify all record types into one list
 sealed class RecordEntry {
     abstract val timestamp: Long
-
     data class RawWater(val record: RawWaterRecord) : RecordEntry() {
         override val timestamp = record.timestamp
     }
@@ -58,9 +57,18 @@ sealed class RecordEntry {
     data class Chlorine(val record: ChlorineRecord) : RecordEntry() {
         override val timestamp = record.timestamp
     }
-    data class CloudRawWater(val record: RawEntry) : RecordEntry() {
-        override val timestamp = record.createdAt.toDate().time
+    data class PlantFlow(val record: PlantFlowRecord) : RecordEntry() {
+        override val timestamp = record.timestamp
     }
+    data class Color(val record: ColorRecord) : RecordEntry() {
+        override val timestamp = record.timestamp
+    }
+    data class TankVolumes(val record: TankVolumesRecord) : RecordEntry() {
+        override val timestamp = record.timestamp
+    }
+//    data class CloudRawWater(val record: RawEntry) : RecordEntry() {
+//        override val timestamp = record.createdAt.toDate().time
+//    }
 }
 
 fun Long.toDateKey(): String {
@@ -104,6 +112,9 @@ fun Records(
     val rawWaterRecords by recordViewModel.rawWaterRecords.collectAsState()
     val filteredWaterRecords by recordViewModel.filteredWaterRecords.collectAsState()
     val clarifiedWaterRecords by recordViewModel.clarifiedWaterRecords.collectAsState()
+    val plantFlowRecords by recordViewModel.plantFlowRecords.collectAsState()
+    val colorRecords by recordViewModel.colorRecords.collectAsState()
+    val tankVolumesRecords by recordViewModel.tankVolumesRecords.collectAsState()
 
     val cloudRawWaterRecords by recordViewModel.cloudRawWaterRecords.collectAsState()
     val isLoadingCloudRecords by recordViewModel.isLoadingCloudRecords.collectAsState()
@@ -114,13 +125,26 @@ fun Records(
         recordViewModel.loadRawEntries()
     }
     // Combine all records into one sorted list
-    val allEntries = remember(coagulantRecords, chlorineRecords, rawWaterRecords, filteredWaterRecords, clarifiedWaterRecords, cloudRawWaterRecords) {
-        (rawWaterRecords.map { RecordEntry.RawWater(it) } +
+    val allEntries = remember(
+        coagulantRecords,
+        chlorineRecords,
+        rawWaterRecords,
+        filteredWaterRecords,
+        clarifiedWaterRecords,
+        plantFlowRecords,
+        colorRecords,
+        tankVolumesRecords) {
+//        cloudRawWaterRecords) {
+        (
+                rawWaterRecords.map { RecordEntry.RawWater(it) } +
                 filteredWaterRecords.map { RecordEntry.FilteredWater(it) } +
-                cloudRawWaterRecords.map {RecordEntry.CloudRawWater(it)} +
+                // cloudRawWaterRecords.map {RecordEntry.CloudRawWater(it)} +
                 clarifiedWaterRecords.map { RecordEntry.ClarifiedWater(it) } +
                 coagulantRecords.map { RecordEntry.Coagulant(it) } +
-                chlorineRecords.map { RecordEntry.Chlorine(it) })
+                chlorineRecords.map { RecordEntry.Chlorine(it) }) +
+                plantFlowRecords.map { RecordEntry.PlantFlow(it) } +
+                colorRecords.map { RecordEntry.Color(it) } +
+                tankVolumesRecords.map { RecordEntry.TankVolumes(it) }
             .sortedByDescending { it.timestamp }
     }
 
@@ -261,18 +285,34 @@ fun Records(
                                     }
                                     is RecordEntry.Chlorine -> {
                                         // We clicked a Chlorine Record
+                                        TODO()
                                     }
                                     is RecordEntry.RawWater -> {
                                         // We clicked a RawWater Record
+                                        TODO()
                                     }
                                     is RecordEntry.FilteredWater -> {
                                         // We clicked a FilteredWater Record
+                                        TODO()
                                     }
                                     is RecordEntry.ClarifiedWater -> {
                                         // We clicked a ClarifiedWater Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.PlantFlow -> {
+                                        // We clicked a PlantFlow Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.Color -> {
+                                        // We clicked a Color Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.TankVolumes -> {
+                                        // We clicked a TankVolumes Record
+                                        TODO()
                                     }
 
-                                    is RecordEntry.CloudRawWater -> TODO()
+                                    //is RecordEntry.CloudRawWater -> TODO()
                                 }
                             }
                         )
@@ -394,7 +434,10 @@ fun RecordEntry.entryTitle(): String = when (this) {
     is RecordEntry.ClarifiedWater -> "Entry: Clarified Water Turbidity"
     is RecordEntry.Coagulant -> "Entry: Coagulant Dosage"
     is RecordEntry.Chlorine -> "Entry: Chlorine Dosage"
-    is RecordEntry.CloudRawWater -> "Entry: Raw Water (Cloud)"
+    is RecordEntry.PlantFlow -> "Entry: Plant Flow"
+    is RecordEntry.Color -> "Entry: Water Color"
+    is RecordEntry.TankVolumes -> "Entry: Tank Volumes"
+    // is RecordEntry.CloudRawWater -> "Entry: Raw Water (Cloud)"
 }
 
 fun RecordEntry.entrySubtitle(): String? = when (this) {
@@ -445,12 +488,24 @@ fun RecordEntry.entryDetails() {
             DetailRow("Slider Overdose", "${record.sliderPosOverDose.toInt()} %")
             DetailRow("New Slider Position", "${record.newSliderPos.toInt()} %")
         }
-        is RecordEntry.CloudRawWater -> {
-            DetailRow("Raw Water Turbidity", "${record.turbidity}")
-//            DetailRow("Plant ID", record.plantID)
-//            DetailRow("Operator ID", record.operatorID)
-            DetailRow("Notes", record.notes ?: "---")
+        is RecordEntry.PlantFlow -> {
+            DetailRow("Plant Flow", record.plantFlow)
         }
+        is RecordEntry.Color -> {
+            DetailRow("Water Color", record.color)
+        }
+        is RecordEntry.TankVolumes -> {
+            DetailRow("Coagulant Tank 1", record.coagulantTank1)
+            DetailRow("Coagulant Tank 2", record.coagulantTank2)
+            DetailRow("Chlorine Tank 1", record.chlorineTank1)
+            DetailRow("Chlorine Tank 2", record.chlorineTank2)
+        }
+//        is RecordEntry.CloudRawWater -> { TODO()
+////            DetailRow("Raw Water Turbidity", "${record.turbidity}")
+//////            DetailRow("Plant ID", record.plantID)
+//////            DetailRow("Operator ID", record.operatorID)
+////            DetailRow("Notes", record.notes ?: "---")
+//        }
     }
 }
 

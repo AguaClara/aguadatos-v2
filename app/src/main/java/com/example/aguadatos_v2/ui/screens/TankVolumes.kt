@@ -49,7 +49,7 @@ import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 @Composable
 public fun TankVolumes(
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (String, String, String, String) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -302,7 +302,21 @@ public fun TankVolumes(
             ) {
                 //submit button
                 Button(
-                    onClick = onSubmitClick /*submit data to server code goes here*/ ,
+                    onClick = {
+                        if (
+                            coagulantTank1.isNotBlank() &&
+                            coagulantTank2.isNotBlank() &&
+                            chlorineTank1.isNotBlank() &&
+                            chlorineTank2.isNotBlank()
+                        ) {
+                            onSubmitClick(
+                                coagulantTank1,
+                                coagulantTank2,
+                                chlorineTank1,
+                                chlorineTank2
+                            )
+                        }
+                    } /*submit data to server code goes here*/ ,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF77AF87),
                         contentColor = Color.White

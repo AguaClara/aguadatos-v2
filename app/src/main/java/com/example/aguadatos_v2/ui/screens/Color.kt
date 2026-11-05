@@ -42,7 +42,7 @@ import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 @Composable
 public fun Color(
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (String) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -125,7 +125,7 @@ public fun Color(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                //chlorine dosage input text field
+                //color input text field
                 OutlinedTextField(
                     value = chlorineDosage,
                     onValueChange = {  newValue ->
@@ -143,7 +143,7 @@ public fun Color(
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "mg/L", fontSize = 16.sp, fontFamily = fontFamily)
+                Text(text = "PCU", fontSize = 16.sp, fontFamily = fontFamily)
             }
 
             Text(
@@ -157,7 +157,11 @@ public fun Color(
 
             //submit button
             Button(
-                onClick = onSubmitClick /*submit data to server code goes here*/ ,
+                onClick = {
+                    if (chlorineDosage.isNotBlank()) {
+                        onSubmitClick(chlorineDosage)
+                    }
+                } /*submit data to server code goes here*/ ,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

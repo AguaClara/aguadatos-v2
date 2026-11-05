@@ -56,3 +56,27 @@ data class ClarifiedWaterRecord(
     val timestamp: Long = System.currentTimeMillis(),
     val clarifiedWater: String
 )
+
+@Entity(tableName = "plant_flow_records")
+data class PlantFlowRecord(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val timestamp: Long = System.currentTimeMillis(),
+    val plantFlow: String
+)
+
+@Entity(tableName = "color_records")
+data class ColorRecord(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val timestamp: Long = System.currentTimeMillis(),
+    val color: String
+)
+
+@Entity(tableName = "tank_volumes_records")
+data class TankVolumesRecord(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val timestamp: Long = System.currentTimeMillis(),
+    val coagulantTank1: String,
+    val coagulantTank2: String,
+    val chlorineTank1: String,
+    val chlorineTank2: String
+)

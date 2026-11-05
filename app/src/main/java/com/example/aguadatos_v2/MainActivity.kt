@@ -222,14 +222,30 @@ class MainActivity : ComponentActivity() {
 
           //color route
           composable("color") {
-            Color(onBackClick = {navController.popBackStack()},{}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            Color(
+              onBackClick = {navController.popBackStack()},
+              { value ->
+                recordViewModel.saveColor(value)
+                navController.popBackStack()
+              },
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              {}, {})
           }
 
           //tank volumes route
           composable("tank_volumes") {
             TankVolumes(
                 onBackClick = { navController.popBackStack() },
-                onSubmitClick = {},
+                onSubmitClick = { coagulantTank1, coagulantTank2, chlorineTank1, chlorineTank2 ->
+                  recordViewModel.saveTankVolumes(
+                    coagulantTank1,
+                    coagulantTank2,
+                    chlorineTank1,
+                    chlorineTank2
+                  )
+                  navController.popBackStack()
+                },
                 onHomeClick = { navController.navigate("home") },
                 onRecordsClick = { navController.navigate("records") },
                 onGraphsClick = {},
@@ -248,7 +264,15 @@ class MainActivity : ComponentActivity() {
 
           //plant flow route
           composable("plant_flow"){
-            PlantFlow(onBackClick = {navController.popBackStack()}, {}, onHomeClick = {navController.navigate("home")}, onRecordsClick = {navController.navigate("records")}, {}, {})
+            PlantFlow(
+              onBackClick = {navController.popBackStack()},
+              { value ->
+                recordViewModel.savePlantFlow(value)
+                navController.popBackStack()
+              },
+              onHomeClick = {navController.navigate("home")},
+              onRecordsClick = {navController.navigate("records")},
+              {}, {})
           }
 
           //raw water route

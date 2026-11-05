@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 /**
  * This is the main Room database for AguaDatos. It is a singleton class that provides access to the
@@ -25,15 +27,52 @@ import androidx.room.RoomDatabase
         ChlorineRecord::class,
         RawWaterRecord::class,
         FilteredWaterRecord::class,
-        ClarifiedWaterRecord::class
+        ClarifiedWaterRecord::class,
+        PlantFlowRecord::class,
+        ColorRecord::class,
+        TankVolumesRecord::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recordDao(): RecordDao
 
     companion object {
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `plant_flow_records` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `timestamp` INTEGER NOT NULL,
+                        `plantFlow` TEXT NOT NULL
+                    )
+                    """.trimIndent()
+                )
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `color_records` (
+                    `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    `timestamp` INTEGER NOT NULL,
+                    `color` TEXT NOT NULL
+                    )
+                    """.trimIndent()
+                )
+                database.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `tank_volumes_records` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `timestamp` INTEGER NOT NULL,
+                        `coagulantTank1` TEXT NOT NULL,
+                        `coagulantTank2` TEXT NOT NULL,
+                        `chlorineTank1` TEXT NOT NULL,
+                        `chlorineTank2` TEXT NOT NULL
+                    )
+                    """.trimIndent()
+                )
+            }
+        }
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
@@ -43,7 +82,8 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+                ).addMigrations(MIGRATION_1_2)
+                    .build()
                 INSTANCE = instance
                 instance
             }

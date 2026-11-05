@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asStateFlow
 
 class RecordViewModel(application: Application) : AndroidViewModel(application) {
@@ -27,16 +28,18 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
     val chlorineRecords = dao.getAllChlorine()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
     val rawWaterRecords = dao.getAllRawWater()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
     val filteredWaterRecords = dao.getAllFilteredWater()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
     val clarifiedWaterRecords = dao.getAllClarifiedWater()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-
+    val plantFlowRecords = dao.getAllPlantFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val colorRecords = dao.getAllColor()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val tankVolumesRecords = dao.getAllTankVolumes()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
     fun saveCoagulant(
         sliderPosition: Float,
         newSliderPos: Float,
@@ -97,6 +100,34 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
 
     fun saveClarifiedWater(clarifiedWater: String) = viewModelScope.launch {
         dao.insertClarifiedWater(ClarifiedWaterRecord(clarifiedWater = clarifiedWater))
+    }
+
+    fun savePlantFlow(plantFlow: String) = viewModelScope.launch {
+        dao.insertPlantFlow(
+            PlantFlowRecord(plantFlow = plantFlow)
+        )
+    }
+
+    fun saveColor(color: String) = viewModelScope.launch {
+        dao.insertColor(
+            ColorRecord(color = color)
+        )
+    }
+
+    fun saveTankVolumes(
+        coagulantTank1: String,
+        coagulantTank2: String,
+        chlorineTank1: String,
+        chlorineTank2: String
+    ) = viewModelScope.launch {
+        dao.insertTankVolumes(
+            TankVolumesRecord(
+                coagulantTank1 = coagulantTank1,
+                coagulantTank2 = coagulantTank2,
+                chlorineTank1 = chlorineTank1,
+                chlorineTank2 = chlorineTank2
+            )
+        )
     }
 
     fun loadRawEntries() {

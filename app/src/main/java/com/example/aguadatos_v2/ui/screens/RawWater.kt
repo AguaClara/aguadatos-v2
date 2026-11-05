@@ -23,10 +23,13 @@ import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
+import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
+
 
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 import kotlinx.coroutines.launch
@@ -51,6 +54,7 @@ public fun RawWater(
     onGraphsClick: () -> Unit,
     onProfileClick: () -> Unit
 ) {
+    val recordViewModel: RecordViewModel = viewModel()
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
         providerPackage = "com.google.android.gms",
@@ -172,25 +176,29 @@ public fun RawWater(
                     val plantID = "test-plant-id"
                     val operatorID = "test-operator-id"
                     if (turbidity == null) {
-                        return@Button
-                    }
-                    // Submit to server
-                    dataViewModel.submitRawEntry(
-                        plantID = plantID,
-                        operatorID = operatorID,
-                        turbidity = turbidity,
-                        notes = "Test entry",
-                        onSuccess = {
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Submit Successful")
-                            }
-                        },
-                        onError = { error ->
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Submit failed ($error)")
-                            }
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Please enter a valid turbidity value.")
                         }
-                    )
+                    } else {
+                        onSubmitClick(rawWater)
+                    }
+//                    // Submit to server
+//                    dataViewModel.submitRawEntry(
+//                        plantID = plantID,
+//                        operatorID = operatorID,
+//                        turbidity = turbidity,
+//                        notes = "Test entry",
+//                        onSuccess = {
+//                            scope.launch {
+//                                snackbarHostState.showSnackbar("Submit Successful")
+//                            }
+//                        },
+//                        onError = { error ->
+//                            scope.launch {
+//                                snackbarHostState.showSnackbar("Submit failed ($error)")
+//                            }
+//                        }
+
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
