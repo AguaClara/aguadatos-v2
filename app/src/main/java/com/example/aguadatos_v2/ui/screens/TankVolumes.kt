@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,10 +45,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
+import com.example.aguadatos_v2.data.RawWaterRecord
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
 
 @Composable
 public fun TankVolumes(
+    dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: (String, String, String, String) -> Unit,
     onHomeClick: () -> Unit,
@@ -303,20 +308,52 @@ public fun TankVolumes(
                 //submit button
                 Button(
                     onClick = {
+                        // TODO make a tank volumes submission for local storage
+                        val coagTank1 = coagulantTank1.toFloatOrNull()
+                        val coagTank2 = coagulantTank2.toFloatOrNull()
+                        val chlorTank1 = chlorineTank1.toFloatOrNull()
+                        val chlorTank2 = chlorineTank2.toFloatOrNull()
+
                         if (
-                            coagulantTank1.isNotBlank() &&
-                            coagulantTank2.isNotBlank() &&
-                            chlorineTank1.isNotBlank() &&
-                            chlorineTank2.isNotBlank()
+                            coagTank1 == null ||
+                            coagTank2 == null ||
+                            chlorTank1 == null ||
+                            chlorTank2 == null
                         ) {
-                            onSubmitClick(
-                                coagulantTank1,
-                                coagulantTank2,
-                                chlorineTank1,
-                                chlorineTank2
-                            )
+                            return@Button
                         }
-                    } /*submit data to server code goes here*/ ,
+
+                        // Save to Room database
+                        onSubmitClick(
+                            coagulantTank1,
+                            coagulantTank2,
+                            chlorineTank1,
+                            chlorineTank2
+                        )
+
+                        //submit to server
+                        dataViewModel.submitTankVolumesEntry(
+                            plantID = UserSession.getPlantID(),
+                            operatorID = UserSession.getOperatorID(),
+                            coagulantTank1 = coagTank1,
+                            coagulantTank2 = coagTank2,
+                            chlorineTank1 = chlorTank1,
+                            chlorineTank2 = chlorTank2,
+                            notes = "Test entry",
+                            onSuccess = {
+                                Log.d(
+                                    "TankVolumes",
+                                    "Submit Successful"
+                                )
+                            },
+                            onError = { error ->
+                                Log.d(
+                                    "Tank Volumes",
+                                    "Submit Failed"
+                                )
+                            }
+                        )
+                    }, /*submit data to server code goes here*/
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF77AF87),
                         contentColor = Color.White

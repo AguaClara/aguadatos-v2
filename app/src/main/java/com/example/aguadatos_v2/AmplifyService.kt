@@ -21,7 +21,7 @@ interface AmplifyService {
   fun submitInflowEntry(
     plantID: String,
     operatorID: String,
-    inflowRate: Double,
+    inflowRate: Float,
     notes: String?,
     onSuccess: () -> Unit,
     onError: (String) -> Unit
@@ -30,7 +30,7 @@ interface AmplifyService {
   fun submitRawEntry(
     plantID: String,
     operatorID: String,
-    turbidity: Double,
+    turbidity: Float,
     notes: String?,
     onSuccess: () -> Unit,
     onError: (String) -> Unit
@@ -40,9 +40,79 @@ interface AmplifyService {
     onSuccess: (List<RawEntry>) -> Unit,
     onError: (String) -> Unit
   )
+
+  fun submitCoagulantDosage(
+    plantID: String,
+    operatorID: String,
+    sliderPosition: Float,
+    inflowRate: Float,
+    startVolume: Float,
+    endVolume: Float,
+    timeElapsed: Float,
+    chemicalDose: Float,
+    chemicalFlowRate: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
+  fun submitFilteredWaterTurbidity(
+    plantID: String,
+    operatorID: String,
+    turbidity: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
+  fun submitClarifiedWaterTurbidity(
+    plantID: String,
+    operatorID: String,
+    turbidity: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
+  fun submitChlorineDosage(
+    plantID: String,
+    operatorID: String,
+    sliderPosition: Float,
+    inflowRate: Float,
+    startVolume: Float,
+    endVolume: Float,
+    timeElapsed: Float,
+    chemicalDose: Float,
+    chemicalFlowRate: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
+  fun submitColor(
+    plantID: String,
+    operatorID: String,
+    color: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
+  fun submitTankVolumes(
+    plantID: String,
+    operatorID: String,
+    coagulantTank1: Float,
+    coagulantTank2: Float,
+    chlorineTank1: Float,
+    chlorineTank2: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
 }
 
-class AguaDatosAmplify : AmplifyService {
+object AguaDatosAmplify : AmplifyService {
   override fun configureAmplify(context: Context) {
     try {
       Amplify.addPlugin(AWSApiPlugin())
@@ -63,14 +133,14 @@ class AguaDatosAmplify : AmplifyService {
   override fun submitInflowEntry(
     plantID: String,
     operatorID: String,
-    inflowRate: Double,
+    inflowRate: Float,
     notes: String?,
     onSuccess: () -> Unit,
     onError: (String) -> Unit
   ) {
     val entry = InflowEntry.builder()
       .createdAt(Temporal.DateTime(Date(),0))
-      .inflowRate(inflowRate)
+      .inflowRate(inflowRate.toDouble())
       .plant(Plant.justId(plantID))
       .operator(Operator.justId(operatorID))
       .notes(notes)
@@ -78,8 +148,14 @@ class AguaDatosAmplify : AmplifyService {
 
     Amplify.API.mutate(
       ModelMutation.create(entry),
-      {
-        onSuccess()
+      { response ->
+        if (response.hasErrors()) {
+          Log.e("AmplifyService", "GraphQL errors: ${response.errors}")
+          onError(response.errors.first().message)
+        } else {
+          Log.i("AmplifyService", "Success: ${response.data}")
+          onSuccess()
+        }
       },
       { error ->
         onError(error.localizedMessage ?: "Entry Failed")
@@ -90,14 +166,19 @@ class AguaDatosAmplify : AmplifyService {
   override fun submitRawEntry(
     plantID: String,
     operatorID: String,
-    turbidity: Double,
+    turbidity: Float,
     notes: String?,
     onSuccess: () -> Unit,
     onError: (String) -> Unit
   ) {
+
+    Log.d(
+      "AmplifyService",
+      "Submitting RawEntry: plantID=$plantID, operatorID=$operatorID, turbidity=$turbidity"
+    )
     val entry = RawEntry.builder()
       .createdAt(Temporal.DateTime(Date(),0))
-      .turbidity(turbidity)
+      .turbidity(turbidity.toDouble())
       .plant(Plant.justId(plantID))
       .operator(Operator.justId(operatorID))
       .notes(notes)
@@ -105,13 +186,125 @@ class AguaDatosAmplify : AmplifyService {
 
     Amplify.API.mutate(
       ModelMutation.create(entry),
-      {
-        onSuccess()
+      { response ->
+        Log.d("AmplifyService", "MUTATION CALLBACK RECEIVED")
+        Log.d("AmplifyService", "Response data: ${response.data}")
+        Log.d("AmplifyService", "Response errors: ${response.errors}")
+        if (response.hasErrors()) {
+          Log.e("AmplifyService", "GraphQL errors: ${response.errors}")
+          onError(response.errors.first().message)
+        } else {
+          Log.i("AmplifyService", "Success: ${response.data}")
+          onSuccess()
+        }
       },
       { error ->
-        onError(error.localizedMessage ?: "Entry Failed")
+        Log.e("AmplifyService", "========== MUTATION FAILURE ==========")
+        Log.e("AmplifyService", "Class: ${error.javaClass.name}")
+        Log.e("AmplifyService", "Message: ${error.message}")
+        Log.e("AmplifyService", "Cause: ${error.cause?.javaClass?.name}")
+        Log.e("AmplifyService", "Cause message: ${error.cause?.message}")
+        Log.e("AmplifyService", "Full exception:", error)
+        Log.e("AmplifyService", "======================================")
+
+        onError(error.message ?: "Entry Failed")
       }
     )
+    Log.d("AmplifyService", "Amplify.API.mutate() returned")
+  }
+
+  // TODO: all the following depend on the AWS console I believe
+  // -Anthony Querbach 10/25/2026
+
+  override fun submitCoagulantDosage(
+    plantID: String,
+    operatorID: String,
+    sliderPosition: Float,
+    inflowRate: Float,
+    startVolume: Float,
+    endVolume: Float,
+    timeElapsed: Float,
+    chemicalDose: Float,
+    chemicalFlowRate: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  ) {
+    TODO("Not yet implemented")
+  }
+
+  override fun submitFilteredWaterTurbidity(
+    plantID: String,
+    operatorID: String,
+    filteredWaterTurbidity: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  ) {
+    TODO("Not yet implemented")
+  }
+
+  override fun submitClarifiedWaterTurbidity(
+    plantID: String,
+    operatorID: String,
+    filteredWaterTurbidity: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  ) {
+    TODO("Not yet implemented")
+  }
+
+  override fun submitChlorineDosage(
+    plantID: String,
+    operatorID: String,
+    sliderPosition: Float,
+    inflowRate: Float,
+    startVolume: Float,
+    endVolume: Float,
+    timeElapsed: Float,
+    chemicalDose: Float,
+    chemicalFlowRate: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  ) {
+    TODO("Not yet implemented")
+  }
+
+  override fun submitColor(
+    plantID: String,
+    operatorID: String,
+    color: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  ) {
+    TODO("Not yet implemented")
+  }
+
+  override fun submitTankVolumes(
+    plantID: String,
+    operatorID: String,
+    coagulantTank1: Float,
+    coagulantTank2: Float,
+    chlorineTank1: Float,
+    chlorineTank2: Float,
+    notes: String?,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  ) {
+
+    Log.d(
+      "AmplifyService",
+      "Submitting TankVolumes: " +
+              "plantID=$plantID, operatorID=$operatorID, " +
+              "coagulantTank1=$coagulantTank1, " +
+              "coagulantTank2=$coagulantTank2, " +
+              "chlorineTank1=$chlorineTank1, " +
+              "chlorineTank2=$chlorineTank2, "
+    )
+    TODO("Not yet implemented")
   }
 
   override fun getRawEntries(onSuccess: (List<RawEntry>) -> Unit, onError: (String) -> Unit) {

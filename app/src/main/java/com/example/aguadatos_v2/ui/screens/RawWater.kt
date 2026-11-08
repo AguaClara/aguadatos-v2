@@ -29,14 +29,11 @@ import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
-
-
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
+import java.time.LocalDate
 import kotlinx.coroutines.launch
 
-
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 /*
 * Raw water composable:
 * Intent & Design:
@@ -48,7 +45,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 public fun RawWater(
     dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
-    onSubmitClick: (String) -> Unit,
+    onSubmitClick: (DataSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -172,42 +169,47 @@ public fun RawWater(
             //submit button
             Button(
                 onClick = {
-                    val turbidity = rawWater.toDoubleOrNull()
-                    val plantID = "test-plant-id"
-                    val operatorID = "test-operator-id"
+                    val turbidity = rawWater.toFloatOrNull()
+
                     if (turbidity == null) {
                         scope.launch {
-                            snackbarHostState.showSnackbar("Please enter a valid turbidity value.")
+                            snackbarHostState.showSnackbar(
+                                "Please enter a valid turbidity value."
+                            )
                         }
-                    } else {
-                        onSubmitClick(rawWater)
+                        return@Button
                     }
-//                    // Submit to server
-//                    dataViewModel.submitRawEntry(
-//                        plantID = plantID,
-//                        operatorID = operatorID,
-//                        turbidity = turbidity,
-//                        notes = "Test entry",
-//                        onSuccess = {
-//                            scope.launch {
-//                                snackbarHostState.showSnackbar("Submit Successful")
-//                            }
-//                        },
-//                        onError = { error ->
-//                            scope.launch {
-//                                snackbarHostState.showSnackbar("Submit failed ($error)")
-//                            }
-//                        }
 
+                    // Save to local Room database
+                    onSubmitClick(
+                        RawWaterSubmission(
+                            date = LocalDate.now().toString(),
+                            rawWater = rawWater
+                        )
+                    )
+
+                    // Submit to Amplify
+                    dataViewModel.submitRawWaterEntry(
+                        plantID = UserSession.getPlantID(),
+                        operatorID = UserSession.getOperatorID(),
+                        turbidity = turbidity,
+                        notes = "Test entry",
+                        onSuccess = {
+                            Log.d("RawWater", "Submit Successful")
+                        },
+                        onError = { error ->
+                            Log.e("RawWater", "Submit Failed: $error")
+                        }
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White
                 ),
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
                     .align(Alignment.End)
-                    .height(40.dp),
+                    .height(40.dp)
             ) {
                 Text(text = stringResource(R.string.submit), fontFamily = fontFamily)
             }

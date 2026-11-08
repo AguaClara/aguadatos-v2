@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
 
 /*
 * Plant flow composable:
@@ -34,6 +37,7 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 
 @Composable
 public fun PlantFlow(
+    dataViewModel: DataViewModel,
     onBackClick: () -> Unit,
     onSubmitClick: (String) -> Unit,
     onHomeClick: () -> Unit,
@@ -156,11 +160,23 @@ public fun PlantFlow(
                 onClick = {
                     val flow = plantFlow.toDoubleOrNull()
 
-                    if (flow == null) {
-                        return@Button
+                    if (flow != null) {
+                        onSubmitClick(plantFlow)
+
+                        dataViewModel.submitInflowEntry(
+                            plantID = UserSession.getPlantID(),
+                            operatorID = UserSession.getOperatorID(),
+                            inflowRate = flow.toFloat(),
+                            notes = "Test entry",
+                            onSuccess = {
+                                Log.d("Inflow", "Submit Successful")
+                            },
+                            onError = { error ->
+                                Log.e("Inflow", "Submit Failed: $error")
+                            }
+                        )
                     }
-                    onSubmitClick(plantFlow)
-                } /*submit data to server code goes here*/,
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

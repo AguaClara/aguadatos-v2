@@ -25,7 +25,7 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 /** This is an auto generated class representing the Operator type in your schema. */
 @SuppressWarnings("all")
 @ModelConfig(pluralName = "Operators", type = Model.Type.USER, version = 1, authRules = {
-  @AuthRule(allow = AuthStrategy.PRIVATE, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+  @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
 @Index(name = "OperatorByPlant", fields = {"plantID","id"})
 public final class Operator implements Model {

@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.aguadatos_v2.data.*
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel

@@ -24,7 +24,7 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 /** This is an auto generated class representing the FilteredEntry type in your schema. */
 @SuppressWarnings("all")
 @ModelConfig(pluralName = "FilteredEntries", type = Model.Type.USER, version = 1, authRules = {
-  @AuthRule(allow = AuthStrategy.PRIVATE, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+  @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
 @Index(name = "FilteredByPlant", fields = {"plantID","createdAt"})
 @Index(name = "FilteredByOperator", fields = {"operatorID","createdAt"})

@@ -1,5 +1,6 @@
 package com.example.aguadatos_v2.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,8 +23,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aguadatos_v2.R
+import com.example.aguadatos_v2.data.RawWaterRecord
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
+import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodels.UserSession
+import java.time.LocalDate
 
 /*
 * Clarified Water composable:
@@ -34,8 +39,9 @@ import com.example.aguadatos_v2.ui.components.BottomNavButton
 
 @Composable
 public fun ClarifiedWater(
+    dataViewModel: DataViewModel,
     onBackClick: () -> Unit,
-    onSubmitClick: (String) -> Unit,
+    onSubmitClick: (DataSubmission) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -54,7 +60,7 @@ public fun ClarifiedWater(
         )
     )
 
-    val selectedChemical by remember {mutableStateOf("PAC")} //take this value from server or previous screen
+    val selectedChemical by remember { mutableStateOf("PAC") } //take this value from server or previous screen
     var clarifiedWater by remember { mutableStateOf("") }
 
     Scaffold(
@@ -121,14 +127,16 @@ public fun ClarifiedWater(
                 //clarified water turbidity input text field
                 OutlinedTextField(
                     value = clarifiedWater,
-                    onValueChange = {  newValue ->
+                    onValueChange = { newValue ->
                         // Only allow digits and decimal points
-                        if (newValue.all { it.isDigit() || it== '.' }) {
+                        if (newValue.all { it.isDigit() || it == '.' }) {
                             clarifiedWater = newValue
-                        }},
+                        }
+                    },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White),
+                        unfocusedContainerColor = Color.White
+                    ),
                     shape = RoundedCornerShape(12.dp),
 
                     modifier = Modifier
@@ -150,7 +158,33 @@ public fun ClarifiedWater(
 
             //submit button
             Button(
-                onClick = { onSubmitClick(clarifiedWater) }/*submit data to server code goes here*/,
+                onClick = {
+                    onSubmitClick(
+                        ClarifiedSubmission(
+                            date = LocalDate.now().toString(),
+                            turbidity = clarifiedWater
+                        )
+                    )
+                    dataViewModel.submitClarifiedWaterTurbidityEntry(
+                        plantID = UserSession.getPlantID(),
+                        operatorID = UserSession.getOperatorID(),
+                        turbidity = clarifiedWater.toFloat(),
+                        notes = "Test entry",
+                        onSuccess = {
+                            Log.d(
+                                "ClarifiedWater",
+                                "Submit Successful"
+                            )
+                        },
+                        onError = { error ->
+                            Log.d(
+                                "ClarifiedWater",
+                                "Submit Failed"
+                            )
+                        }
+                    )
+                },
+
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White

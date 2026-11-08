@@ -14,6 +14,7 @@
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="create_account">Crear cuenta</string>
     <string name="already_have_an_account_log_in">¿Ya tiene una cuenta? Iniciar sesión</string>
+    <string name="email_example">Ej: kellytran@example.com</string>
 
     <string name="includes_lowercase_character">Incluye letra minúscula</string>
     <string name="includes_uppercase_character">Incluye letra mayúscula</string>

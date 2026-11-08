@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asStateFlow
 
 class RecordViewModel(application: Application) : AndroidViewModel(application) {
-    private val amplifyService: AmplifyService = AguaDatosAmplify()
+    private val amplifyService: AmplifyService = AguaDatosAmplify
     private val _cloudRawWaterRecords = MutableStateFlow<List<RawEntry>>(emptyList())
     val cloudRawWaterRecords: StateFlow<List<RawEntry>> = _cloudRawWaterRecords.asStateFlow()
     private val _isLoadingCloudRecords = MutableStateFlow(false)

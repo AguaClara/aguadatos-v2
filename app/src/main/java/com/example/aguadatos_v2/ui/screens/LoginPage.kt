@@ -47,16 +47,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.aguadatos_v2.R
+import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginPage(){
-  LoginPage({},{})
+  LoginPage(viewModel(), {},{})
 }
 
 @Composable
 fun LoginPage(
+  authViewModel : AuthViewModel,
   onLoginClick: () -> Unit = {},
   onSignupClick: () -> Unit = {}
 ) {
@@ -74,7 +76,7 @@ fun LoginPage(
     )
   )
 
-  var name by remember { mutableStateOf("") }
+  var email by remember { mutableStateOf("") }
   var password by remember { mutableStateOf("") }
   var showPassword by remember { mutableStateOf(false) }
 
@@ -119,7 +121,7 @@ fun LoginPage(
       Spacer(modifier = Modifier.height(150.dp))
       Box(modifier = Modifier.fillMaxWidth()) {
         Text(
-          text = stringResource(R.string.first_and_last_name),
+          text = stringResource(R.string.email),
           color = Color.Black,
           fontWeight = FontWeight.Bold,
           fontSize = 18.sp,
@@ -128,9 +130,9 @@ fun LoginPage(
         )
       }
       OutlinedTextField(
-        value = name,
-        onValueChange = { name = it },
-        placeholder = { Text("ex. Kelly Tran", color = Color.Gray) },
+        value = email,
+        onValueChange = { email = it },
+        placeholder = { Text(stringResource(R.string.email_example), color = Color.Gray) },
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
           focusedContainerColor = Color.White,
@@ -193,7 +195,13 @@ fun LoginPage(
     ) {
 
       Button(
-        onClick = onLoginClick,
+        onClick = {
+          authViewModel.updateSignUpState(
+            email = email,
+            password = password
+          )
+          onLoginClick()
+        },
         modifier = Modifier
           .fillMaxWidth()
           .height(56.dp),
@@ -202,7 +210,7 @@ fun LoginPage(
           containerColor = Color(0xFF4A90E2),
           contentColor = Color.White
         ),
-//        enabled = name.isNotBlank() && password.isNotBlank()
+//        enabled = email.isNotBlank() && password.isNotBlank()
       ) {
         Text(stringResource(R.string.log_in), fontSize = 18.sp)
       }
