@@ -121,8 +121,39 @@ data class FlowSubmission (
         get() = listOf(
             DisplayRow(R.string.plant_flow, inflowRate, "L/s")
         )
+}
+
+data class TankVolumesSubmission (
+    override val date: String,
+    val coagulantTank1: String,
+    val coagulantTank2: String,
+    val chlorineTank1: String,
+    val chlorineTank2: String
+) : DataSubmission {
+    override val screenTitle = R.string.tank_volume_caps
+    override val displayRows: List<DisplayRow>
+        get() = listOf(
+            DisplayRow(R.string.tank_volumes, coagulantTank1, "L"),
+            DisplayRow(R.string.tank_volumes, coagulantTank2, "L"),
+            DisplayRow(R.string.tank_volumes, chlorineTank1, "L"),
+            DisplayRow(R.string.tank_volumes, chlorineTank2, "L"),
+        )
 
 }
+
+data class ColorSubmission (
+    override val date: String,
+    val color: String,
+) : DataSubmission {
+    override val screenTitle = R.string.color_caps
+    override val displayRows: List<DisplayRow>
+        get() = listOf(
+            DisplayRow(R.string.color, color, "PCU")
+        )
+
+}
+
+// need tank volumes, color, coagulant, chlorine
 
 /**
  * ConfirmScreen displays a confirmation page where the user is asked to confirm
