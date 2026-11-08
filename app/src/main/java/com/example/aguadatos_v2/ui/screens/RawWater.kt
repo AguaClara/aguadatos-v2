@@ -28,7 +28,9 @@ import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import com.amplifyframework.core.model.temporal.Temporal
 
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
 import kotlinx.coroutines.launch
@@ -200,6 +202,17 @@ public fun RawWater(
                                 "Submit Failed"
                             )
                         }
+                    )
+
+                    // Test database query
+                    dataViewModel.testGetRawEntries(
+                        plantID = UserSession.getPlantID(),
+                        startDate = Temporal.DateTime(
+                            LocalDate.now()
+                                .minusDays(30)
+                                .atStartOfDay(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                        )
                     )
                 },
                 colors = ButtonDefaults.buttonColors(

@@ -135,6 +135,7 @@ class MainActivity : ComponentActivity() {
           //login route
           composable("login") {
             LoginPage(
+              authViewModel = authViewModel,
               onLoginClick = {
                 // do some verification for login info
                 // TODO: replace these with actual vals from API call
