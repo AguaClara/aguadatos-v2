@@ -11,20 +11,36 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import com.example.aguadatos_v2.data.CoagulantRecord
+import com.example.aguadatos_v2.ui.screens.WelcomePage
 import com.example.aguadatos_v2.ui.screens.Chlorine
+import com.example.aguadatos_v2.ui.screens.ClarifiedSubmission
 import com.example.aguadatos_v2.ui.screens.ClarifiedWater
 import com.example.aguadatos_v2.ui.screens.Coagulant
 import com.example.aguadatos_v2.ui.screens.CoagulantSubmission
+import com.example.aguadatos_v2.ui.screens.CoagulantConfirmScreen
 import com.example.aguadatos_v2.ui.screens.Color
 import com.example.aguadatos_v2.ui.screens.ConfirmPlant
 import com.example.aguadatos_v2.ui.screens.ConfirmScreen
 import com.example.aguadatos_v2.ui.screens.CreateParameter
+import com.example.aguadatos_v2.ui.screens.DataSubmission
+import com.example.aguadatos_v2.ui.screens.EditCoagulant
+import com.example.aguadatos_v2.ui.screens.FilteredSubmission
 import com.example.aguadatos_v2.ui.screens.FilteredWater
+import com.example.aguadatos_v2.ui.screens.FlowSubmission
+import com.example.aguadatos_v2.ui.screens.Graph
 import com.example.aguadatos_v2.ui.screens.HomeScreen
 import com.example.aguadatos_v2.ui.screens.LoginPage
 import com.example.aguadatos_v2.ui.screens.PlantConfiguration
@@ -32,28 +48,15 @@ import com.example.aguadatos_v2.ui.screens.PlantConfigurationConfirm
 import com.example.aguadatos_v2.ui.screens.PlantConfigurationOther
 import com.example.aguadatos_v2.ui.screens.PlantFlow
 import com.example.aguadatos_v2.ui.screens.RawWater
+import com.example.aguadatos_v2.ui.screens.RawWaterSubmission
 import com.example.aguadatos_v2.ui.screens.Records
 import com.example.aguadatos_v2.ui.screens.SignUp
 import com.example.aguadatos_v2.ui.screens.SubmittedConfirmScreen
 import com.example.aguadatos_v2.ui.screens.TankVolumes
 import com.example.aguadatos_v2.ui.screens.VerificationCode
-import com.example.aguadatos_v2.ui.screens.WelcomePage
-import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.LaunchedEffect
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
-import com.example.aguadatos_v2.ui.screens.ClarifiedSubmission
-import com.example.aguadatos_v2.ui.screens.DataSubmission
-import com.example.aguadatos_v2.ui.screens.FilteredSubmission
-import com.example.aguadatos_v2.ui.screens.FlowSubmission
-import com.example.aguadatos_v2.ui.screens.Graph
-
-import com.example.aguadatos_v2.ui.screens.RawWaterSubmission
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
+import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
 import com.example.aguadatos_v2.ui.viewmodels.UserSession
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -61,7 +64,6 @@ import java.time.format.DateTimeFormatter
 //main activity handles navigation
 class MainActivity : ComponentActivity() {
   private val amplifyService: AmplifyService = AguaDatosAmplify
-
 
   /**
    * NavController helper functions for processing submissions.
@@ -86,6 +88,9 @@ class MainActivity : ComponentActivity() {
   @RequiresApi(Build.VERSION_CODES.O)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    amplifyService.configureAmplify(this)
+
     enableEdgeToEdge()
     setContent {
       //uses navController and navHost to handle all navigation routes
@@ -135,6 +140,7 @@ class MainActivity : ComponentActivity() {
           //login route
           composable("login") {
             LoginPage(
+              authViewModel = authViewModel,
               onLoginClick = {
                 // do some verification for login info
                 // TODO: replace these with actual vals from API call
@@ -144,11 +150,8 @@ class MainActivity : ComponentActivity() {
 
                 // writes the user and plant ID to a local user session object for later user
                 UserSession.setSessionInfo(sessionID, plantID);
-                navController.navigate("home")
-
-
-                             },
-              onSignupClick = {navController.navigate(route = "signup")}
+                navController.navigate("home") },
+              onSignupClick = { navController.navigate(route = "signup") }
             )
           }
 
@@ -175,10 +178,39 @@ class MainActivity : ComponentActivity() {
             Records(
               recordViewModel = recordViewModel,
               onHomeClick = { navController.navigate("home") },
-              onRecordsClick = { navController.navigate("records")},
-              onGraphsClick = { navController.navigate("graphs")},
-              onProfileClick = { navController.navigate("plant_configuration") }
+              onBackClick = { navController.popBackStack() },
+              onRecordsClick = { navController.navigate("records") },
+              onGraphsClick = { navController.navigate("graphs") },
+              onProfileClick = { navController.navigate("plant_configuration") },
+              onEditCoagulantClick = { id ->
+                navController.navigate("edit_coagulant/$id")
+              }
             )
+          }
+
+          // edit coagulant route
+          composable("edit_coagulant/{recordId}") { backStackEntry ->
+            val recordId = backStackEntry.arguments
+              ?.getString("recordId")
+              ?.toIntOrNull()
+
+            val record = recordViewModel.coagulantRecords
+              .collectAsState()
+              .value
+              .find { it.id == recordId }
+
+            if (record != null) {
+              EditCoagulant(
+                record = record,
+                onBackClick = {
+                  navController.popBackStack()
+                },
+                onSaveClick = { updatedRecord ->
+                  recordViewModel.updateCoagulant(updatedRecord)
+                  navController.popBackStack()
+                }
+              )
+            }
           }
 
           //graphs route
@@ -235,13 +267,16 @@ class MainActivity : ComponentActivity() {
           //color route
           composable("color") {
             Color(
-              onBackClick = { navController.popBackStack() },
-              onSubmitClick = {},
-              onHomeClick = { navController.navigate("home") },
-              onRecordsClick = { navController.navigate("records") },
-              onGraphsClick = { navController.navigate("graphs") },
-              onProfileClick = { navController.navigate("plant_configuration") },
-              dataViewModel = dataViewModel
+                dataViewModel = dataViewModel,
+                onBackClick = { navController.popBackStack() },
+                onSubmitClick = { value ->
+                    recordViewModel.saveColor(value)
+                    navController.popBackStack()
+                },
+                onHomeClick = { navController.navigate("home") },
+                { navController.navigate("records") },
+                onGraphsClick = { navController.navigate("graphs") },
+                onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
@@ -249,7 +284,15 @@ class MainActivity : ComponentActivity() {
           composable("tank_volumes") {
             TankVolumes(
                 onBackClick = { navController.popBackStack() },
-                onSubmitClick = {},
+                onSubmitClick = { coagulantTank1, coagulantTank2, chlorineTank1, chlorineTank2 ->
+                  recordViewModel.saveTankVolumes(
+                    coagulantTank1,
+                    coagulantTank2,
+                    chlorineTank1,
+                    chlorineTank2
+                  )
+                  navController.popBackStack()
+                },
                 onHomeClick = { navController.navigate("home") },
                 onRecordsClick = { navController.navigate("records") },
                 onGraphsClick = { navController.navigate("graphs") },
@@ -278,13 +321,16 @@ class MainActivity : ComponentActivity() {
           //plant flow route
           composable("plant_flow"){
             PlantFlow(
+                dataViewModel = dataViewModel,
                 onBackClick = { navController.popBackStack() },
-                onSubmitClick = {},
+                onSubmitClick = { value ->
+                    recordViewModel.savePlantFlow(value)
+                    navController.popBackStack()
+                },
                 onHomeClick = { navController.navigate("home") },
                 onRecordsClick = { navController.navigate("records") },
                 onGraphsClick = { navController.navigate("graphs") },
-                onProfileClick = { navController.navigate("plant_configuration") },
-                dataViewModel = dataViewModel
+                onProfileClick = { navController.navigate("plant_configuration") }
             )
           }
 
@@ -331,8 +377,7 @@ class MainActivity : ComponentActivity() {
                 ?.get<CoagulantSubmission>("coagulantSubmission")
 
             if (submission != null) {
-
-              ConfirmScreen(
+              CoagulantConfirmScreen(
                 date = submission.date,
                 chemicalType = submission.chemicalType,
                 sliderPosition = submission.sliderPosition,

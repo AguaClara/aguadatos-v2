@@ -95,7 +95,7 @@
     <string name="entry_details">Detalles del registro:</string>
 
     <!-- Color -->
-    <string name="what_is_the_water_color">¿Cuál es el color del agua de la planta en NTU?</string>
+    <string name="what_is_the_water_color">¿Cuál es el color del agua de la planta en unidades de color?</string>
     <string name="color_caps">COLOR</string>
 
     <!-- Create Parameter -->

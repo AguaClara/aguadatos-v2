@@ -54,7 +54,7 @@ import com.example.aguadatos_v2.ui.viewmodels.UserSession
 public fun TankVolumes(
     dataViewModel : DataViewModel,
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (String, String, String, String) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -308,12 +308,28 @@ public fun TankVolumes(
                 //submit button
                 Button(
                     onClick = {
-
                         // TODO make a tank volumes submission for local storage
-                        val coagTank1 = coagulantTank1.toFloat()
-                        val coagTank2 = coagulantTank2.toFloat()
-                        val chlorTank1 = chlorineTank1.toFloat()
-                        val chlorTank2 = chlorineTank2.toFloat()
+                        val coagTank1 = coagulantTank1.toFloatOrNull()
+                        val coagTank2 = coagulantTank2.toFloatOrNull()
+                        val chlorTank1 = chlorineTank1.toFloatOrNull()
+                        val chlorTank2 = chlorineTank2.toFloatOrNull()
+
+                        if (
+                            coagTank1 == null ||
+                            coagTank2 == null ||
+                            chlorTank1 == null ||
+                            chlorTank2 == null
+                        ) {
+                            return@Button
+                        }
+
+                        // Save to Room database
+                        onSubmitClick(
+                            coagulantTank1,
+                            coagulantTank2,
+                            chlorineTank1,
+                            chlorineTank2
+                        )
 
                         //submit to server
                         dataViewModel.submitTankVolumesEntry(
@@ -336,7 +352,8 @@ public fun TankVolumes(
                                     "Submit Failed"
                                 )
                             }
-                        ) } ,
+                        )
+                    }, /*submit data to server code goes here*/
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF77AF87),
                         contentColor = Color.White

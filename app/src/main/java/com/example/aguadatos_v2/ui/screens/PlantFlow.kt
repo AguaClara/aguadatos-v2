@@ -39,7 +39,7 @@ import com.example.aguadatos_v2.ui.viewmodels.UserSession
 public fun PlantFlow(
     dataViewModel: DataViewModel,
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (String) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -158,24 +158,24 @@ public fun PlantFlow(
             //submit button
             Button(
                 onClick = {
-                    val plantFlow = plantFlow.toFloat()
+                    val flow = plantFlow.toDoubleOrNull()
 
-                    // submit to server
-                    dataViewModel.submitInflowEntry(
-                        plantID = UserSession.getPlantID(),
-                        operatorID = UserSession.getOperatorID(),
-                        inflowRate = plantFlow,
-                        notes = "Test entry",
-                        onSuccess = {Log.d(
-                            "Inflow",
-                            "Submit Successful")
-                        },
-                        onError = { error ->
-                            Log.d("Inflow",
-                                "Submit Failed"
-                            )
-                        }
-                    )
+                    if (flow != null) {
+                        onSubmitClick(plantFlow)
+
+                        dataViewModel.submitInflowEntry(
+                            plantID = UserSession.getPlantID(),
+                            operatorID = UserSession.getOperatorID(),
+                            inflowRate = flow.toFloat(),
+                            notes = "Test entry",
+                            onSuccess = {
+                                Log.d("Inflow", "Submit Successful")
+                            },
+                            onError = { error ->
+                                Log.e("Inflow", "Submit Failed: $error")
+                            }
+                        )
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),

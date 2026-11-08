@@ -58,11 +58,13 @@ class DataViewModel : ViewModel() {
         turbidity: Float,
         notes: String?,
         onSuccess: () -> Unit,
-        onError: (String) -> Unit) {
+        onError: (String) -> Unit
+    ) {
         Log.d(
             "DataViewModel",
             "Submitting RawWaterEntry: plantID=$plantID, operatorID=$operatorID, turbidity=$turbidity"
         )
+
         amplifyService.submitRawEntry(
             plantID = plantID,
             operatorID = operatorID,
@@ -294,9 +296,6 @@ class DataViewModel : ViewModel() {
     ) : List<RawEntry> {
         return suspendCancellableCoroutine { continuation ->
             amplifyService.getRawEntries(
-                plantID = plantID,
-                startDate = startDate,
-                endDate = endDate,
                 onSuccess = { entries ->
                     if (continuation.isActive) {
                         continuation.resume(entries)

@@ -52,10 +52,6 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/*
-* tried to finish this screen as well, but since internship ends, I dont have time (double check with patrick for what to do)
-* */
-
 
 data class CoagulantSubmission(
     val date: String,
@@ -68,6 +64,7 @@ data class CoagulantSubmission(
     val chemicalDose: String,
     val chemicalFlowRate: String
 ) : Serializable
+
 
 /*
 If this code is ever uncommented, a data view model is needed
@@ -816,15 +813,15 @@ public fun Coagulant(
                     .height(50.dp)
                     .padding(8.dp)
             ) {
-                Text(text = stringResource(R.string.submit))
+                Text(
+                    text = stringResource(R.string.submit),
+                )
             }
         }
     }
 }
-
-
 @Composable
-public fun ConfirmScreen(
+public fun CoagulantConfirmScreen(
     date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
     chemicalType: String,
     sliderPosition: Float,

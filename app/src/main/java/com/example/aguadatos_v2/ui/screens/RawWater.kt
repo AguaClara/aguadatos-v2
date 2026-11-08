@@ -23,21 +23,16 @@ import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.aguadatos_v2.R
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.components.BottomNavButton
 import com.example.aguadatos_v2.ui.viewmodels.AuthViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-
+import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
 import com.example.aguadatos_v2.ui.viewmodels.DataViewModel
-import kotlinx.coroutines.launch
-
-
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import com.example.aguadatos_v2.ui.viewmodels.UserSession
-import kotlinx.serialization.internal.throwMissingFieldException
+import java.time.LocalDate
+import kotlinx.coroutines.launch
 
 /*
 * Raw water composable:
@@ -56,6 +51,7 @@ public fun RawWater(
     onGraphsClick: () -> Unit,
     onProfileClick: () -> Unit
 ) {
+    val recordViewModel: RecordViewModel = viewModel()
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
         providerPackage = "com.google.android.gms",
@@ -173,7 +169,16 @@ public fun RawWater(
             //submit button
             Button(
                 onClick = {
-                    val turbidity = rawWater.toFloatOrNull() ?: return@Button
+                    val turbidity = rawWater.toFloatOrNull()
+
+                    if (turbidity == null) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                "Please enter a valid turbidity value."
+                            )
+                        }
+                        return@Button
+                    }
 
                     // Save to local Room database
                     onSubmitClick(
@@ -182,23 +187,18 @@ public fun RawWater(
                             rawWater = rawWater
                         )
                     )
-                    // Submit to server
+
+                    // Submit to Amplify
                     dataViewModel.submitRawWaterEntry(
                         plantID = UserSession.getPlantID(),
                         operatorID = UserSession.getOperatorID(),
                         turbidity = turbidity,
                         notes = "Test entry",
                         onSuccess = {
-                            Log.d(
-                                "RawWater",
-                                "Submit Successful"
-                            )
+                            Log.d("RawWater", "Submit Successful")
                         },
                         onError = { error ->
-                            Log.d(
-                                "RawWater",
-                                "Submit Failed"
-                            )
+                            Log.e("RawWater", "Submit Failed: $error")
                         }
                     )
                 },
@@ -206,10 +206,10 @@ public fun RawWater(
                     containerColor = Color(0xFF77AF87),
                     contentColor = Color.White
                 ),
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
                     .align(Alignment.End)
-                    .height(40.dp),
+                    .height(40.dp)
             ) {
                 Text(text = stringResource(R.string.submit), fontFamily = fontFamily)
             }

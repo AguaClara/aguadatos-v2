@@ -46,7 +46,7 @@ import com.example.aguadatos_v2.ui.viewmodels.UserSession
 public fun Color(
     dataViewModel: DataViewModel,
     onBackClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (String) -> Unit,
     onHomeClick: () -> Unit,
     onRecordsClick: () -> Unit,
     onGraphsClick: () -> Unit,
@@ -129,7 +129,7 @@ public fun Color(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                //chlorine dosage input text field
+                //color input text field
                 OutlinedTextField(
                     value = color,
                     onValueChange = { newValue ->
@@ -149,7 +149,7 @@ public fun Color(
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "mg/L", fontSize = 16.sp, fontFamily = fontFamily)
+                Text(text = "PCU", fontSize = 16.sp, fontFamily = fontFamily)
             }
 
             Text(
@@ -164,27 +164,25 @@ public fun Color(
             //submit button
             Button(
                 onClick = {
-                    val colorVal = color.toFloat()
-                    onSubmitClick()
-                    dataViewModel.submitColorEntry(
-                        plantID = UserSession.getPlantID(),
-                        operatorID = UserSession.getOperatorID(),
-                        color = colorVal,
-                        notes = "Test entry",
-                        onSuccess = {
-                            Log.d(
-                                "Color",
-                                "Submit Successful"
-                            )
-                        },
-                        onError = { error ->
-                            Log.d(
-                                "Color",
-                                "Submit Failed"
+                    if (color.isNotBlank()) {
+                        onSubmitClick(color)
+
+                        val colorVal = color.toFloatOrNull()
+                        if (colorVal != null) {
+                            dataViewModel.submitColorEntry(
+                                plantID = UserSession.getPlantID(),
+                                operatorID = UserSession.getOperatorID(),
+                                color = colorVal,
+                                notes = "Test entry",
+                                onSuccess = {
+                                    Log.d("Color", "Submit Successful")
+                                },
+                                onError = { error ->
+                                    Log.e("Color", "Submit Failed: $error")
+                                }
                             )
                         }
-                    )
-
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF77AF87),

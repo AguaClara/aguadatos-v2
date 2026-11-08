@@ -13,6 +13,7 @@ import com.amplifyframework.datastore.generated.model.Operator
 import com.amplifyframework.datastore.generated.model.Plant
 
 import com.amplifyframework.api.graphql.model.ModelMutation
+import com.amplifyframework.api.graphql.model.ModelQuery
 import com.amplifyframework.datastore.generated.model.RawEntry
 
 interface AmplifyService {
@@ -32,6 +33,11 @@ interface AmplifyService {
     turbidity: Float,
     notes: String?,
     onSuccess: () -> Unit,
+    onError: (String) -> Unit
+  )
+
+  fun getRawEntries(
+    onSuccess: (List<RawEntry>) -> Unit,
     onError: (String) -> Unit
   )
 
@@ -104,7 +110,6 @@ interface AmplifyService {
     onError: (String) -> Unit
   )
 
-
 }
 
 object AguaDatosAmplify : AmplifyService {
@@ -114,10 +119,10 @@ object AguaDatosAmplify : AmplifyService {
       Amplify.addPlugin(AWSCognitoAuthPlugin())
       Amplify.configure(context)
 
-      Amplify.Auth.fetchAuthSession(
-        { result -> Log.i("Auth", "Logged in: ${result.isSignedIn}") },
-        { error -> Log.e("Auth", "Session error", error) }
-      )
+//      Amplify.Auth.fetchAuthSession(
+//        { result -> Log.i("Auth", "Logged in: ${result.isSignedIn}") },
+//        { error -> Log.e("Auth", "Session error", error) }
+//      )
       Log.i("AguaDatosv2Amplify", "Initialized Amplify project [AguaDatosv2]")
 
     } catch (error: AmplifyException) {
@@ -207,11 +212,6 @@ object AguaDatosAmplify : AmplifyService {
     )
     Log.d("AmplifyService", "Amplify.API.mutate() returned")
   }
-
-
-
-
-
 
   // TODO: all the following depend on the AWS console I believe
   // -Anthony Querbach 10/25/2026
@@ -305,5 +305,22 @@ object AguaDatosAmplify : AmplifyService {
               "chlorineTank2=$chlorineTank2, "
     )
     TODO("Not yet implemented")
+  }
+
+  override fun getRawEntries(onSuccess: (List<RawEntry>) -> Unit, onError: (String) -> Unit) {
+    Amplify.API.query(
+      ModelQuery.list(RawEntry::class.java),
+      { response ->
+        val entries = response.data
+        if (entries != null) {
+          onSuccess(entries.items.toList())
+        } else {
+          onError("No raw water records returned.")
+        }
+      },
+      { error ->
+        onError(error.localizedMessage ?: "Failed to retrieve raw water records.")
+      }
+    )
   }
 }

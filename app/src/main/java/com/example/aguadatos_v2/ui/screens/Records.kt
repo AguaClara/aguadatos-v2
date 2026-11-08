@@ -1,6 +1,7 @@
 package com.example.aguadatos_v2.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,28 +11,38 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.aguadatos_v2.R
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.aguadatos_v2.data.*
 import com.example.aguadatos_v2.ui.components.BottomNavigationBar
 import com.example.aguadatos_v2.ui.viewmodel.RecordViewModel
+import com.example.aguadatos_v2.data.CoagulantRecord
+import com.amplifyframework.datastore.generated.model.RawEntry
 import java.text.SimpleDateFormat
 import java.util.*
 
 // Wrapper to unify all record types into one list
 sealed class RecordEntry {
     abstract val timestamp: Long
-
     data class RawWater(val record: RawWaterRecord) : RecordEntry() {
         override val timestamp = record.timestamp
     }
@@ -47,6 +58,18 @@ sealed class RecordEntry {
     data class Chlorine(val record: ChlorineRecord) : RecordEntry() {
         override val timestamp = record.timestamp
     }
+    data class PlantFlow(val record: PlantFlowRecord) : RecordEntry() {
+        override val timestamp = record.timestamp
+    }
+    data class Color(val record: ColorRecord) : RecordEntry() {
+        override val timestamp = record.timestamp
+    }
+    data class TankVolumes(val record: TankVolumesRecord) : RecordEntry() {
+        override val timestamp = record.timestamp
+    }
+//    data class CloudRawWater(val record: RawEntry) : RecordEntry() {
+//        override val timestamp = record.createdAt.toDate().time
+//    }
 }
 
 fun Long.toDateKey(): String {
@@ -78,24 +101,51 @@ fun Long.toDayLabel(): String {
 @Composable
 fun Records(
     recordViewModel: RecordViewModel = viewModel(),
+    onBackClick: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onRecordsClick: () -> Unit = {},
     onGraphsClick: () -> Unit = {},
-    onProfileClick: () -> Unit = {}
+    onProfileClick: () -> Unit = {},
+    onEditCoagulantClick: (Int) -> Unit = {},
 ) {
     val coagulantRecords by recordViewModel.coagulantRecords.collectAsState()
     val chlorineRecords by recordViewModel.chlorineRecords.collectAsState()
     val rawWaterRecords by recordViewModel.rawWaterRecords.collectAsState()
     val filteredWaterRecords by recordViewModel.filteredWaterRecords.collectAsState()
     val clarifiedWaterRecords by recordViewModel.clarifiedWaterRecords.collectAsState()
+    val plantFlowRecords by recordViewModel.plantFlowRecords.collectAsState()
+    val colorRecords by recordViewModel.colorRecords.collectAsState()
+    val tankVolumesRecords by recordViewModel.tankVolumesRecords.collectAsState()
 
+    val cloudRawWaterRecords by recordViewModel.cloudRawWaterRecords.collectAsState()
+    val isLoadingCloudRecords by recordViewModel.isLoadingCloudRecords.collectAsState()
+    val cloudRecordsError by recordViewModel.cloudRecordsError.collectAsState()
+
+    // Tell Compose to request cloud records when Records screen first enters
+    LaunchedEffect(Unit) {
+        recordViewModel.loadRawEntries()
+    }
     // Combine all records into one sorted list
-    val allEntries = remember(coagulantRecords, chlorineRecords, rawWaterRecords, filteredWaterRecords, clarifiedWaterRecords) {
-        (rawWaterRecords.map { RecordEntry.RawWater(it) } +
+    val allEntries = remember(
+        coagulantRecords,
+        chlorineRecords,
+        rawWaterRecords,
+        filteredWaterRecords,
+        clarifiedWaterRecords,
+        plantFlowRecords,
+        colorRecords,
+        tankVolumesRecords) {
+//        cloudRawWaterRecords) {
+        (
+                rawWaterRecords.map { RecordEntry.RawWater(it) } +
                 filteredWaterRecords.map { RecordEntry.FilteredWater(it) } +
+                // cloudRawWaterRecords.map {RecordEntry.CloudRawWater(it)} +
                 clarifiedWaterRecords.map { RecordEntry.ClarifiedWater(it) } +
                 coagulantRecords.map { RecordEntry.Coagulant(it) } +
-                chlorineRecords.map { RecordEntry.Chlorine(it) })
+                chlorineRecords.map { RecordEntry.Chlorine(it) }) +
+                plantFlowRecords.map { RecordEntry.PlantFlow(it) } +
+                colorRecords.map { RecordEntry.Color(it) } +
+                tankVolumesRecords.map { RecordEntry.TankVolumes(it) }
             .sortedByDescending { it.timestamp }
     }
 
@@ -140,12 +190,22 @@ fun Records(
                 .background(Color(0xFFE4EFFC))
         ) {
             // Header
-            Box(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp, bottom = 8.dp),
-                contentAlignment = Alignment.Center
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.back_arrow),
+                    contentDescription = stringResource(R.string.back),
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .size(28.dp)
+                        .clickable { onBackClick() }
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = "RECORDS",
                     fontSize = 24.sp,
@@ -217,7 +277,46 @@ fun Records(
                     contentPadding = PaddingValues(vertical = 8.dp)
                 ) {
                     items(entriesForDate) { entry ->
-                        RecordEntryCard(entry)
+                        RecordEntryCard(
+                            entry = entry,
+                            onEditClick = {
+                                when (entry) {
+                                    is RecordEntry.Coagulant -> {
+                                        onEditCoagulantClick(entry.record.id)
+                                    }
+                                    is RecordEntry.Chlorine -> {
+                                        // We clicked a Chlorine Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.RawWater -> {
+                                        // We clicked a RawWater Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.FilteredWater -> {
+                                        // We clicked a FilteredWater Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.ClarifiedWater -> {
+                                        // We clicked a ClarifiedWater Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.PlantFlow -> {
+                                        // We clicked a PlantFlow Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.Color -> {
+                                        // We clicked a Color Record
+                                        TODO()
+                                    }
+                                    is RecordEntry.TankVolumes -> {
+                                        // We clicked a TankVolumes Record
+                                        TODO()
+                                    }
+
+                                    //is RecordEntry.CloudRawWater -> TODO()
+                                }
+                            }
+                        )
                     }
                     item {
                         // Data synced footer
@@ -237,7 +336,10 @@ fun Records(
 }
 
 @Composable
-fun RecordEntryCard(entry: RecordEntry) {
+fun RecordEntryCard(
+    entry: RecordEntry,
+    onEditClick: () -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -277,13 +379,39 @@ fun RecordEntryCard(entry: RecordEntry) {
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
-                Icon(
-                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                    contentDescription = if (expanded) "Collapse" else "Expand",
-                    tint = Color.DarkGray
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Edit button
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(
+                                color = Color(0xFF7CBB84),
+                                shape = RoundedCornerShape(6.dp)
+                            )
+                            .clickable { onEditClick() },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = "Edit",
+                            tint = Color.White,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    // Collapse/expand arrow
+                    Icon(
+                        imageVector = if (expanded)
+                            Icons.Filled.KeyboardArrowUp
+                        else
+                            Icons.Filled.KeyboardArrowDown,
+                        contentDescription = if (expanded) "Collapse" else "Expand",
+                        tint = Color.DarkGray,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
-
             // Expanded details
             AnimatedVisibility(visible = expanded) {
                 Column(
@@ -307,6 +435,10 @@ fun RecordEntry.entryTitle(): String = when (this) {
     is RecordEntry.ClarifiedWater -> "Entry: Clarified Water Turbidity"
     is RecordEntry.Coagulant -> "Entry: Coagulant Dosage"
     is RecordEntry.Chlorine -> "Entry: Chlorine Dosage"
+    is RecordEntry.PlantFlow -> "Entry: Plant Flow"
+    is RecordEntry.Color -> "Entry: Water Color"
+    is RecordEntry.TankVolumes -> "Entry: Tank Volumes"
+    // is RecordEntry.CloudRawWater -> "Entry: Raw Water (Cloud)"
 }
 
 fun RecordEntry.entrySubtitle(): String? = when (this) {
@@ -357,6 +489,24 @@ fun RecordEntry.entryDetails() {
             DetailRow("Slider Overdose", "${record.sliderPosOverDose.toInt()} %")
             DetailRow("New Slider Position", "${record.newSliderPos.toInt()} %")
         }
+        is RecordEntry.PlantFlow -> {
+            DetailRow("Plant Flow", record.plantFlow)
+        }
+        is RecordEntry.Color -> {
+            DetailRow("Water Color", record.color)
+        }
+        is RecordEntry.TankVolumes -> {
+            DetailRow("Coagulant Tank 1", record.coagulantTank1)
+            DetailRow("Coagulant Tank 2", record.coagulantTank2)
+            DetailRow("Chlorine Tank 1", record.chlorineTank1)
+            DetailRow("Chlorine Tank 2", record.chlorineTank2)
+        }
+//        is RecordEntry.CloudRawWater -> { TODO()
+////            DetailRow("Raw Water Turbidity", "${record.turbidity}")
+//////            DetailRow("Plant ID", record.plantID)
+//////            DetailRow("Operator ID", record.operatorID)
+////            DetailRow("Notes", record.notes ?: "---")
+//        }
     }
 }
 
